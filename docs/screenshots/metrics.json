@@ -1,0 +1,272 @@
+[
+  {
+    "clientWidth": 305,
+    "hiddenHeadings": [],
+    "pageWidth": 305,
+    "pins": 0,
+    "sections": [
+      {
+        "height": 1249,
+        "title": "hero-title",
+        "top": 1
+      },
+      {
+        "height": 1510,
+        "title": "glance-title",
+        "top": 1250
+      },
+      {
+        "height": 2085,
+        "title": "business-title",
+        "top": 2760
+      },
+      {
+        "height": 1242,
+        "title": "partners-title",
+        "top": 4845
+      },
+      {
+        "height": 1657,
+        "title": "reach-title",
+        "top": 6087
+      },
+      {
+        "height": 2233,
+        "title": "manufacturing-title",
+        "top": 7744
+      },
+      {
+        "height": 1724,
+        "title": "journey-title",
+        "top": 9978
+      },
+      {
+        "height": 1671,
+        "title": "news-title",
+        "top": 11701
+      },
+      {
+        "height": 1673,
+        "title": "enquiry-paths-title",
+        "top": 13372
+      }
+    ],
+    "width": 320
+  },
+  {
+    "clientWidth": 375,
+    "hiddenHeadings": [],
+    "pageWidth": 375,
+    "pins": 0,
+    "sections": [
+      {
+        "height": 1199,
+        "title": "hero-title",
+        "top": 1
+      },
+      {
+        "height": 1367,
+        "title": "glance-title",
+        "top": 1200
+      },
+      {
+        "height": 2073,
+        "title": "business-title",
+        "top": 2567
+      },
+      {
+        "height": 1144,
+        "title": "partners-title",
+        "top": 4639
+      },
+      {
+        "height": 1516,
+        "title": "reach-title",
+        "top": 5783
+      },
+      {
+        "height": 2221,
+        "title": "manufacturing-title",
+        "top": 7299
+      },
+      {
+        "height": 1674,
+        "title": "journey-title",
+        "top": 9521
+      },
+      {
+        "height": 1663,
+        "title": "news-title",
+        "top": 11195
+      },
+      {
+        "height": 1422,
+        "title": "enquiry-paths-title",
+        "top": 12858
+      }
+    ],
+    "width": 390
+  },
+  {
+    "clientWidth": 753,
+    "hiddenHeadings": [],
+    "pageWidth": 753,
+    "pins": 0,
+    "sections": [
+      {
+        "height": 1122,
+        "title": "hero-title",
+        "top": 1
+      },
+      {
+        "height": 1284,
+        "title": "glance-title",
+        "top": 1123
+      },
+      {
+        "height": 1259,
+        "title": "business-title",
+        "top": 2406
+      },
+      {
+        "height": 819,
+        "title": "partners-title",
+        "top": 3665
+      },
+      {
+        "height": 1587,
+        "title": "reach-title",
+        "top": 4484
+      },
+      {
+        "height": 2390,
+        "title": "manufacturing-title",
+        "top": 6071
+      },
+      {
+        "height": 1086,
+        "title": "journey-title",
+        "top": 8461
+      },
+      {
+        "height": 753,
+        "title": "news-title",
+        "top": 9547
+      },
+      {
+        "height": 1211,
+        "title": "enquiry-paths-title",
+        "top": 10300
+      }
+    ],
+    "width": 768
+  },
+  {
+    "clientWidth": 1009,
+    "hiddenHeadings": [],
+    "pageWidth": 1009,
+    "pins": 0,
+    "sections": [
+      {
+        "height": 781,
+        "title": "hero-title",
+        "top": 1
+      },
+      {
+        "height": 806,
+        "title": "glance-title",
+        "top": 782
+      },
+      {
+        "height": 886,
+        "title": "business-title",
+        "top": 1588
+      },
+      {
+        "height": 537,
+        "title": "partners-title",
+        "top": 2474
+      },
+      {
+        "height": 1026,
+        "title": "reach-title",
+        "top": 3011
+      },
+      {
+        "height": 1248,
+        "title": "manufacturing-title",
+        "top": 4037
+      },
+      {
+        "height": 768,
+        "title": "journey-title",
+        "top": 5285
+      },
+      {
+        "height": 708,
+        "title": "news-title",
+        "top": 6053
+      },
+      {
+        "height": 806,
+        "title": "enquiry-paths-title",
+        "top": 6760
+      }
+    ],
+    "width": 1024
+  },
+  {
+    "clientWidth": 1425,
+    "hiddenHeadings": [],
+    "pageWidth": 1425,
+    "pins": 0,
+    "sections": [
+      {
+        "height": 781,
+        "title": "hero-title",
+        "top": 1
+      },
+      {
+        "height": 957,
+        "title": "glance-title",
+        "top": 782
+      },
+      {
+        "height": 937,
+        "title": "business-title",
+        "top": 1738
+      },
+      {
+        "height": 612,
+        "title": "partners-title",
+        "top": 2676
+      },
+      {
+        "height": 1128,
+        "title": "reach-title",
+        "top": 3288
+      },
+      {
+        "height": 1286,
+        "title": "manufacturing-title",
+        "top": 4415
+      },
+      {
+        "height": 861,
+        "title": "journey-title",
+        "top": 5701
+      },
+      {
+        "height": 799,
+        "title": "news-title",
+        "top": 6562
+      },
+      {
+        "height": 860,
+        "title": "enquiry-paths-title",
+        "top": 7361
+      }
+    ],
+    "width": 1440
+  }
+]

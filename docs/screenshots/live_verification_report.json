@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-10-21T20:18:53.526Z",
+  "desktopMetrics": {
+    "titleText": "Connecting Pakistan.Powering Possibility.",
+    "hasVisual": true,
+    "hasCanvas": true,
+    "visualRect": {
+      "width": 467.203125,
+      "height": 467.203125,
+      "top": 147.390625,
+      "left": 845.296875
+    },
+    "scrollWidth": 1425,
+    "clientWidth": 1425
+  },
+  "retailMetrics": {
+    "exists": true,
+    "headingText": "Retail & E-commerce",
+    "partnerCount": 12,
+    "visiblePartners": [
+      "Daraz",
+      "PriceOye",
+      "foodpanda",
+      "Bykea",
+      "Alfamall",
+      "Standard Chartered",
+      "Meezan Bank",
+      "Faysal Bank",
+      "Qistpay",
+      "JazzCash",
+      "easypaisa",
+      "Ufone"
+    ]
+  },
+  "mobileMetrics": {
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "noHorizontalOverflow": true
+  },
+  "allChecksPass": true
+}

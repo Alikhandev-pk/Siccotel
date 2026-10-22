@@ -1,0 +1,705 @@
+{
+  "method": "Official Chrome Headless CLI with --force-prefers-reduced-motion and isolated temporary profiles; same-origin local proxy iframe observes unchanged running app. GPU disabled after native GPU-process startup failure.",
+  "sources": [
+    "https://developer.chrome.com/docs/automation-and-testing/headless-cli",
+    "https://groups.google.com/a/chromium.org/g/flags-dev/c/pr_jK4JblSs"
+  ],
+  "limits": [
+    "GPU disabled: tests actual CSS/native-scroll/reveal/Lenis behavior with static scene fallbacks. WebGL frame draw timing is source-reviewed only.",
+    "Tests initial reduced-motion preference; runtime preference switching is source-reviewed only.",
+    "Headless responsive viewport checks are not physical device certification."
+  ],
+  "results": [
+    {
+      "browser": "isolated Chrome headless",
+      "width": 1440,
+      "height": 1000,
+      "exitCode": 0,
+      "url": "http://127.0.0.1:57308/",
+      "title": "Siccotel — Connecting Pakistan Through Technology",
+      "readyState": "complete",
+      "reducedMotion": true,
+      "noPreference": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "documentWidth": {
+        "client": 1425,
+        "scroll": 1425
+      },
+      "htmlClass": "MOT0tq_variable bX36za_variable antialiased",
+      "scrollBehavior": "auto",
+      "immediateNativeScroll": {
+        "before": 0,
+        "after": 900
+      },
+      "hero": [
+        {
+          "text": "Distribution · Manufacturing · Retail",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 357.5,
+          "height": 16
+        },
+        {
+          "text": "Connecting Pakistan.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 700.796875,
+          "height": 72.90625
+        },
+        {
+          "text": "Powering Possibility.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 700.796875,
+          "height": 72.90625
+        },
+        {
+          "text": "Bringing global device brands to Pakistan through nationwide distribution, local assembly and retail",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 544,
+          "height": 128
+        },
+        {
+          "text": "Partner With UsExplore Our Business",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 700.796875,
+          "height": 48
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 467.203125,
+          "height": 467.203125
+        }
+      ],
+      "revealTargets": [
+        {
+          "text": "One of Pakistan’s largest smartphone distributors.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 580,
+          "height": 174.703125
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 318.78125,
+          "height": 186.28125
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 245.203125,
+          "height": 253.5
+        },
+        {
+          "text": "From global brands to everyday connections.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 768,
+          "height": 116.46875
+        },
+        {
+          "text": "Retail & E-commerce",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 768,
+          "height": 58.234375
+        },
+        {
+          "text": "Trusted by global device brands.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 373.328125,
+          "height": 174.703125
+        },
+        {
+          "text": "DistributionSmartphones since 2016Exclusive distributor & strategic partnerPartnership announced 202",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 786.671875,
+          "height": 374.25
+        },
+        {
+          "text": "A network that reaches every region.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 683.328125,
+          "height": 116.46875
+        },
+        {
+          "text": "Regional hubs & offices6+Retailers served4,500+",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 476.65625,
+          "height": 86.59375
+        },
+        {
+          "text": "Made in Pakistan, at Korangi Creek.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 580,
+          "height": 116.46875
+        },
+        {
+          "text": "120,000sq. ft. of operational space at KCIP, Karachi",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 580,
+          "height": 135.828125
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 580,
+          "height": 401.53125
+        },
+        {
+          "text": "01Component sourcing02Assembly03Nationwide distribution04Service centres",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 373.328125,
+          "height": 293
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 148.21875,
+          "height": 148.21875
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 148.21875,
+          "height": 148.21875
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 148.21875,
+          "height": 148.21875
+        },
+        {
+          "text": "Two decades of steady progress.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 768,
+          "height": 116.46875
+        },
+        {
+          "text": "Latest from Siccotel.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 501.28125,
+          "height": 58.234375
+        },
+        {
+          "text": "Transsion Hosts Its Distributors from PakistanTranssion hosted its distributors from Pakistan in Chi",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 1200,
+          "height": 467.328125
+        },
+        {
+          "text": "Partner with Siccotel.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 476.65625,
+          "height": 149.59375
+        },
+        {
+          "text": "01Dealers, wholesalers and retailersDealer / Retail PartnershipStock genuine, officially warranted d",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 683.328125,
+          "height": 674
+        }
+      ],
+      "runningAnimations": [],
+      "canvases": 0,
+      "pass": true
+    },
+    {
+      "browser": "isolated Chrome headless",
+      "width": 390,
+      "height": 844,
+      "exitCode": 0,
+      "url": "http://127.0.0.1:57308/",
+      "title": "Siccotel — Connecting Pakistan Through Technology",
+      "readyState": "complete",
+      "reducedMotion": true,
+      "noPreference": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentWidth": {
+        "client": 375,
+        "scroll": 375
+      },
+      "htmlClass": "MOT0tq_variable bX36za_variable antialiased",
+      "scrollBehavior": "auto",
+      "immediateNativeScroll": {
+        "before": 0,
+        "after": 900
+      },
+      "hero": [
+        {
+          "text": "Distribution · Manufacturing · Retail",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 281.390625,
+          "height": 15
+        },
+        {
+          "text": "Connecting Pakistan.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 79.46875
+        },
+        {
+          "text": "Powering Possibility.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 39.734375
+        },
+        {
+          "text": "Bringing global device brands to Pakistan through nationwide distribution, local assembly and retail",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 109.875
+        },
+        {
+          "text": "Partner With UsExplore Our Business",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 108
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 343
+        }
+      ],
+      "revealTargets": [
+        {
+          "text": "One of Pakistan’s largest smartphone distributors.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 107.484375
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 187.078125,
+          "height": 109.125
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 143.90625,
+          "height": 148.953125
+        },
+        {
+          "text": "From global brands to everyday connections.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 71.65625
+        },
+        {
+          "text": "Retail & E-commerce",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 35.828125
+        },
+        {
+          "text": "Trusted by global device brands.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 71.65625
+        },
+        {
+          "text": "DistributionSmartphones since 2016Exclusive distributor & strategic partnerPartnership announced 202",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 647.75
+        },
+        {
+          "text": "A network that reaches every region.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 71.65625
+        },
+        {
+          "text": "Regional hubs & offices6+Retailers served4,500+",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 86.59375
+        },
+        {
+          "text": "Made in Pakistan, at Korangi Creek.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 71.65625
+        },
+        {
+          "text": "120,000sq. ft. of operational space at KCIP, Karachi",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 118.234375
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 237.453125
+        },
+        {
+          "text": "01Component sourcing02Assembly03Nationwide distribution04Service centres",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 277
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 106.328125,
+          "height": 106.328125
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 106.328125,
+          "height": 106.328125
+        },
+        {
+          "text": "",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 106.34375,
+          "height": 106.34375
+        },
+        {
+          "text": "Two decades of steady progress.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 71.65625
+        },
+        {
+          "text": "Latest from Siccotel.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 35.828125
+        },
+        {
+          "text": "Transsion Hosts Its Distributors from PakistanTranssion hosted its distributors from Pakistan in Chi",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 1362.125
+        },
+        {
+          "text": "Partner with Siccotel.",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 82.6875
+        },
+        {
+          "text": "01Dealers, wholesalers and retailersDealer / Retail PartnershipStock genuine, officially warranted d",
+          "opacity": "1",
+          "visibility": "visible",
+          "transform": "none",
+          "animationName": "none",
+          "animationDuration": "1e-05s",
+          "transitionDuration": "1e-05s",
+          "width": 343,
+          "height": 862.875
+        }
+      ],
+      "runningAnimations": [
+        {
+          "id": "",
+          "playState": "running",
+          "type": "CSSTransition",
+          "target": "object-cover",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 0.01,
+            "easing": "ease",
+            "endDelay": 0,
+            "fill": "backwards",
+            "iterationStart": 0,
+            "iterations": 1
+          }
+        },
+        {
+          "id": "",
+          "playState": "running",
+          "type": "CSSTransition",
+          "target": "object-cover",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 0.01,
+            "easing": "ease",
+            "endDelay": 0,
+            "fill": "backwards",
+            "iterationStart": 0,
+            "iterations": 1
+          }
+        }
+      ],
+      "canvases": 0,
+      "pass": true
+    }
+  ]
+}
