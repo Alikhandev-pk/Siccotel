@@ -32,7 +32,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en-PK" className={`${inter.variable} ${archivo.variable} antialiased`} suppressHydrationWarning>
+    // data-scroll-behavior lets Next.js switch CSS smooth scrolling off during route changes.
+    <html lang="en-PK" data-scroll-behavior="smooth" className={`${inter.variable} ${archivo.variable} antialiased`} suppressHydrationWarning>
       <body className="flex min-h-dvh flex-col">
         <Suspense fallback={<div className="h-[var(--header-h)]" />}>
           <SiteHeader />
