@@ -1,12 +1,8 @@
 "use client";
 
-import Lenis from "lenis";
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect } from "react";
-import { gsap, hasFinePointer, prefersReducedMotion, ScrollTrigger } from "@/lib/gsap";
-
-let lenis: Lenis | null = null;
-export const getLenis = () => lenis;
+import { ScrollTrigger } from "@/lib/gsap";
 
 /**
  * A link click that leads to a different pathname. The destination is shown
@@ -54,26 +50,13 @@ function rememberPosition() {
 const headerOffset = () => parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
 
 /**
- * Move without animation and keep Lenis and ScrollTrigger in step. Setting the
- * position through ScrollTrigger's scroll function updates its cached value;
- * otherwise its next refresh() restores the stale pre-jump position.
+ * Move without animation and keep ScrollTrigger in step. Setting the position
+ * through ScrollTrigger's scroll function updates its cached value; otherwise
+ * its next refresh() restores the stale pre-jump position.
  */
 function jumpTo(top: number) {
   window.scrollTo({ top, left: 0, behavior: "instant" });
   ScrollTrigger.getScrollFunc(window)(top);
-  lenis?.scrollTo(top, { immediate: true, force: true });
-}
-
-/** The same anchor behavior with Lenis, touch input or reduced motion. */
-export function scrollToTarget(target: Element | number, immediate = false) {
-  if (lenis) {
-    // Lenis 1.3 reads the container's scroll-padding and target scroll-margin.
-    lenis.scrollTo(target as HTMLElement | number, { immediate, force: true });
-    return;
-  }
-  const behavior: ScrollBehavior = immediate || prefersReducedMotion() ? "auto" : "smooth";
-  if (typeof target === "number") window.scrollTo({ top: target, behavior });
-  else target.scrollIntoView({ behavior, block: "start" });
 }
 
 /** Document position that leaves `el` just below the sticky header. */
@@ -88,84 +71,12 @@ const getHashTarget = (hash: string) => {
   }
 };
 
-/** One Lenis instance and one GSAP-driven loop, with native touch scrolling. */
-export function SmoothScroll() {
+/** Page-position behavior on native scrolling: route changes, history and ScrollTrigger refreshes. */
+export function ScrollManager() {
   const pathname = usePathname();
 
   useEffect(() => {
-    let instance: Lenis | null = null;
-    let tick: ((time: number) => void) | null = null;
-    let ticking = false;
     let disposed = false;
-
-    const syncTicker = () => {
-      if (!tick) return;
-      if (document.visibilityState === "visible" && !ticking) {
-        instance?.resize();
-        instance?.scrollTo(window.scrollY, { immediate: true, force: true });
-        gsap.ticker.add(tick);
-        ticking = true;
-      } else if (document.visibilityState !== "visible" && ticking) {
-        gsap.ticker.remove(tick);
-        ticking = false;
-      }
-    };
-
-    const start = () => {
-      if (lenis || prefersReducedMotion() || !hasFinePointer()) return;
-      instance = new Lenis({
-        autoRaf: false,
-        lerp: 0.11,
-        smoothWheel: true,
-        syncTouch: false,
-        allowNestedScroll: true,
-        stopInertiaOnNavigate: true,
-        prevent: (node) => node.closest?.("[data-lenis-prevent], select, textarea") != null,
-      });
-      lenis = instance;
-      instance.on("scroll", ScrollTrigger.update);
-      const ownedInstance = instance;
-      // GSAP uses seconds; Lenis' raf API uses milliseconds.
-      tick = (time) => ownedInstance.raf(time * 1000);
-      gsap.ticker.lagSmoothing(0);
-      syncTicker();
-    };
-
-    const stop = () => {
-      if (tick && ticking) gsap.ticker.remove(tick);
-      ticking = false;
-      tick = null;
-      instance?.off("scroll", ScrollTrigger.update);
-      instance?.destroy();
-      if (lenis === instance) lenis = null;
-      instance = null;
-      gsap.ticker.lagSmoothing(500, 33);
-    };
-
-    start();
-    document.addEventListener("visibilitychange", syncTicker);
-    const preferences = [window.matchMedia("(prefers-reduced-motion: reduce)"), window.matchMedia("(hover: hover) and (pointer: fine)")];
-    const onPrefChange = () => { stop(); start(); ScrollTrigger.refresh(); };
-    preferences.forEach((query) => query.addEventListener("change", onPrefChange));
-
-    const onClick = (event: MouseEvent) => {
-      if (!lenis || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      const link = (event.target as Element | null)?.closest?.("a[href*='#']") as HTMLAnchorElement | null;
-      if (!link || link.target === "_blank" || link.hasAttribute("download")) return;
-      const url = new URL(link.href, window.location.href);
-      if (url.origin !== window.location.origin || url.pathname !== window.location.pathname || url.search !== window.location.search) return;
-      const target = getHashTarget(url.hash);
-      if (!target) return;
-      event.preventDefault();
-      if (url.hash !== window.location.hash) history.pushState(history.state, "", url.hash);
-      lenis.scrollTo(target, {
-        onComplete: () => {
-          if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
-          target.focus({ preventScroll: true });
-        },
-      });
-    };
-    document.addEventListener("click", onClick, true);
 
     // Runs in the capture phase, before Next.js' Link handler, on every device.
     const onNavigationClick = (event: MouseEvent) => {
@@ -228,7 +139,6 @@ export function SmoothScroll() {
         lastHeight = height;
         if (!forced && !changed) return;
         forced = false;
-        lenis?.resize();
         ScrollTrigger.refresh();
       }, 160);
     };
@@ -243,20 +153,16 @@ export function SmoothScroll() {
 
     return () => {
       disposed = true;
-      preferences.forEach((query) => query.removeEventListener("change", onPrefChange));
-      document.removeEventListener("click", onClick, true);
       document.removeEventListener("click", onNavigationClick, true);
       window.removeEventListener("popstate", onPopState);
       window.removeEventListener("scroll", rememberPosition);
       window.removeEventListener("pagehide", persist);
       window.history.scrollRestoration = previousRestoration;
-      document.removeEventListener("visibilitychange", syncTicker);
       document.removeEventListener("load", imageReady, true);
       document.fonts?.removeEventListener("loadingdone", layoutReady);
       window.removeEventListener("resize", layoutReady);
       window.clearTimeout(refreshTimer);
       observer.disconnect();
-      stop();
     };
   }, []);
 
@@ -294,10 +200,8 @@ export function SmoothScroll() {
       if (hashTarget) jumpTo(targetTop(hashTarget));
     };
 
-    // Pin spacers and late images can move a hash target, so align again after them.
+    // Late images can move a hash target, so align again after them.
     const frame = requestAnimationFrame(() => {
-      lenis?.resize();
-      lenis?.scrollTo(window.scrollY, { immediate: true, force: true });
       ScrollTrigger.refresh();
       realign();
       if (hashTarget) {

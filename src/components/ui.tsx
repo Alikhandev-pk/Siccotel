@@ -6,7 +6,7 @@ import { HeadingWords } from "./HeadingWords";
 type ButtonVariant = "primary" | "secondary" | "ghost-dark" | "light";
 
 const buttonBase =
-  "group inline-flex min-h-12 items-center justify-center gap-3 rounded-[3px] px-6 text-[0.9375rem] text-center leading-tight font-semibold sm:whitespace-nowrap tracking-[-0.005em] transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-out active:translate-y-px";
+  "group inline-flex min-h-12 items-center justify-center gap-3 rounded-[3px] px-6 text-[0.9375rem] text-center leading-tight font-semibold sm:whitespace-nowrap tracking-[-0.005em] transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-px active:translate-y-0";
 
 const buttonVariants: Record<ButtonVariant, string> = {
   primary: "bg-accent text-white hover:bg-accent-hover shadow-[0_6px_18px_-10px_rgba(200,0,11,0.65)]",
@@ -33,7 +33,6 @@ export function ButtonLink({
   external,
   className = "",
   icon = true,
-  magnetic = false,
 }: {
   href: string;
   children: ReactNode;
@@ -41,8 +40,6 @@ export function ButtonLink({
   external?: boolean;
   className?: string;
   icon?: boolean;
-  /** Subtle magnetic pull on desktop pointers. Use only on a few key CTAs. */
-  magnetic?: boolean;
 }) {
   const content = (
     <>
@@ -51,17 +48,16 @@ export function ButtonLink({
     </>
   );
   const cls = `${buttonBase} ${buttonVariants[variant]} ${className}`;
-  const magnet = magnetic ? { "data-magnetic": "" } : {};
   if (external) {
     return (
-      <a href={href} className={cls} target="_blank" rel="noopener noreferrer" {...magnet}>
+      <a href={href} className={cls} target="_blank" rel="noopener noreferrer">
         {content}
         <span className="sr-only"> (opens in a new tab)</span>
       </a>
     );
   }
   return (
-    <Link href={href} className={cls} {...magnet}>
+    <Link href={href} className={cls}>
       {content}
     </Link>
   );
@@ -114,11 +110,11 @@ export function SectionHeader({
 }) {
   return (
     <div className={`${align === "center" ? "mx-auto text-center" : ""} max-w-3xl ${className}`}>
-      {eyebrow && <p className="eyebrow mb-5">{eyebrow}</p>}
+      {eyebrow && <p className="eyebrow mb-3 sm:mb-5">{eyebrow}</p>}
       <Heading className="t-h2" data-anim="heading">
         <HeadingWords>{title}</HeadingWords>
       </Heading>
-      {intro && <div data-anim="fade" className="t-lead mt-5 max-w-2xl text-muted on-dark:text-night-muted">{intro}</div>}
+      {intro && <div data-anim="fade" className="t-lead mt-3 max-w-2xl text-muted on-dark:text-night-muted sm:mt-5">{intro}</div>}
     </div>
   );
 }

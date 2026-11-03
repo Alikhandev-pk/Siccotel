@@ -7,7 +7,7 @@ import { useGSAP } from "@gsap/react";
 /**
  * Single registration point for GSAP plugins. Import gsap, ScrollTrigger and
  * useGSAP from here so every component shares one ticker and one set of
- * ScrollTrigger instances (Lenis is driven by the same ticker).
+ * ScrollTrigger instances.
  */
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -18,9 +18,5 @@ if (typeof window !== "undefined") {
 
 export const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-/** Fine pointer + hover: mouse/trackpad devices, where pointer effects make sense. */
-export const hasFinePointer = () =>
-  typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
 export { gsap, ScrollTrigger, useGSAP };

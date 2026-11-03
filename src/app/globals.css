@@ -37,16 +37,20 @@
   --header-h: 4.5rem;
 }
 
+:root {
+  /* The utility row exists from lg up and scrolls away; only --header-h stays pinned. */
+  --utility-h: 0rem;
+}
+@media (min-width: 1024px) {
+  :root {
+    --utility-h: 2.25rem;
+  }
+}
+
 @layer base {
   html {
     scroll-padding-top: calc(var(--header-h) + 1.5rem);
     -webkit-tap-highlight-color: transparent;
-  }
-  /* Native smooth anchor scrolling only where Lenis isn't running. */
-  @media (prefers-reduced-motion: no-preference) {
-    html:not(.lenis) {
-      scroll-behavior: smooth;
-    }
   }
   body {
     background: var(--color-paper);
@@ -80,19 +84,11 @@
   }
 }
 
-/* Lenis (from lenis/dist/lenis.css). */
-html.lenis,
-html.lenis body {
-  height: auto;
+.site-header {
+  top: calc(var(--utility-h) * -1);
 }
-.lenis:not(.lenis-autoToggle).lenis-stopped {
-  overflow: clip;
-}
-.lenis [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
+.site-utility {
+  height: var(--utility-h);
 }
 
 @layer components {
@@ -136,8 +132,8 @@ html.lenis body {
     font-family: var(--font-display);
     font-stretch: 106%;
     font-weight: 650;
-    font-size: clamp(2rem, 1.45rem + 2.2vw, 3.25rem);
-    line-height: 1.12;
+    font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.625rem);
+    line-height: 1.14;
     letter-spacing: -0.03em;
   }
   .t-h3 {
@@ -197,7 +193,7 @@ html.lenis body {
   .btn-arrow > svg {
     position: absolute;
     inset: 0;
-    transition: transform 0.45s var(--ease-out-expo);
+    transition: transform 0.25s var(--ease-out-quart);
   }
   .btn-arrow > svg + svg {
     transform: translateX(-130%);
@@ -217,7 +213,7 @@ html.lenis body {
     background-size: 0% 1px;
     background-position: 0 100%;
     background-repeat: no-repeat;
-    transition: background-size 0.45s var(--ease-out-expo);
+    transition: background-size 0.25s var(--ease-out-quart);
   }
   .link-line:hover,
   .link-line:focus-visible,
@@ -236,65 +232,95 @@ html.lenis body {
   }
 }
 
-/* Each visual has a reserved region; type and controls size independently. */
-.hero-layout {
+/* -------------------------------------------------------------------- */
+/* Home hero — components/home/HeroCarousel                              */
+/* -------------------------------------------------------------------- */
+/* The artwork's own proportions reserve the space. Very wide screens stop at a
+   maximum height and the slide background fills the sides; nothing is cropped.
+   pan-y leaves vertical page scrolling to the browser during a swipe. */
+.hero-banner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4000 / 1435;
+  max-height: 760px;
+  overflow: hidden;
+  background: #fafafa;
+  touch-action: pan-y;
+}
+/* Every caption shares one cell, so the longest one reserves the height. */
+.hero-captions {
   display: grid;
-  align-items: center;
-  gap: 2.5rem;
-  padding-top: calc(var(--header-h) + 2.5rem);
-  padding-bottom: 3rem;
 }
-.hero-heading { text-wrap: initial; }
-.hero-heading .hero-line { max-width: 100%; }
-.home-hero {
-  background-image: radial-gradient(ellipse at 88% 45%, #211415 0%, transparent 55%);
+.hero-captions > * {
+  grid-area: 1 / 1;
 }
-.section-space { padding-block: clamp(2.75rem, 6.5vw, 6rem); }
-.hero-photo-stack { position: relative; isolation: isolate; perspective: 1200px; }
-.hero-photo-stack::before {
-  content: "";
+.hero-title {
+  font-family: var(--font-display);
+  font-stretch: 106%;
+  font-weight: 650;
+  font-size: clamp(1.75rem, 1.35rem + 1.5vw, 2.625rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+/* Stays in the tab order but appears only on keyboard focus, so it never covers the artwork otherwise. */
+.hero-pause {
   position: absolute;
-  inset: 5px -9px -10px 9px;
-  z-index: -1;
-  border: 1px solid rgb(200 0 11 / 0.5);
-  border-radius: 8px;
-  background: #28171a;
-  transform: rotate(-1.5deg);
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 5;
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.875rem;
+  border-radius: 3px;
+  background: var(--color-ink);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
 }
-.hero-photo-frame { box-shadow: 0 26px 44px -22px rgb(0 0 0 / 0.8); }
-@media (max-width: 1023px) {
-  .hero-photo-stack { width: calc(100% - 20px); }
+.hero-pause:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
-@media (min-width: 1024px) {
-  .hero-layout {
-    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
-    gap: 3rem;
-    padding-top: calc(var(--header-h) + 3rem);
-    padding-bottom: 4rem;
+@media (scripting: none) {
+  .hero-pause {
+    display: none;
   }
-  .hero-heading { font-size: clamp(2.5rem, 4.05vw, 3.6rem); }
 }
 
-/* -------------------------------------------------------------------- */
-/* Hero entrance — GSAP timeline in components/home/HeroIntro.           */
-/* -------------------------------------------------------------------- */
-/* No heading mask: glyphs and multi-line descenders have their full bounds. */
+/* Hides the entrance targets only when scripting and motion are available. If
+   the timeline never starts, the failsafe reveals them; HeroCarousel then takes
+   over by setting animation: none on what it owns. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .home-hero [data-hero] {
+    opacity: 0;
+    animation: hero-failsafe 0.4s ease-out 1.2s forwards;
+  }
+}
+@keyframes hero-failsafe {
+  to { opacity: 1; }
+}
+
+.section-space { padding-block: clamp(2.25rem, 6vw, 5.5rem); }
+
+/* Inner-page heading line; all content stays readable if animation is unavailable. */
 .hero-line {
   display: block;
 }
 .hero-line > span {
   display: block;
 }
-/* All content remains readable when animation or scripting is unavailable. */
 
-/* Inner-page heroes (PageHero) keep a pure-CSS entrance. Elements owned by
-   the home-page GSAP timeline are excluded so only one system moves them. */
+/* Inner-page heroes (PageHero) keep a pure-CSS entrance. */
 @media (prefers-reduced-motion: no-preference) {
-  .hero-line > span:not([data-hero]):not([data-page-heading]) {
+  .hero-line > span:not([data-page-heading]) {
     animation: hero-rise 0.7s var(--ease-out-expo) both;
     animation-delay: var(--d, 0ms);
   }
-  .hero-in:not([data-hero]) {
+  .hero-in {
     animation: hero-fade 0.65s var(--ease-out-expo) both;
     animation-delay: var(--d, 0ms);
   }

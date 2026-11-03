@@ -64,5 +64,6 @@ export const businessActivities: BusinessActivity[] = [
 
 export const afterSales = {
   title: "SiccoCare after-sales support",
+  short: "After-sales service centres in major cities of Pakistan, and the right warranty check for your device.",
   text: "Customer service is a core value at Siccotel. The company supports customers after purchase, with after-sales service centres in major cities of Pakistan, and points them to the right warranty check for their device.",
 };

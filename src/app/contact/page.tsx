@@ -125,8 +125,9 @@ export default function ContactPage() {
                     </address>
                     <ul className="mt-3 space-y-1 text-[0.9375rem]">
                       {contact.factory.emails.map((e) => (
-                        <li key={e.value} className="break-all">
-                          <span className="text-muted">{e.label}: </span>
+                        <li key={e.value} className="[overflow-wrap:anywhere]">
+                          {/* On its own line, so an address stays whole on narrow screens. */}
+                          <span className="block text-sm text-muted">{e.label}</span>
                           <a href={`mailto:${e.value}`} className={linkCls}>
                             {e.value}
                           </a>

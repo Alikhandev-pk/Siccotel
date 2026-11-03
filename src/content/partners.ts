@@ -47,7 +47,7 @@ export const brandPartners: Partner[] = [
     logo: itel,
     relationship: "Distribution",
     details: ["Devices since 2021", "Accessories since 2024"],
-    logoScale: 0.85,
+    logoScale: 1.1,
   },
   {
     name: "Tecno",
@@ -78,7 +78,7 @@ export const brandPartners: Partner[] = [
     logo: hmd,
     relationship: "Distribution",
     details: ["Since 2025"],
-    logoScale: 0.9,
+    logoScale: 1.35,
   },
 ];
 

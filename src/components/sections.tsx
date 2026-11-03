@@ -3,11 +3,11 @@ import Link from "next/link";
 import { ArrowRight, Mail, MessageCircle, Phone } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { contact, networkStats } from "@/content/company";
-import { brandPartners, type Partner } from "@/content/partners";
+import { appleRelationship, brandPartners, type Partner } from "@/content/partners";
 import { milestones, type Milestone } from "@/content/milestones";
 import { enquiryHref, enquiryTypes } from "@/content/navigation";
 import type { NewsArticle } from "@/content/news";
-import { ArrowSwap, Reveal } from "./ui";
+import { ArrowSwap, Reveal, TextLink } from "./ui";
 import { HeadingWords } from "./HeadingWords";
 
 /* ------------------------------------------------------------------ */
@@ -68,15 +68,16 @@ export function PageHero({
 export function StatsGrid({ tone = "light" }: { tone?: "light" | "dark" }) {
   const dark = tone === "dark";
   return (
-    <dl className="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4 lg:gap-x-10">
+    <dl className="grid grid-cols-2 gap-x-6 gap-y-5 sm:gap-y-8 lg:grid-cols-4 lg:gap-x-10">
       {networkStats.map((s) => (
         <div key={s.label} className="flex min-w-0 flex-col">
-          <dt className={`order-2 mt-3 max-w-[14rem] text-[0.9375rem] leading-snug ${dark ? "text-night-muted" : "text-muted"}`}>
+          <dt className={`order-2 mt-1.5 max-w-[14rem] text-sm leading-snug sm:mt-3 sm:text-[0.9375rem] ${dark ? "text-night-muted" : "text-muted"}`}>
             {s.label}
           </dt>
           <dd className="order-1">
-            <span aria-hidden className={`mb-4 block h-[2px] w-8 ${dark ? "bg-accent-on-dark" : "bg-accent"}`} />
-            <span className="t-figure block text-[clamp(2.2rem,0.9rem+3.6vw,4.5rem)]">{s.value}</span>
+            <span aria-hidden className={`mb-2.5 block h-[2px] w-8 sm:mb-4 ${dark ? "bg-accent-on-dark" : "bg-accent"}`} />
+            {/* Only "n+" counts up: a founding year counting from zero would read as a mistake. */}
+            <span className="t-figure block text-[clamp(1.875rem,0.9rem+3vw,3.75rem)]" data-anim={s.value.endsWith("+") ? "count" : undefined}>{s.value}</span>
           </dd>
         </div>
       ))}
@@ -103,29 +104,32 @@ export function PartnerLogo({ partner, height = 36, className = "" }: { partner:
   );
 }
 
-export function PartnerLogoGrid({ partners = brandPartners }: { partners?: Partner[] }) {
+/** A static logo row. The Apple note keeps the reseller and distributor relationships distinct. */
+export function PartnerStrip({ partners = brandPartners }: { partners?: Partner[] }) {
   return (
-    <ul className="grid grid-cols-2 border-t border-l border-line sm:grid-cols-4" data-anim="stagger">
-      {partners.map((p) => {
-        const special = p.relationship !== "Distribution";
-        return (
-          <li key={p.name} className="group relative flex flex-col border-r border-b border-line bg-white transition-colors duration-500 hover:bg-stone">
-            {special && <span aria-hidden className="absolute inset-x-0 top-0 h-[2px] bg-accent" />}
-            <div className="flex h-24 items-center justify-center px-4 sm:h-28">
-              <PartnerLogo
-                partner={p}
-                height={30}
-                className="transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.06]"
-              />
-            </div>
-            <p className="px-5 pb-5 text-[0.8125rem] leading-snug">
-              <span className={special ? "font-semibold text-accent" : "font-semibold text-ink"}>{p.relationship}</span>
-              {p.details[0] && <span className="block text-muted">{p.details[0]}</span>}
-            </p>
-          </li>
-        );
-      })}
-    </ul>
+    <section aria-labelledby="partners-title" className="border-b border-line bg-white">
+      <div className="container-site py-3 sm:py-6 lg:py-7">
+        <div className="flex items-center justify-between gap-4 sm:gap-6">
+          <h2 id="partners-title" className="text-[0.6875rem] font-semibold tracking-[0.1em] text-muted uppercase sm:text-xs sm:tracking-[0.14em]">
+            Trusted by global device brands
+          </h2>
+          <TextLink href="/partners" className="min-h-11 shrink-0 text-sm">
+            All partners
+          </TextLink>
+        </div>
+        <ul className="grid grid-cols-4 items-center gap-x-3 sm:mt-3 sm:gap-x-4 sm:gap-y-1 lg:grid-cols-8 lg:gap-x-6" data-anim="stagger">
+          {partners.map((p) => (
+            <li key={p.name} className="flex h-11 items-center justify-center sm:h-14">
+              <PartnerLogo partner={p} height={24} />
+            </li>
+          ))}
+        </ul>
+        <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-muted sm:mt-2">
+          <span className="font-semibold text-ink">{appleRelationship.name}:</span> {appleRelationship.relationship}.{" "}
+          <span className="font-semibold text-ink">ZTE nubia:</span> exclusive distributor &amp; strategic partner.
+        </p>
+      </div>
+    </section>
   );
 }
 
@@ -162,19 +166,20 @@ export function NewsCard({
 }: {
   article: NewsArticle;
   priority?: boolean;
-  size?: "default" | "large";
+  /** `compact` becomes a thumbnail row on phones; the whole card remains the link. */
+  size?: "default" | "large" | "compact";
 }) {
   const image = article.images[0];
   const large = size === "large";
+  const compact = size === "compact";
   return (
-    <article className="group relative flex h-full flex-col">
+    <article className={`group relative h-full ${compact ? "grid grid-cols-[7.5rem_minmax(0,1fr)] items-center gap-x-3.5 md:flex md:flex-col md:items-stretch" : "flex flex-col"}`}>
       <div
-        data-tilt=""
-        className={`relative overflow-hidden rounded-[6px] border border-line bg-stone transition-shadow duration-500 group-hover:shadow-[0_30px_60px_-36px_rgba(22,24,27,0.6)] group-has-[a:focus-visible]:outline-2 group-has-[a:focus-visible]:outline-offset-4 group-has-[a:focus-visible]:outline-accent aspect-[16/10]`}
+        className={`relative overflow-hidden rounded-[8px] border border-line bg-stone transition-shadow duration-200 group-hover:shadow-[0_18px_40px_-28px_rgba(22,24,27,0.5)] group-has-[a:focus-visible]:outline-2 group-has-[a:focus-visible]:outline-offset-4 group-has-[a:focus-visible]:outline-accent aspect-[16/10]`}
       >
         {image ? (
           // Hover zoom lives on this wrapper; the image itself is moved by scroll parallax.
-          <div className="absolute inset-0 transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04] group-has-[a:focus-visible]:scale-[1.04]">
+          <div className="absolute inset-0 transition-transform duration-[250ms] ease-out group-hover:scale-[1.02] group-has-[a:focus-visible]:scale-[1.02]">
             <Image
               src={image.src}
               alt={image.alt}
@@ -194,22 +199,24 @@ export function NewsCard({
           </div>
         )}
       </div>
-      {article.context && (
-        <p className="mt-5 text-xs font-semibold tracking-[0.12em] text-accent uppercase">{article.context}</p>
-      )}
-      <h3
-        className={`${article.context ? "mt-2" : "mt-5"} font-display leading-snug font-semibold tracking-[-0.02em] ${
-          large ? "text-2xl sm:text-[2rem] sm:leading-[1.15]" : "text-xl"
-        }`}
-      >
-        <Link href={`/news/${article.slug}`} className="after:absolute after:inset-0 focus-visible:outline-none">
-          <span className="link-line pb-0.5">{article.title}</span>
-        </Link>
-      </h3>
-      <p className={`mt-3 leading-relaxed text-muted ${large ? "max-w-2xl text-lg" : ""}`}>{article.summary}</p>
-      <span aria-hidden className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-ink group-hover:text-accent">
-        Read article <ArrowSwap />
-      </span>
+      <div className="flex min-w-0 flex-1 flex-col">
+        {article.context && (
+          <p className={`text-xs font-semibold tracking-[0.12em] text-accent uppercase ${compact ? "md:mt-5" : "mt-5"}`}>{article.context}</p>
+        )}
+        <h3
+          className={`${article.context ? (compact ? "mt-1 md:mt-2" : "mt-2") : compact ? "md:mt-5" : "mt-5"} font-display leading-snug font-semibold tracking-[-0.02em] ${
+            large ? "text-2xl sm:text-[2rem] sm:leading-[1.15]" : compact ? "text-base md:text-xl" : "text-xl"
+          }`}
+        >
+          <Link href={`/news/${article.slug}`} className="after:absolute after:inset-0 focus-visible:outline-none">
+            <span className="link-line pb-0.5">{article.title}</span>
+          </Link>
+        </h3>
+        <p className={`mt-3 leading-relaxed text-muted ${large ? "max-w-2xl text-lg" : ""} ${compact ? "hidden md:block" : ""}`}>{article.summary}</p>
+        <span aria-hidden className={`mt-auto items-center gap-2 pt-5 text-sm font-semibold text-ink group-hover:text-accent ${compact ? "hidden md:inline-flex" : "inline-flex"}`}>
+          Read article <ArrowSwap />
+        </span>
+      </div>
     </article>
   );
 }
@@ -234,24 +241,25 @@ export function EnquiryPaths({ title = "How can we work together?", intro }: { t
         </defs>
       </svg>
       <div className="section-space container-site relative">
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
+        <div className="grid gap-5 sm:gap-14 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-5">
-            <p className="eyebrow mb-5">Business enquiries</p>
-            <h2 id="enquiry-paths-title" className="t-h1" data-anim="heading">
+            <p className="eyebrow mb-3 sm:mb-5">Business enquiries</p>
+            <h2 id="enquiry-paths-title" className="t-h2" data-anim="heading">
               {title}
             </h2>
-            <p className="t-lead mt-6 max-w-md text-night-muted">
+            <p className="t-lead mt-3 max-w-md text-night-muted sm:mt-6">
               {intro ?? "Choose the option that fits you best and your enquiry will reach the right team."}
             </p>
-            <ul className="mt-10 space-y-3 text-[0.9375rem]">
-              <li>
-                <a href={contact.phone.href} className="group inline-flex items-center gap-3 text-white/90 hover:text-white">
+            {/* Phone and email follow in the footer directly below, so phones show only WhatsApp here. */}
+            <ul className="mt-3 text-[0.9375rem] sm:mt-10 sm:space-y-3">
+              <li className="hidden sm:block">
+                <a href={contact.phone.href} className="group inline-flex min-h-11 items-center gap-3 text-white/90 hover:text-white sm:min-h-0">
                   <Phone aria-hidden className="size-4 text-accent-on-dark" />
                   <span className="link-line">{contact.phone.display}</span>
                 </a>
               </li>
-              <li>
-                <a href={`mailto:${contact.email}`} className="group inline-flex items-center gap-3 text-white/90 hover:text-white">
+              <li className="hidden sm:block">
+                <a href={`mailto:${contact.email}`} className="group inline-flex min-h-11 items-center gap-3 text-white/90 hover:text-white sm:min-h-0">
                   <Mail aria-hidden className="size-4 text-accent-on-dark" />
                   <span className="link-line">{contact.email}</span>
                 </a>
@@ -261,7 +269,7 @@ export function EnquiryPaths({ title = "How can we work together?", intro }: { t
                   href={contact.whatsapp.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 text-white/90 hover:text-white"
+                  className="group inline-flex min-h-11 items-center gap-3 text-white/90 hover:text-white sm:min-h-0"
                 >
                   <MessageCircle aria-hidden className="size-4 text-accent-on-dark" />
                   <span className="link-line">WhatsApp {contact.whatsapp.display}</span>
@@ -275,18 +283,18 @@ export function EnquiryPaths({ title = "How can we work together?", intro }: { t
               <li key={t.value} className="border-b border-night-line">
                 <Link
                   href={enquiryHref(t.value)}
-                  className="group grid grid-cols-[auto_1fr_auto] items-start gap-x-5 gap-y-1 py-7 transition-colors duration-500 hover:bg-white/[0.03] sm:gap-x-8 sm:px-4"
+                  className="group grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-1 py-3 transition-colors duration-200 hover:bg-white/[0.03] sm:items-start sm:gap-x-8 sm:px-4 sm:py-7"
                 >
-                  <span className="pt-1.5 font-display text-sm font-semibold text-accent-on-dark tabular-nums">0{i + 1}</span>
+                  <span className="font-display text-sm font-semibold text-accent-on-dark tabular-nums sm:pt-1.5">0{i + 1}</span>
                   <span>
-                    <span className="block text-xs font-semibold tracking-[0.12em] text-night-muted uppercase">{t.audience}</span>
-                    <span className="mt-1.5 block font-display text-[1.375rem] leading-tight font-semibold tracking-[-0.02em] sm:text-[1.625rem]">
+                    <span className="hidden text-xs font-semibold tracking-[0.12em] text-night-muted uppercase sm:block">{t.audience}</span>
+                    <span className="block font-display text-[1.0625rem] leading-tight font-semibold tracking-[-0.02em] sm:mt-1.5 sm:text-[1.625rem]">
                       {t.label}
                     </span>
-                    <span className="mt-2 block max-w-lg text-[0.9375rem] leading-relaxed text-night-muted">{t.description}</span>
+                    <span className="mt-2 hidden max-w-lg text-[0.9375rem] leading-relaxed text-night-muted sm:block">{t.description}</span>
                   </span>
-                  <span className="mt-1 inline-flex size-11 items-center justify-center rounded-full border border-white/20 transition-colors duration-500 group-hover:border-accent-on-dark group-hover:bg-accent">
-                    <ArrowRight aria-hidden className="size-4 transition-transform duration-500 group-hover:-rotate-45" />
+                  <span className="inline-flex size-11 items-center justify-center rounded-full border border-white/20 transition-colors duration-200 group-hover:border-accent-on-dark group-hover:bg-accent sm:mt-1">
+                    <ArrowRight aria-hidden className="size-4 transition-transform duration-200 group-hover:-rotate-45" />
                     <span className="sr-only">Start enquiry</span>
                   </span>
                 </Link>

@@ -1,6 +1,6 @@
 ﻿# Siccotel web
 
-Local Next.js 16 / React 19 corporate website, with GSAP, Lenis and lazy-loaded React Three Fiber scenes. Previewing requires no deployment or DNS changes.
+Local Next.js 16 / React 19 corporate website, with GSAP on native scrolling. Previewing requires no deployment or DNS changes.
 
 ```sh
 npm install
@@ -16,7 +16,7 @@ npm run build
 npm start
 ```
 
-The homepage includes company overview, distribution/manufacturing/retail, brand partners, regional map, manufacturing, company journey, news and enquiry paths. Existing About, Business, Manufacturing, Partners, News and Contact routes retain fuller content. Official sources and photograph provenance are in [docs/CONTENT_AUDIT.md](docs/CONTENT_AUDIT.md); implementation and verification details are in [docs/UPGRADE_REPORT.md](docs/UPGRADE_REPORT.md).
+The homepage opens with a carousel of campaign banners from siccotel.com, followed by brand partners, company overview, distribution/manufacturing/retail, store and support paths, regional map, manufacturing, company journey, news and enquiry paths. Banners are configured in `src/content/hero.ts`; replace them there when a campaign ends. Existing About, Business, Manufacturing, Partners, News and Contact routes retain fuller content. Official sources and photograph provenance are in [docs/CONTENT_AUDIT.md](docs/CONTENT_AUDIT.md); implementation and verification details are in [docs/UPGRADE_REPORT.md](docs/UPGRADE_REPORT.md).
 
 ## Configuration
 
@@ -26,8 +26,8 @@ Copy `.env.example` to `.env.local` and configure an enquiry delivery provider b
 
 ## Motion and accessibility
 
-Content and final statistics are server rendered. The hero uses a locally stored official assembly-floor photograph with reserved dimensions and a short fade. The manufacturing WebGL scene has an SVG fallback, stops after its entrance and pauses while offscreen or the tab is hidden. The shared GSAP ticker drives Lenis in milliseconds and R3F in seconds. Reduced-motion preferences disable scroll reveals and smooth scrolling; native route/history restoration remain under Next.js control.
+Content and final statistics are server rendered. Hero banners are contained rather than cropped, with their space reserved by the artwork's aspect ratio; only the first is preloaded. Each banner shows for 5 seconds with a 0.5-second crossfade. Rotation holds while the tab is hidden or the carousel has keyboard focus, and is off with reduced motion; a pause/resume control appears on keyboard focus. Scrolling is native: there is no smooth-scroll library, and CSS `scroll-behavior: smooth` must stay off because ScrollTrigger refreshes interrupt it, which leaves anchor links short of their target. Reduced-motion preferences disable reveals and autoplay; `ScrollManager` handles route and history positions.
 
-Hero image provenance and the latest verification results are in [docs/FINALIZATION_REPORT.md](docs/FINALIZATION_REPORT.md).
+Earlier hero provenance and verification results are in [docs/FINALIZATION_REPORT.md](docs/FINALIZATION_REPORT.md); banner sources are in [docs/CONTENT_AUDIT.md](docs/CONTENT_AUDIT.md).
 
 Regional map city names are not proof of offices. Only published Karachi addresses appear as facilities. Publication dates are omitted where the source supplies only event context.

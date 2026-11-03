@@ -2,6 +2,28 @@
 
 Comprehensive audit comparing the original public website ([https://siccotel.com/](https://siccotel.com/) and [https://siccoteltelecom.com/](https://siccoteltelecom.com/)) with the current implementation in `siccotel-web`.
 
+## Client Confirmation Required
+
+**Phone and WhatsApp numbers conflict across Siccotel's official websites. Neither number has been confirmed, and nothing here should be read as choosing the correct one.** Observed in a rendered browser on 2 November 2026:
+
+| Page | Number displayed | Call link dials | WhatsApp button goes to |
+| :--- | :--- | :--- | :--- |
+| siccotel.com home | +92 300 0174226 | **+92 326 8400903** | **+92 326 8400903** |
+| siccotel.com/siccocare/ | +92 300 0174226 | **+92 326 8400903** | **+92 326 8400903** |
+| siccotel.com/contact-us/ | +92 300 0174226 | Two links, both labelled +92 300 0174226: one dials +92 300 0174226, the other **+92 326 8400903** | **+92 326 8400903** |
+| siccoteltelecom.com/contact-us/ | +92 300 0174226 | No call link | +92 300 0174226 |
+
+**This website currently uses +92 300 0174226 for both phone and WhatsApp** (`contact` in `src/content/company.ts`). That is the number every page displays, but on siccotel.com visitors who tap it reach a different number, so a caller here may reach a different team than a caller there.
+
+Please confirm:
+1. The correct public phone number.
+2. The correct WhatsApp number, which may be different.
+3. Whether +92 326 8400903 is still in use and for what.
+
+Change the values only in `src/content/company.ts`; every page reads them from there.
+
+---
+
 ## Section Coverage Checklist
 
 | Original Section | Current Implementation | Missing / Weak Content | Required Fix | Status |
@@ -15,7 +37,7 @@ Comprehensive audit comparing the original public website ([https://siccotel.com
 | **7. Company Journey** (Journey graphic on homepage & `/about-us/`) | Animated timeline rail on homepage and full milestone table on `/about#journey` | Previous timeline was a static HTML list without scroll animation. | Built animated GSAP ScrollTrigger timeline sequence: milestone nodes and cards reveal with staggered upward entrance and hover interactions. Preserved all 10 verified milestones (2001 Retail, 2007 Distribution, 2011 HIQO, 2014 Alcatel, 2016 Infinix, 2018 TCL, 2021 itel/Nokia, 2022 Tecno/Samsung/realme, 2024 accessories/TVs, 2025 HMD/ZTE nubia). | ✅ Animated & Verified |
 | **8. Nationwide Presence** (Regional map & network stats) | Interactive SVG map (`ReachMap`) and network statistics | Original map showed 10 cities but lacked verified individual branch addresses for regional cities. | Retained all 10 authentic map cities (Karachi, Sukkur, Quetta, Multan, Faisalabad, Lahore, Gujranwala, Sialkot, Rawalpindi, Peshawar). Displays verified addresses for Karachi (Head Office & Assembly Plant) while clearly stating that local addresses for other cities are unpublished, preventing fabricated data. | ✅ Factual & Accessible |
 | **9. News & Media** (`/news-media/`) | Homepage 3-card news grid and complete `/news` archive with 12 articles | Dates were not published on the original website; needed to avoid invented timestamps. | All 12 authentic articles preserved at `/news/[slug]` with verified event contexts (Q4 2025, MWC Barcelona 2025, ITCN Asia 2023) without inventing publication dates. Balanced grid layout with authentic photography. | ✅ Verified & Balanced |
-| **10. Contact & Enquiries** (`/contact-us/` & `siccoteltelecom.com/contact-us/`) | Contact page (`/contact`), pre-filtered enquiry forms, header & footer links | Previous iteration had unconfirmed WhatsApp number (+92 326 8400903). | Updated to verified published WhatsApp (+92 300 0174226) and phone (+92 300 0174226), verified Karachi HQ address (Alpha Trade Tower), Telecom factory address (KCIP), official emails (`sales@siccotel.com`, `biz@siccoteltelecom.com`), and working DIRBS PTA verification link. | ✅ Verified & Functional |
+| **10. Contact & Enquiries** (`/contact-us/` & `siccoteltelecom.com/contact-us/`) | Contact page (`/contact`), pre-filtered enquiry forms, header & footer links | Phone and WhatsApp numbers conflict between official sources; see "Client Confirmation Required" below. | Karachi HQ address (Alpha Trade Tower), Telecom factory address (KCIP), official emails (`sales@siccotel.com`, `biz@siccoteltelecom.com`) and DIRBS PTA link in place. Phone and WhatsApp currently show +92 300 0174226, **unconfirmed**. | ⚠️ Awaiting client confirmation of phone numbers |
 
 ---
 
@@ -50,8 +72,24 @@ foodpanda, Faysal Bank and Bykea answer automated requests with HTTP 403; the si
 
 ---
 
+## Hero Campaign Banners
+
+Taken from the Elementor slider on the `https://siccotel.com/` homepage, inspected in a rendered browser on 2 November 2026 (they are CSS backgrounds, so a plain HTML fetch does not show them). The live site serves the `-scaled` 2560×918 versions; these are the unscaled 4000×1435 originals, stored unmodified in `public/assets/banners/`. No separate mobile artwork exists: the original site serves the same files to phones.
+
+| Local file | Original URL |
+| :--- | :--- |
+| `samsung-galaxy-a57-a37-campaign.jpg` | https://siccotel.com/wp-content/uploads/2026/07/Siccotel-Web-New-Banner2-Recovered2S.jpg |
+| `infinix-note-hot-smart-campaign.jpg` | https://siccotel.com/wp-content/uploads/2026/07/Siccotel-Web-New-Banner2.jpg |
+| `redmagic-11-pro-campaign.jpg` | https://siccotel.com/wp-content/uploads/2026/07/Siccotel-Web-New-Banner2-Recovered2.jpg |
+
+Captions name only what each banner shows. Each links to a Sicco Store page that returned HTTP 200 with the matching product title on the same date: `/product/samsung-galaxy-a57-5g/`, the Infinix smartphone listing, and `/product/zte-nubia-redmagic-11-pro/`. The "Exclusively available" wording appears only inside the REDMAGIC artwork and is not repeated in site copy.
+
+---
+
 ## Unresolved Gaps & Source Verification Limitations
 
 1. **Individual Regional Hub Addresses**: The original regional map marks 10 cities across Pakistan, but only Karachi publishes street addresses for the Head Office (Alpha Trade Tower) and the Assembly Plant (KCIP). The regional hubs operate in major cities with after-sales support, but individual street addresses are not published on the public website; they are accurately designated as unpublished rather than inventing mock addresses.
 2. **News Publication Timestamps**: The original WordPress `news-media` page displays article titles and images without standard publication timestamps. Event contexts (e.g., Q4 2025, MWC Barcelona 2025, ITCN Asia 2023) are preserved factually without fabricating publication dates.
-3. **Live Enquiry Delivery Credentials**: The enquiry endpoint is configured with full validation, rate limiting, and structured error responses. Real webhook / SMTP email delivery requires `.env.local` configuration from `.env.example`.
+3. **Published Phone Number Conflict**: Unresolved; see "Client Confirmation Required" at the top of this document.
+4. **Mobile Banner Artwork**: None found on 2 November 2026. The siccotel.com slider serves the same files to phones with no `srcset` or `<picture>`, a media-library search for "mobile" returns nothing, and the near-square uploads since October 2025 are not campaign banners. Phones therefore show the complete 4000×1435 artwork, about 140px tall at 390px wide. Mobile-specific artwork from the client would allow a larger phone banner.
+5. **Live Enquiry Delivery Credentials**: The enquiry endpoint is configured with full validation, rate limiting, and structured error responses. Real webhook / SMTP email delivery requires `.env.local` configuration from `.env.example`.

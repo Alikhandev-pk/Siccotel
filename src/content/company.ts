@@ -15,6 +15,11 @@ export const company = {
     "Siccotel is a Karachi-based smartphone distributor, manufacturer and retailer, serving Pakistan through a nationwide network of regional hubs, wholesalers and retailers since 2001.",
 } as const;
 
+/**
+ * The phone and WhatsApp numbers are unconfirmed: Siccotel's own sites conflict.
+ * Do not change them without client confirmation; see "Client Confirmation
+ * Required" in docs/CONTENT_AUDIT.md.
+ */
 export const contact = {
   email: "sales@siccotel.com",
   phone: { display: "+92 300 0174226", href: "tel:+923000174226" },

@@ -3,6 +3,27 @@
 import { gsap, ScrollTrigger } from "./gsap";
 import { dur, ease, revealStart, stagger } from "./motion";
 
+/**
+ * Counts up to the value already in the HTML, which is restored exactly when
+ * the tween ends or is reverted. Values without a numeric prefix are left alone.
+ */
+function countUp(el: HTMLElement) {
+  const final = el.textContent ?? "";
+  const match = /^([\d,]+)(.*)$/.exec(final);
+  if (!match) return;
+  const target = Number(match[1].replace(/,/g, ""));
+  const counter = { value: 0 };
+  gsap.fromTo(counter, { value: 0 }, {
+    value: target,
+    duration: 1.2,
+    ease: ease.soft,
+    onUpdate: () => { el.textContent = `${Math.round(counter.value).toLocaleString("en-US")}${match[2]}`; },
+    onComplete: () => { el.textContent = final; },
+    onInterrupt: () => { el.textContent = final; },
+  });
+  return () => { el.textContent = final; };
+}
+
 /** A scoped entrance vocabulary shared by pages and independently mounted sections. */
 export function setupReveals(root: HTMLElement) {
   const media = gsap.matchMedia();
@@ -15,7 +36,9 @@ export function setupReveals(root: HTMLElement) {
       const delay = Math.min(Math.max(Number(el.dataset.animDelay) || 0, 0), 180) / 1000;
       const reveal = () => context.add(() => {
         const common = { duration: dur.md, ease: ease.out, delay, clearProps: "opacity,visibility,transform,clipPath" };
-        if (kind === "heading") {
+        if (kind === "count") {
+          return countUp(el);
+        } else if (kind === "heading") {
           const words = el.querySelectorAll("[data-motion-word]");
           gsap.fromTo(words.length ? words : el, { opacity: 0.12, y: 18 }, {
             ...common, opacity: 1, y: 0, stagger: words.length ? { each: stagger.tight, amount: 0.22 } : 0,

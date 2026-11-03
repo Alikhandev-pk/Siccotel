@@ -1,3 +1,5 @@
+import { externalLinks } from "./company";
+
 export const mainNav = [
   { label: "About", href: "/about" },
   { label: "Our Business", href: "/business" },
@@ -5,6 +7,12 @@ export const mainNav = [
   { label: "Partners", href: "/partners" },
   { label: "News", href: "/news" },
   { label: "Contact", href: "/contact" },
+] as const;
+
+/** Customer destinations, kept apart from the corporate navigation. */
+export const utilityNav = [
+  { label: "SiccoCare", detail: "Warranty and after-sales support", href: "/business#after-sales", external: false },
+  { label: "Sicco Store", detail: "Shop genuine devices online", href: externalLinks.siccoStore, external: true },
 ] as const;
 
 export const enquiryTypes = [

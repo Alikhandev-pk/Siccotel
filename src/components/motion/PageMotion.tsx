@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { dur, ease } from "@/lib/motion";
+import { ease } from "@/lib/motion";
 import { setupReveals } from "@/lib/reveals";
 
 /**
@@ -40,11 +40,9 @@ export function PageMotion() {
 
         cleanupReveals = setupReveals(root as HTMLElement);
 
-        // Keep touch layouts stable. Subtle media drift and card perspective are
-        // confined to wide screens with a mouse, and never affect text transforms.
+        // Keep touch layouts stable. Subtle media drift is confined to wide screens
+        // with a mouse, inside each image's own clipped frame.
         media.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)", () => {
-          const cleanups: (() => void)[] = [];
-
           select("[data-img-parallax]").forEach((frame: HTMLElement) => {
             const image = frame.querySelector("img");
             if (!image || image.classList.contains("object-contain")) return;
@@ -57,30 +55,6 @@ export function PageMotion() {
             });
           });
 
-          select("[data-tilt]").forEach((el: HTMLElement) => {
-            // A dedicated inner wrapper may opt in when its outer wrapper reveals.
-            const target = el.querySelector<HTMLElement>("[data-tilt-inner]") ?? el;
-            if (target.hasAttribute("data-anim")) return;
-            gsap.set(target, { transformPerspective: 1100 });
-            const rotateX = gsap.quickTo(target, "rotationX", { duration: dur.xs, ease: ease.soft });
-            const rotateY = gsap.quickTo(target, "rotationY", { duration: dur.xs, ease: ease.soft });
-            const leave = () => { rotateX(0); rotateY(0); };
-            const move = (event: PointerEvent) => {
-              if (event.pointerType !== "mouse") return;
-              const rect = el.getBoundingClientRect();
-              rotateY(((event.clientX - rect.left) / rect.width - 0.5) * 3);
-              rotateX(-((event.clientY - rect.top) / rect.height - 0.5) * 2);
-            };
-            el.addEventListener("pointermove", move);
-            el.addEventListener("pointerleave", leave);
-            cleanups.push(() => {
-              el.removeEventListener("pointermove", move);
-              el.removeEventListener("pointerleave", leave);
-              rotateX.tween.kill();
-              rotateY.tween.kill();
-            });
-          });
-          return () => cleanups.forEach((cleanup) => cleanup());
         });
 
         ScrollTrigger.sort();

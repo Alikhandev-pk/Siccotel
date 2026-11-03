@@ -4,7 +4,7 @@ import { Archivo, Inter } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { ScrollManager } from "@/components/motion/ScrollManager";
 import { PageMotion } from "@/components/motion/PageMotion";
 import { company } from "@/content/company";
 import { allowIndexing, siteUrl } from "@/lib/site";
@@ -32,10 +32,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    // data-scroll-behavior lets Next.js switch CSS smooth scrolling off during route changes.
-    <html lang="en-PK" data-scroll-behavior="smooth" className={`${inter.variable} ${archivo.variable} antialiased`} suppressHydrationWarning>
+    <html lang="en-PK" className={`${inter.variable} ${archivo.variable} antialiased`} suppressHydrationWarning>
       <body className="flex min-h-dvh flex-col">
-        <Suspense fallback={<div className="h-[var(--header-h)]" />}>
+        <Suspense fallback={<div className="h-[calc(var(--header-h)+var(--utility-h)+1px)] bg-white" />}>
           <SiteHeader />
         </Suspense>
         <main id="main" className="flex-1">
@@ -43,7 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <SiteFooter />
         <Suspense fallback={null}>
-          <SmoothScroll />
+          <ScrollManager />
           <PageMotion />
         </Suspense>
       </body>

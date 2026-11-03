@@ -23,16 +23,18 @@ export const dur = {
 
 export const stagger = { tight: 0.05, base: 0.08, loose: 0.12 } as const;
 
-/** Where scroll reveals start: element top reaches 88% of the viewport. */
+/** Where scroll reveals start: element top reaches 90% of the viewport. */
 export const revealStart = "top 90%";
 
-/** Hero choreography (seconds). Mirrors the CSS --d delays on the hero text. */
+/** Hero entrance: start times in seconds on one overlapping timeline (components/home/HeroCarousel). */
 export const hero = {
-  eyebrow: 0,
-  line1: 0.08,
-  line2: 0.2,
-  lead: 0.38,
-  ctas: 0.48,
-  /** The photograph arrives as the headline settles. */
-  visual: 0.55,
+  banner: 0,
+  caption: 0.4,
+  intro: 0.5,
 } as const;
+
+/** How long each hero banner stays fully on screen while autoplay is running. */
+export const heroSlideSeconds = 5;
+
+/** The crossfade between hero banners. */
+export const heroCrossfadeSeconds = 0.5;
