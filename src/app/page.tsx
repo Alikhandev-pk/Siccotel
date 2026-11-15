@@ -2,7 +2,6 @@ import Image from "next/image";
 import { BadgeCheck, PackageCheck, ShieldCheck } from "lucide-react";
 import { enquiryHref } from "@/content/navigation";
 import { telecomLogo } from "@/lib/cms/defaults";
-import { resolveReachArtwork } from "@/lib/cms/artwork";
 import { fillProps, imageProps } from "@/lib/cms/image";
 import {
   getBanners,
@@ -50,7 +49,6 @@ export default async function HomePage() {
       getNews(),
     ]);
   const { glance, reach, manufacturing } = home;
-  const reachArtwork = await resolveReachArtwork(reach);
   const featured = products
     .filter((p) => p.showOnAssembly && p.images[0])
     .slice(0, 3);
@@ -163,7 +161,7 @@ export default async function HomePage() {
             intro={reach.intro}
           />
           <div className="mt-5 sm:mt-8 lg:mt-10">
-            <ReachMap reach={reach} artwork={reachArtwork} settings={settings} />
+            <ReachMap />
           </div>
         </div>
       </section>
