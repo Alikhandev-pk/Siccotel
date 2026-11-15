@@ -7,6 +7,8 @@ import { fillProps } from "@/lib/cms/image";
 import type { Article, CmsImage, Milestone, Published, Stat } from "@/lib/cms/types";
 import { ArrowSwap, Reveal, TextLink } from "./ui";
 import { HeadingWords } from "./HeadingWords";
+import { LogoMarquee } from "./animations/LogoMarquee";
+import { Reveal as MotionReveal } from "./animations/Reveal";
 
 /* ------------------------------------------------------------------ */
 /* Page hero for inner pages                                           */
@@ -126,13 +128,22 @@ export function PartnerStrip({ partners, title = "Trusted by global device brand
             All partners
           </TextLink>
         </div>
-        <ul className="grid grid-cols-4 items-center gap-x-3 sm:mt-3 sm:gap-x-4 sm:gap-y-1 lg:grid-cols-8 lg:gap-x-6" data-anim="stagger">
-          {partners.map((p) => (
-            <li key={p.name} className="flex h-11 items-center justify-center sm:h-14">
-              <PartnerLogo partner={p} height={24} />
-            </li>
+        {/* The second copy exists only for the seamless marquee loop (LogoMarquee). */}
+        <LogoMarquee>
+          {[false, true].map((clone) => (
+            <ul
+              key={String(clone)}
+              aria-hidden={clone || undefined}
+              className={`${clone ? "hidden" : "grid"} grid-cols-4 items-center gap-x-3 sm:mt-3 sm:gap-x-4 sm:gap-y-1 lg:grid-cols-8 lg:gap-x-6`}
+            >
+              {partners.map((p) => (
+                <li key={p.name} className="flex h-11 items-center justify-center sm:h-14">
+                  <PartnerLogo partner={p} height={24} />
+                </li>
+              ))}
+            </ul>
           ))}
-        </ul>
+        </LogoMarquee>
       </div>
     </section>
   );
@@ -186,6 +197,7 @@ export function NewsCard({
   return (
     <article className={`group relative h-full ${compact ? "grid grid-cols-[7.5rem_minmax(0,1fr)] items-center gap-x-3.5 md:flex md:flex-col md:items-stretch" : "flex flex-col"}`}>
       <div
+        data-news-media=""
         className={`relative overflow-hidden rounded-[8px] border border-line bg-stone transition-shadow duration-200 group-hover:shadow-[0_18px_40px_-28px_rgba(22,24,27,0.5)] group-has-[a:focus-visible]:outline-2 group-has-[a:focus-visible]:outline-offset-4 group-has-[a:focus-visible]:outline-accent aspect-[16/10]`}
       >
         {image ? (
@@ -210,7 +222,7 @@ export function NewsCard({
           </div>
         )}
       </div>
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div data-news-text="" className="flex min-w-0 flex-1 flex-col">
         {(article.context || article.date) && (
           <p className={`text-xs font-semibold tracking-[0.12em] text-accent uppercase ${compact ? "md:mt-5" : "mt-5"}`}>
             {[article.context, formatCardDate(article.date)].filter(Boolean).join(" · ")}
@@ -255,7 +267,7 @@ export function EnquiryPaths({ title = "How can we work together?", intro, email
       </svg>
       <div className="section-space container-site relative">
         <div className="grid gap-5 sm:gap-14 lg:grid-cols-12 lg:gap-10">
-          <div className="lg:col-span-5">
+          <MotionReveal className="lg:col-span-5">
             <p className="eyebrow mb-3 sm:mb-5">Business enquiries</p>
             <h2 id="enquiry-paths-title" className="t-h2" data-anim="heading">
               {title}
@@ -272,8 +284,8 @@ export function EnquiryPaths({ title = "How can we work together?", intro, email
                 </a>
               </li>
             </ul>
-          </div>
-          <ul className="border-t border-night-line lg:col-span-7" data-anim="stagger">
+          </MotionReveal>
+          <MotionReveal as="ul" mode="children" y={30} className="border-t border-night-line lg:col-span-7">
             {enquiryTypes.map((t, i) => (
               <li key={t.value} className="border-b border-night-line">
                 <Link
@@ -295,7 +307,7 @@ export function EnquiryPaths({ title = "How can we work together?", intro, email
                 </Link>
               </li>
             ))}
-          </ul>
+          </MotionReveal>
         </div>
       </div>
     </section>
