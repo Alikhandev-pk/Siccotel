@@ -4,7 +4,7 @@ import Image, { getImageProps } from "next/image";
 import { useCallback, useRef, useState, useSyncExternalStore, type PointerEvent as ReactPointerEvent } from "react";
 import { ArrowUpRight, Pause, Play } from "lucide-react";
 import type { Banner, HomeDoc, Published } from "@/lib/cms/types";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { ease, hero, heroCrossfadeSeconds, heroSlideSeconds } from "@/lib/motion";
 import { ButtonLink } from "../ui";
 
@@ -146,26 +146,42 @@ export function HeroCarousel({ banners, intro }: { banners: HeroBanner[]; intro:
     [mountSlide],
   );
 
-  // Banner reveal, then the caption area in reading order.
+  // Banner (Ken Burns), then the caption, then the intro: eyebrow rule, headline
+  // words rising out of their masks, copy and actions. Whole intro under 1.5s.
   useGSAP(
     () => {
       const q = gsap.utils.selector(rootRef);
       const owned = q("[data-hero]");
+      const banner = q("[data-hero='banner']");
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const alreadyShown = failsafeStarted(owned[0]);
         // Take over from the CSS failsafe on everything this timeline owns.
         gsap.set(owned, { animation: "none" });
+
+        // Slight parallax as the banner scrolls away (it starts at rest at the top).
+        gsap.to(banner, {
+          yPercent: 8,
+          ease: "none",
+          scrollTrigger: { trigger: q(".hero-banner")[0], start: 0, end: "bottom top", scrub: true },
+        });
+
         if (alreadyShown) {
           gsap.set(owned, { opacity: 1 });
           return;
         }
+        const title = q(".hero-title")[0];
+        const split = title ? SplitText.create(title, { type: "words", mask: "words", wordsClass: "hero-word" }) : null;
         gsap
           .timeline({ defaults: { ease: ease.soft, duration: 0.6 } })
-          .fromTo(q("[data-hero='banner']"), { opacity: 0, scale: 1.015 }, { opacity: 1, scale: 1, duration: 0.9 }, hero.banner)
+          .fromTo(banner, { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out" }, hero.banner)
           .fromTo(q("[data-hero='caption']"), { opacity: 0, y: 18 }, { opacity: 1, y: 0 }, hero.caption)
-          .fromTo(q("[data-hero='intro']"), { opacity: 0, y: 22 }, { opacity: 1, y: 0 }, hero.intro)
-          .set(owned, { clearProps: "transform" });
+          .set(q("[data-hero='intro']"), { opacity: 1 }, hero.intro - 0.2)
+          .fromTo(q("[data-hero-eyebrow]"), { "--eyebrow-line": 0, opacity: 0 }, { "--eyebrow-line": 1, opacity: 1, duration: 0.6, ease: "power3.out" }, hero.intro - 0.2)
+          .fromTo(split?.words ?? [], { yPercent: 100 }, { yPercent: 0, duration: 0.8, ease: "power4.out", stagger: 0.08 }, hero.intro - 0.1)
+          .fromTo(q("[data-hero-fade]"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, stagger: 0.08 }, hero.intro + 0.2)
+          .add(() => split?.revert())
+          .set([...owned.filter((el) => el !== banner[0]), ...q("[data-hero-fade]")], { clearProps: "transform" });
       });
       return () => mm.revert();
     },
@@ -329,7 +345,7 @@ export function HeroCarousel({ banners, intro }: { banners: HeroBanner[]; intro:
 
         <div data-hero="intro" className="grid gap-4 py-5 sm:py-6 lg:col-span-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-8 lg:py-0">
           <div className="min-w-0">
-            <p className="eyebrow mb-2.5 text-xs tracking-[0.06em] sm:mb-3 sm:tracking-[0.16em]">{intro.eyebrow}</p>
+            <p data-hero-eyebrow="" className="eyebrow mb-2.5 text-xs tracking-[0.06em] sm:mb-3 sm:tracking-[0.16em]">{intro.eyebrow}</p>
             <h1 className="hero-title">
               {[intro.headline1, intro.headline2].filter(Boolean).map((line) => (
                 <span key={line} className="block">
@@ -337,10 +353,10 @@ export function HeroCarousel({ banners, intro }: { banners: HeroBanner[]; intro:
                 </span>
               ))}
             </h1>
-            <p className="mt-2.5 max-w-[34rem] leading-relaxed text-muted sm:mt-3">{intro.description}</p>
+            <p data-hero-fade="" className="mt-2.5 max-w-[34rem] leading-relaxed text-muted sm:mt-3">{intro.description}</p>
           </div>
           {/* The header carries Partner With Us from sm up. Below that the hero does, with Explore as the secondary route. */}
-          <div className="grid grid-cols-2 gap-2 sm:hidden">
+          <div data-hero-fade="" className="grid grid-cols-2 gap-2 sm:hidden">
             <ButtonLink href="/contact#enquiry" icon={false} className="px-2!">
               Partner With Us
             </ButtonLink>
@@ -348,7 +364,7 @@ export function HeroCarousel({ banners, intro }: { banners: HeroBanner[]; intro:
               Our Services
             </ButtonLink>
           </div>
-          <div className="hidden sm:block lg:justify-self-end">
+          <div data-hero-fade="" className="hidden sm:block lg:justify-self-end">
             <ButtonLink href={intro.actionHref}>{intro.actionLabel}</ButtonLink>
           </div>
         </div>
