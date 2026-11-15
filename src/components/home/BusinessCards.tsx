@@ -3,6 +3,7 @@ import { Check } from "lucide-react";
 import { fillProps } from "@/lib/cms/image";
 import type { HomeDoc, ServiceActivity } from "@/lib/cms/types";
 import { ButtonLink, TextLink } from "../ui";
+import { Reveal } from "../animations/Reveal";
 
 /** `points` picks from each activity's list; network figures appear once, in the statistics row. */
 const pointPicks: Record<string, number[]> = { distribution: [0, 1, 3], manufacturing: [0, 1, 2], retail: [1, 2, 3] };
@@ -13,25 +14,25 @@ export function BusinessCards({ copy, activities }: { copy: HomeDoc["business"];
   return (
     <section id="our-business" aria-labelledby="business-title" className="section-space border-y border-line bg-stone">
       <div className="container-site">
-        <div className="grid gap-5 lg:grid-cols-12 lg:items-end lg:gap-10">
+        <Reveal className="grid gap-5 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-7">
             <p className="eyebrow mb-3 sm:mb-4">{copy.eyebrow}</p>
-            <h2 id="business-title" className="t-h2" data-anim="heading">
+            <h2 id="business-title" className="t-h2">
               {copy.title}
             </h2>
           </div>
-          <p className="hidden max-w-md leading-relaxed text-muted sm:block lg:col-span-5" data-anim="fade">
+          <p className="hidden max-w-md leading-relaxed text-muted sm:block lg:col-span-5">
             {copy.intro}
           </p>
-        </div>
+        </Reveal>
 
-        <ul className="mt-6 grid gap-3 sm:mt-9 md:grid-cols-3 md:gap-5 lg:mt-11 lg:gap-6" data-anim="stagger">
+        <Reveal as="ul" mode="children" tilt stagger={0.12} className="mt-6 grid gap-3 sm:mt-9 md:grid-cols-3 md:gap-5 lg:mt-11 lg:gap-6">
           {activities.map((activity, i) => {
             const card = copy.cardImages[i];
             const points = (pointPicks[activity.id] ?? [0, 1, 2]).map((n) => activity.points[n]).filter(Boolean);
             return (
               <li key={activity.id}>
-                <article className="group grid h-full grid-cols-[7.5rem_minmax(0,1fr)] items-center gap-x-3.5 overflow-hidden rounded-[8px] border border-line bg-white p-3.5 transition-[border-color,box-shadow] duration-200 hover:border-ink/25 hover:shadow-[0_18px_40px_-28px_rgba(22,24,27,0.45)] sm:grid-cols-[10rem_minmax(0,1fr)] md:flex md:flex-col md:items-stretch md:gap-x-0 md:p-0">
+                <article data-tilt="" className="group grid h-full grid-cols-[7.5rem_minmax(0,1fr)] items-center gap-x-3.5 overflow-hidden rounded-[8px] border border-line bg-white p-3.5 transition-[border-color,box-shadow] duration-200 hover:border-ink/25 hover:shadow-[0_18px_40px_-28px_rgba(22,24,27,0.45)] sm:grid-cols-[10rem_minmax(0,1fr)] md:flex md:flex-col md:items-stretch md:gap-x-0 md:p-0">
                   <div className="relative aspect-[16/10] overflow-hidden rounded-[4px] bg-stone-2 md:rounded-none">
                     {card?.image?.src && (
                       <Image
@@ -72,7 +73,7 @@ export function BusinessCards({ copy, activities }: { copy: HomeDoc["business"];
               </li>
             );
           })}
-        </ul>
+        </Reveal>
       </div>
     </section>
   );

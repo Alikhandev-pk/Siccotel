@@ -6,6 +6,8 @@ import { retail } from "@/content/retail";
 import type { HomeDoc, Logo, ServicesDoc, SettingsDoc } from "@/lib/cms/types";
 import { ButtonLink, SectionHeader, TextLink } from "../ui";
 import { ClientsReveal } from "./ClientsReveal";
+import { GridReveal } from "../animations/GridReveal";
+import { Reveal } from "../animations/Reveal";
 
 const siccoCare = utilityNav[0];
 
@@ -60,16 +62,18 @@ export function RetailEcommerceSection({ copy, clients, afterSales, links }: { c
   return (
     <section id="retail-ecommerce" aria-labelledby="retail-ecommerce-title" className="section-space bg-white">
       <div className="container-site">
-        <SectionHeader
-          eyebrow={copy.eyebrow}
-          title={<span id="retail-ecommerce-title">{copy.title}</span>}
-          intro={
-            <>
-              <span className="sm:hidden">{copy.introShort}</span>
-              <span className="hidden sm:inline">{copy.intro}</span>
-            </>
-          }
-        />
+        <Reveal>
+          <SectionHeader
+            eyebrow={copy.eyebrow}
+            title={<span id="retail-ecommerce-title">{copy.title}</span>}
+            intro={
+              <>
+                <span className="sm:hidden">{copy.introShort}</span>
+                <span className="hidden sm:inline">{copy.intro}</span>
+              </>
+            }
+          />
+        </Reveal>
 
         <ul className="mt-6 grid gap-3 sm:mt-9 md:grid-cols-3 md:gap-5 lg:mt-11 lg:gap-6" data-anim="stagger">
           <li>
@@ -126,7 +130,7 @@ export function RetailEcommerceSection({ copy, clients, afterSales, links }: { c
           <h3 className="font-display text-xl font-semibold tracking-[-0.02em] text-ink">{copy.clientsTitle}</h3>
           <ClientsReveal total={clients.length}>
           {/* Flex rather than grid so an incomplete last row stays centred at 3, 4 and 5 columns. */}
-          <ul className="mt-4 flex flex-wrap justify-center gap-2 lg:mt-5 lg:gap-3" data-anim="stagger">
+          <GridReveal className="mt-4 flex flex-wrap justify-center gap-2 lg:mt-5 lg:gap-3">
             {clients.map((client) => {
               const tile = "flex h-12 items-center justify-center rounded-[6px] border border-line bg-white px-2.5 sm:h-16 lg:h-[4.5rem] lg:px-3";
               const logo = (
@@ -159,7 +163,7 @@ export function RetailEcommerceSection({ copy, clients, afterSales, links }: { c
                 </li>
               );
             })}
-          </ul>
+          </GridReveal>
           </ClientsReveal>
         </div>
       </div>

@@ -7,7 +7,9 @@ import { enquiryHref } from "@/content/navigation";
 import type { RegionId } from "@/content/reach-artwork";
 import type { ReachArtwork } from "@/lib/cms/artwork";
 import type { HomeDoc, SettingsDoc } from "@/lib/cms/types";
+import { gsap, useGSAP } from "@/lib/gsap";
 import { TextLink } from "../ui";
+import { MOTION, onceInView } from "../animations/motion";
 
 const HQ_CITY = "karachi";
 /** A tap within this many CSS pixels of a city dot selects the nearest city. */
@@ -31,10 +33,48 @@ export function ReachMap({ reach, artwork, settings }: { reach: HomeDoc["reach"]
   const [regionId, setRegionId] = useState<RegionId | null>(() => regions?.find((r) => r.id === "north")?.id ?? regions?.[0]?.id ?? null);
   const [cityId, setCityId] = useState<string | null>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const mapRef = useRef<HTMLDivElement>(null);
 
   const region = regions?.find((r) => r.id === regionId) ?? null;
   const listed = region ? cities.filter((c) => region.cityIds.includes(c.id)) : cities;
   const city = cities.find((c) => c.id === cityId) ?? null;
+  /** The soft pulsing ring sits on the selected city, or on the head office. */
+  const pulseCity = markers ? (city ?? cities.find((c) => c.id === HQ_CITY) ?? null) : null;
+
+  // On first view: the selected region's outline draws itself, then a ring pings out
+  // from each city dot in turn. Decorative only; the map is complete without it.
+  useGSAP(
+    () => {
+      const root = mapRef.current;
+      if (!root) return;
+      const mm = gsap.matchMedia();
+      mm.add(MOTION, () => {
+        const q = gsap.utils.selector(root);
+        const outline = q("[data-region][data-selected]");
+        const pings = q("[data-ping]");
+        gsap.set(outline, { drawSVG: "0%" });
+        onceInView(root, () => {
+          gsap
+            .timeline()
+            .to(outline, { drawSVG: "100%", duration: 1.1, ease: "power2.inOut", clearProps: "strokeDasharray,strokeDashoffset" }, 0)
+            .fromTo(pings, { scale: 0.4, opacity: 0.8, transformOrigin: "50% 50%" }, { scale: 2.6, opacity: 0, duration: 0.9, ease: "power2.out", stagger: 0.08 }, 0.35);
+        }, "top 75%");
+      });
+      return () => mm.revert();
+    },
+    { scope: mapRef },
+  );
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(MOTION, () => {
+        gsap.fromTo("[data-pulse]", { scale: 1, opacity: 0.6, transformOrigin: "50% 50%" }, { scale: 2.6, opacity: 0, duration: 1.6, ease: "power2.out", repeat: -1, repeatDelay: 0.6 });
+      });
+      return () => mm.revert();
+    },
+    { scope: mapRef, dependencies: [pulseCity?.id], revertOnUpdate: true },
+  );
 
   function selectRegion(id: RegionId) {
     if (id === regionId) return;
@@ -113,7 +153,7 @@ export function ReachMap({ reach, artwork, settings }: { reach: HomeDoc["reach"]
         )}
 
         {/* The image and overlay share this box, so they scale together at every width. */}
-        <div className={`relative ${regions ? "mt-3 sm:mt-4" : ""}`}>
+        <div ref={mapRef} className={`relative ${regions ? "mt-3 sm:mt-4" : ""}`}>
           <Image
             src={reach.map.src}
             width={reach.map.width}
@@ -137,6 +177,7 @@ export function ReachMap({ reach, artwork, settings }: { reach: HomeDoc["reach"]
                   d={r.path}
                   data-region={r.id}
                   data-selected={r.id === regionId ? "" : undefined}
+                  vectorEffect="non-scaling-stroke"
                   className="reach-region"
                   style={{ "--region": r.color } as CSSProperties}
                 />
@@ -147,6 +188,7 @@ export function ReachMap({ reach, artwork, settings }: { reach: HomeDoc["reach"]
                   const cy = (c.y / 100) * H;
                   return (
                     <g key={c.id} data-city={c.id}>
+                      <circle data-ping="" cx={cx} cy={cy} r="8" fill="none" stroke="#c8000b" strokeWidth="1.5" vectorEffect="non-scaling-stroke" opacity="0" pointerEvents="none" />
                       <circle cx={cx} cy={cy} r="7" className="reach-pin" />
                       {c.id === cityId && (
                         <circle
@@ -164,6 +206,21 @@ export function ReachMap({ reach, artwork, settings }: { reach: HomeDoc["reach"]
                     </g>
                   );
                 })}
+              {pulseCity && (
+                <circle
+                  key={pulseCity.id}
+                  data-pulse=""
+                  cx={(pulseCity.x / 100) * W}
+                  cy={(pulseCity.y / 100) * H}
+                  r="9"
+                  fill="none"
+                  stroke="#c8000b"
+                  strokeWidth="1.5"
+                  vectorEffect="non-scaling-stroke"
+                  opacity="0"
+                  pointerEvents="none"
+                />
+              )}
             </svg>
           )}
         </div>

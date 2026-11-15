@@ -24,6 +24,9 @@ import { BusinessCards } from "@/components/home/BusinessCards";
 import { RetailEcommerceSection } from "@/components/home/RetailEcommerceSection";
 import { ReachMap } from "@/components/home/ReachMap";
 import { JourneyRail } from "@/components/home/JourneyRail";
+import { Reveal } from "@/components/animations/Reveal";
+import { ChainProgress } from "@/components/animations/ChainProgress";
+import { NewsReveal } from "@/components/animations/NewsReveal";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata = {
@@ -66,9 +69,9 @@ export default async function HomePage() {
       <section aria-labelledby="glance-title" className="section-space">
         <div className="container-site">
           <div className="grid gap-5 sm:gap-9 lg:grid-cols-12 lg:items-center lg:gap-10">
-            <div className="lg:col-span-6">
+            <Reveal className="lg:col-span-6">
               <p className="eyebrow mb-3 sm:mb-4">{glance.eyebrow}</p>
-              <h2 id="glance-title" className="t-h2" data-anim="heading">
+              <h2 id="glance-title" className="t-h2">
                 {glance.title}
               </h2>
               <p className="t-lead mt-3 text-ink-soft sm:mt-5">{glance.lead}</p>
@@ -92,7 +95,7 @@ export default async function HomePage() {
                   );
                 })}
               </ul>
-            </div>
+            </Reveal>
             <div className="grid grid-cols-[1.3fr_1fr] items-start gap-3 sm:gap-4 lg:col-span-6">
               {photoA?.image?.src && (
                 <figure>
@@ -157,11 +160,13 @@ export default async function HomePage() {
         className="section-space border-y border-line bg-stone"
       >
         <div className="container-site">
-          <SectionHeader
-            eyebrow={reach.eyebrow}
-            title={<span id="reach-title">{reach.title}</span>}
-            intro={reach.intro}
-          />
+          <Reveal>
+            <SectionHeader
+              eyebrow={reach.eyebrow}
+              title={<span id="reach-title">{reach.title}</span>}
+              intro={reach.intro}
+            />
+          </Reveal>
           <div className="mt-5 sm:mt-8 lg:mt-10">
             <ReachMap reach={reach} artwork={reachArtwork} settings={settings} />
           </div>
@@ -182,16 +187,17 @@ export default async function HomePage() {
                 className="h-10 w-auto sm:h-12"
                 sizes="80px"
               />
-              <SectionHeader
-                className="mt-4 sm:mt-7"
-                eyebrow={manufacturing.eyebrow}
-                title={
-                  <span id="manufacturing-title">{manufacturing.title}</span>
-                }
-                intro={manufacturing.intro}
-              />
+              <Reveal className="mt-4 sm:mt-7">
+                <SectionHeader
+                  eyebrow={manufacturing.eyebrow}
+                  title={
+                    <span id="manufacturing-title">{manufacturing.title}</span>
+                  }
+                  intro={manufacturing.intro}
+                />
+              </Reveal>
               <div className="mt-5 sm:mt-7" data-anim="fade">
-                <p className="t-figure text-[clamp(2.25rem,1.6rem+3vw,4.25rem)]">
+                <p className="t-figure text-[clamp(2.25rem,1.6rem+3vw,4.25rem)]" data-anim="count">
                   {manufacturing.figure}
                 </p>
                 <p className="mt-1.5 flex items-start gap-3 text-night-muted sm:mt-2">
@@ -247,24 +253,27 @@ export default async function HomePage() {
               <h3 className="text-xs font-semibold tracking-[0.14em] text-night-muted uppercase">
                 End-to-end service delivery chain
               </h3>
-              <ol
-                className="mt-3 grid grid-cols-2 gap-x-4 sm:mt-4 sm:gap-x-6"
-                data-anim="stagger"
-              >
+              <ChainProgress className="mt-3 grid grid-cols-2 gap-x-4 sm:mt-4 sm:gap-x-6">
                 {manufacturing.chain.map((step, i) => (
                   <li
                     key={step}
-                    className="flex flex-col gap-0.5 border-t border-night-line py-2.5 sm:flex-row sm:items-baseline sm:gap-4 sm:py-3.5"
+                    data-step=""
+                    className="relative flex flex-col gap-0.5 border-t border-night-line py-2.5 sm:flex-row sm:items-baseline sm:gap-4 sm:py-3.5"
                   >
-                    <span className="font-display text-sm text-accent-on-dark tabular-nums">
+                    <span
+                      aria-hidden
+                      data-step-bar=""
+                      className="absolute -top-px right-0 left-0 h-[2px] bg-accent-on-dark"
+                    />
+                    <span data-step-text="" className="font-display text-sm text-accent-on-dark tabular-nums">
                       0{i + 1}
                     </span>
-                    <span className="font-display text-base leading-snug font-semibold tracking-[-0.02em] sm:text-lg">
+                    <span data-step-text="" className="font-display text-base leading-snug font-semibold tracking-[-0.02em] sm:text-lg">
                       {step}
                     </span>
                   </li>
                 ))}
-              </ol>
+              </ChainProgress>
             </div>
             {featured.length > 0 && (
               <div className="lg:col-span-5">
@@ -301,11 +310,13 @@ export default async function HomePage() {
       <section aria-labelledby="journey-title" className="section-space">
         <div className="container-site">
           <div className="flex flex-col justify-between gap-2 sm:gap-5 lg:flex-row lg:items-end">
-            <SectionHeader
-              eyebrow={home.journey.eyebrow}
-              title={<span id="journey-title">{home.journey.title}</span>}
-              intro={home.journey.intro}
-            />
+            <Reveal>
+              <SectionHeader
+                eyebrow={home.journey.eyebrow}
+                title={<span id="journey-title">{home.journey.title}</span>}
+                intro={home.journey.intro}
+              />
+            </Reveal>
             <TextLink href="/about#journey" className="min-h-11 shrink-0">
               Full timeline
             </TextLink>
@@ -326,24 +337,23 @@ export default async function HomePage() {
         >
           <div className="container-site">
             <div className="flex flex-row items-end justify-between gap-4">
-              <SectionHeader
-                eyebrow={home.newsTitle.eyebrow}
-                title={<span id="news-title">{home.newsTitle.title}</span>}
-              />
+              <Reveal>
+                <SectionHeader
+                  eyebrow={home.newsTitle.eyebrow}
+                  title={<span id="news-title">{home.newsTitle.title}</span>}
+                />
+              </Reveal>
               <TextLink href="/news" className="min-h-11 shrink-0">
                 All news
               </TextLink>
             </div>
-            <ul
-              className="mt-4 grid gap-x-6 gap-y-3 sm:mt-9 md:grid-cols-3 md:gap-y-9"
-              data-anim="stagger"
-            >
+            <NewsReveal className="mt-4 grid gap-x-6 gap-y-3 sm:mt-9 md:grid-cols-3 md:gap-y-9">
               {news.slice(0, 3).map((article) => (
                 <li key={article.id}>
                   <NewsCard article={article} size="compact" />
                 </li>
               ))}
-            </ul>
+            </NewsReveal>
           </div>
         </section>
       )}
