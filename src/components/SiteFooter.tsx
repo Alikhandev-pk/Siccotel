@@ -100,7 +100,7 @@ export async function SiteFooter() {
       </div>
       <div className="border-t border-night-line">
         <div className="container-site flex flex-col gap-1 py-4 text-sm text-night-muted sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:py-6">
-          <p>© {company.legalName} All rights reserved.</p>
+          <p>© 2026 {company.legalName} All rights reserved.</p>
           <p>Distribution · Manufacturing · Retail — Karachi, Pakistan</p>
         </div>
       </div>
