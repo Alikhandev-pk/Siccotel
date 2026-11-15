@@ -96,7 +96,7 @@ export function StatsGrid({
 /* ------------------------------------------------------------------ */
 export type LogoPartner = { name: string; logo?: CmsImage | null; logoScale?: number };
 
-export function PartnerLogo({ partner, height = 36, className = "" }: { partner: LogoPartner; height?: number; className?: string }) {
+export function PartnerLogo({ partner, height = 36, className = "", eager = false }: { partner: LogoPartner; height?: number; className?: string; eager?: boolean }) {
   if (!partner.logo?.src) return null;
   const h = Math.round(height * (partner.logoScale ?? 1));
   // Constrain both dimensions so wide wordmarks and compact marks read at a similar optical size.
@@ -108,6 +108,7 @@ export function PartnerLogo({ partner, height = 36, className = "" }: { partner:
       height={partner.logo.height}
       alt={partner.name}
       sizes="200px"
+      loading={eager ? "eager" : undefined}
       className={`w-auto object-contain ${className}`}
       style={{ height: h, maxWidth: `min(100%, ${maxW}px)` }}
     />
@@ -138,7 +139,8 @@ export function PartnerStrip({ partners, title = "Trusted by global device brand
             >
               {partners.map((p) => (
                 <li key={p.name} className="flex h-11 items-center justify-center sm:h-14">
-                  <PartnerLogo partner={p} height={24} />
+                  {/* Eager: in the moving row, lazy logos would scroll in before they load. */}
+                  <PartnerLogo partner={p} height={24} eager />
                 </li>
               ))}
             </ul>

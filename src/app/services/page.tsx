@@ -162,7 +162,7 @@ export default async function ServicesPage() {
             </h2>
             <p className="mt-3 text-base leading-relaxed text-ink-soft sm:mt-5 sm:text-lg">{afterSales.text}</p>
             <div className="mt-4 sm:mt-8">
-              <TextLink href={enquiryHref("general")}>Contact customer support</TextLink>
+              <TextLink href={enquiryHref("general")} className="min-h-11">Contact customer support</TextLink>
             </div>
           </div>
           <ul className="grid gap-3 self-start sm:grid-cols-2 sm:gap-4 lg:col-span-5 lg:col-start-8 lg:grid-cols-1">

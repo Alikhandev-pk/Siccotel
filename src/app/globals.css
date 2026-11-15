@@ -447,12 +447,17 @@
   .marquee-track > ul {
     display: flex;
     flex-wrap: nowrap;
-    gap: 2.5rem;
-    padding-right: 2.5rem;
+    gap: 1.75rem;
+    padding-right: 1.75rem;
   }
+  /* Phones show three to four logos at a time. */
   .marquee-track > ul > li {
     flex: none;
-    width: 7rem;
+    width: 5.5rem;
+  }
+  @media (min-width: 640px) {
+    .marquee-track > ul { gap: 3rem; padding-right: 3rem; }
+    .marquee-track > ul > li { width: 7rem; }
   }
   @media (min-width: 1024px) {
     .marquee { margin-inline: 0; }
