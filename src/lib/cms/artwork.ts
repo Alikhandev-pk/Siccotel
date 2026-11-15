@@ -12,7 +12,8 @@ import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { cacheLife, cacheTag } from "next/cache";
-import { findArtwork, type MapRegion, type RegionId } from "@/content/reach-artwork";
+import outlinedMap from "@/assets/company/pakistan-regional-map-outlined.png";
+import { findArtwork, REGIONAL_MAP_FINGERPRINT, type MapRegion, type RegionId } from "@/content/reach-artwork";
 import { CMS_TAG, MEDIA_URL_PREFIX } from "./config";
 import { resolveUpload } from "./media-store";
 import type { HomeDoc, MapCity } from "./types";
@@ -40,6 +41,9 @@ export async function imageFingerprint(src: string): Promise<string | null> {
   "use cache";
   cacheLife("minutes");
   cacheTag(CMS_TAG);
+  // The bundled regional map is fixed at build time, so its fingerprint is known without
+  // reading .next/static from disk (serverless hosts such as Vercel do not ship those files).
+  if (src.split(/[?#]/)[0] === outlinedMap.src) return REGIONAL_MAP_FINGERPRINT;
   for (const file of candidateFiles(src)) {
     try {
       return `sha256:${crypto.createHash("sha256").update(await fs.readFile(file)).digest("hex")}`;
