@@ -6,6 +6,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight, Mail, Menu, Phone, X } from "lucide-react";
 import { headerNav, utilityNav as baseUtilityNav } from "@/content/navigation";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { getLenis } from "@/lib/lenis";
+import { useHeaderAutoHide } from "./animations/useHeaderAutoHide";
+import { useMagnetic } from "./animations/useMagnetic";
 import { ArrowSwap } from "./ui";
 import { SiccotelLogo } from "./SiccotelLogo";
 
@@ -22,8 +25,13 @@ export function SiteHeader({ contact }: { contact: HeaderContact }) {
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const partnerRef = useRef<HTMLAnchorElement>(null);
+  const menuOpenRef = useRef(false);
   /** A menu link was tapped: its destination decides the scroll position, including same-page anchors. */
   const followingLink = useRef(false);
+  useHeaderAutoHide(headerRef, menuOpenRef);
+  useMagnetic(partnerRef);
 
   const closeForLink = () => {
     followingLink.current = true;
@@ -45,8 +53,12 @@ export function SiteHeader({ contact }: { contact: HeaderContact }) {
   }
 
   useEffect(() => {
+    menuOpenRef.current = open;
     if (!open) return;
     const panel = panelRef.current;
+    // Smooth scrolling would otherwise still move the locked page behind the menu.
+    const lenis = getLenis();
+    lenis?.stop();
     // Lock both: iOS Safari ignores body overflow for touch scrolling unless html is locked too.
     const root = document.documentElement;
     const { overflow } = document.body.style;
@@ -96,6 +108,7 @@ export function SiteHeader({ contact }: { contact: HeaderContact }) {
       if (panel) gsap.set([panel, ...panel.querySelectorAll("[data-menu-item]")], { clearProps: "all" });
       document.body.style.overflow = overflow;
       root.style.overflow = rootOverflow;
+      lenis?.start();
       // Focus moving onto the sticky toggle can scroll the locked page; put it back unless a link was followed.
       if (!followingLink.current && window.location.pathname === openedAt.path && Math.abs(window.scrollY - openedAt.y) > 1) {
         window.scrollTo({ top: openedAt.y, left: 0, behavior: "instant" });
@@ -109,7 +122,7 @@ export function SiteHeader({ contact }: { contact: HeaderContact }) {
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header className="site-header sticky z-50 border-b border-line bg-white text-ink shadow-[0_8px_24px_-20px_rgba(22,24,27,0.4)]">
+    <header ref={headerRef} className="site-header sticky z-50 border-b border-line bg-white text-ink shadow-[0_8px_24px_-20px_rgba(22,24,27,0.4)]">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[60] focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-white"
@@ -190,6 +203,7 @@ export function SiteHeader({ contact }: { contact: HeaderContact }) {
 
         <div className="flex items-center gap-2">
           <Link
+            ref={partnerRef}
             href="/contact#enquiry"
             className="group hidden min-h-11 items-center gap-2.5 rounded-[3px] bg-accent px-5 text-sm font-semibold whitespace-nowrap text-white transition-colors duration-200 hover:bg-accent-hover sm:inline-flex"
           >
@@ -214,6 +228,7 @@ export function SiteHeader({ contact }: { contact: HeaderContact }) {
         id="mobile-menu"
         ref={panelRef}
         hidden={!open}
+        data-lenis-prevent=""
         className="fixed inset-x-0 bottom-0 top-[var(--header-h)] overflow-y-auto overscroll-contain border-t border-line bg-white text-ink lg:hidden"
       >
         <nav aria-label="Mobile" className="container-site pb-6">
