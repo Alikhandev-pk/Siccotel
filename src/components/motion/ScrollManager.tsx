@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect } from "react";
 import { ScrollTrigger } from "@/lib/gsap";
+import { getLenis } from "@/lib/lenis";
 
 /**
  * A link click that leads to a different pathname. The destination is shown
@@ -57,6 +58,8 @@ const headerOffset = () => parseFloat(getComputedStyle(document.documentElement)
  * its next refresh() restores the stale pre-jump position.
  */
 function jumpTo(top: number) {
+  // A smooth scroll still in flight would otherwise carry on from the old page.
+  getLenis()?.scrollTo(top, { immediate: true, force: true });
   window.scrollTo({ top, left: 0, behavior: "instant" });
   ScrollTrigger.getScrollFunc(window)(top);
 }

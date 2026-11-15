@@ -6,6 +6,7 @@ import { SiteHeaderServer } from "@/components/SiteHeaderServer";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ScrollManager } from "@/components/motion/ScrollManager";
 import { PageMotion } from "@/components/motion/PageMotion";
+import { SmoothScroll } from "@/components/animations/SmoothScroll";
 import { company } from "@/content/company";
 import { allowIndexing, siteUrl } from "@/lib/site";
 
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <SiteFooter />
+        <SmoothScroll />
         <Suspense fallback={null}>
           <ScrollManager />
           <PageMotion />

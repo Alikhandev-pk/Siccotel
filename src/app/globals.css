@@ -405,6 +405,107 @@
   }
 }
 
+/* -------------------------------------------------------------------- */
+/* Homepage GSAP motion — components/animations                         */
+/* -------------------------------------------------------------------- */
+/* Reveal targets are hidden before hydration only when scripting and motion are
+   available. GSAP takes over on mount (animation: none + inline visibility); if
+   it never does, the failsafe shows everything after 3s. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-reveal="self"],
+  [data-reveal="children"] > * {
+    visibility: hidden;
+    animation: reveal-failsafe 0s linear 3s forwards;
+  }
+}
+@keyframes reveal-failsafe {
+  to { visibility: visible; }
+}
+
+/* Hero eyebrow rule grows from the left (GSAP tweens --eyebrow-line). */
+.home-hero .eyebrow::before {
+  transform: scaleX(var(--eyebrow-line, 1));
+  transform-origin: 0 50%;
+}
+/* SplitText word masks: room for descenders while the words rise. */
+.hero-word-mask {
+  padding-block: 0.1em;
+  margin-block: -0.1em;
+}
+
+/* Brand partner marquee: the layout is in place from first paint when motion is allowed. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .marquee {
+    overflow: hidden;
+    margin-inline: -1rem;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+  }
+  .marquee-track > ul {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 2.5rem;
+    padding-right: 2.5rem;
+  }
+  .marquee-track > ul > li {
+    flex: none;
+    width: 7rem;
+  }
+  @media (min-width: 1024px) {
+    .marquee { margin-inline: 0; }
+    .marquee-track > ul { gap: 4rem; padding-right: 4rem; }
+    .marquee-track > ul > li { width: 8.5rem; }
+  }
+}
+@media (hover: hover) {
+  .marquee img {
+    filter: grayscale(1);
+    opacity: 0.75;
+    transition: filter 0.3s ease-out, opacity 0.3s ease-out;
+  }
+  .marquee li:hover img {
+    filter: none;
+    opacity: 1;
+  }
+}
+
+/* Business cards: the button arrow nudges right while the card is hovered. */
+@media (hover: hover) {
+  [data-tilt] .btn-arrow {
+    transition: transform 0.25s var(--ease-out-quart);
+  }
+  [data-tilt]:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+}
+
+/* Manufacturing chain: accent bar each step fills (ChainProgress). Decorative only. */
+[data-step-bar] {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* Header: a deeper shadow once the page is scrolled. */
+.site-header[data-scrolled] {
+  box-shadow: 0 12px 30px -18px rgb(22 24 27 / 0.35);
+}
+
+/* Company journey, desktop with motion: a horizontal track scrolled by the pinned section. */
+[data-journey-horizontal] [data-journey-track] {
+  width: max-content;
+}
+[data-journey-horizontal] ol {
+  display: flex;
+  gap: 3rem;
+}
+[data-journey-horizontal] ol > li {
+  width: 19rem;
+  flex: none;
+}
+
 /* Homepage client grid on phones: the first 12 logos until "Show all" (ClientsReveal). */
 @media (max-width: 639.98px) {
   .clients-collapsed li:nth-child(n + 13) {
