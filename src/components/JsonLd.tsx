@@ -1,9 +1,10 @@
 import logo from "@/assets/brand/siccotel-logo.png";
-import { company, contact, social } from "@/content/company";
+import { company } from "@/content/company";
+import type { SettingsDoc } from "@/lib/cms/types";
 import { absoluteUrl, siteUrl } from "@/lib/site";
 
 /** Organization structured data built only from verified facts. */
-export function OrganizationJsonLd() {
+export function OrganizationJsonLd({ settings }: { settings: SettingsDoc }) {
   const data = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -12,15 +13,14 @@ export function OrganizationJsonLd() {
     ...(siteUrl ? { url: siteUrl, logo: absoluteUrl(logo.src) } : {}),
     foundingDate: String(company.foundedYear),
     description: company.shortDescription,
-    email: contact.email,
-    telephone: contact.phone.href.replace("tel:", ""),
+    email: settings.email,
     address: {
       "@type": "PostalAddress",
-      streetAddress: contact.headOffice.street,
-      addressLocality: contact.headOffice.locality,
+      streetAddress: settings.headOffice.street,
+      addressLocality: settings.headOffice.locality,
       addressCountry: "PK",
     },
-    sameAs: social.map((s) => s.href),
+    sameAs: settings.social.map((s) => s.href),
   };
   return (
     <script

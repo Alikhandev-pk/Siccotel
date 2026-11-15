@@ -47,3 +47,6 @@ next-env.d.ts
 /full_audit_data.json
 *.log
 .claude/
+
+# CMS uploads (persistent, not in git)
+/storage/

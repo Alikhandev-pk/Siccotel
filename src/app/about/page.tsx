@@ -1,8 +1,6 @@
 import Image from "next/image";
-import partnershipSigning from "@/assets/news/zte-nubia-partnership-signing.jpg";
-import dealersTour from "@/assets/news/dealers-tour-frankfurt-group.jpg";
-import regionalMap from "@/assets/company/pakistan-regional-network-map.png";
-import { aboutIntro, coreValues, coreValuesIntro, futurePlans, mission, presenceText } from "@/content/company";
+import { fillProps, imageProps } from "@/lib/cms/image";
+import { getDoc, getSettings } from "@/lib/cms/public";
 import { EnquiryPaths, PageHero, StatsGrid, Timeline } from "@/components/sections";
 import { ButtonLink, Reveal, SectionHeader } from "@/components/ui";
 import { pageMetadata } from "@/lib/site";
@@ -14,91 +12,70 @@ export const metadata = pageMetadata({
   path: "/about",
 });
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const [doc, settings] = await Promise.all([getDoc("about"), getSettings()]);
   return (
     <>
-      <PageHero
-        eyebrow="About Siccotel"
-        title="Building Pakistan’s access to technology since 2001."
-        intro="A Karachi company with deep roots in retail, grown into a nationwide distributor and local manufacturer of mobile devices."
-      />
+      <PageHero eyebrow={doc.hero.eyebrow} title={doc.hero.title} intro={doc.hero.intro} />
 
-      <section aria-labelledby="intro-title" className="py-20 lg:py-28">
-        <div className="container-site grid gap-14 lg:grid-cols-12 lg:gap-8">
+      <section aria-labelledby="intro-title" className="section-space">
+        <div className="container-site grid gap-7 sm:gap-14 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-6">
             <h2 id="intro-title" className="sr-only">
               Company introduction
             </h2>
-            <div className="prose-site space-y-5 text-lg leading-relaxed text-ink-soft">
-              {aboutIntro.map((p) => (
-                <p key={p.slice(0, 24)}>{p}</p>
+            <div className="prose-site space-y-4 text-base leading-relaxed text-ink-soft sm:space-y-5 sm:text-lg">
+              {doc.intro.filter(Boolean).map((p) => (
+                <p key={p.slice(0, 40)}>{p}</p>
               ))}
             </div>
-            <div className="mt-6 rounded-[4px] border border-line bg-stone p-5 text-[0.9375rem] leading-relaxed text-ink-soft">
-              <p>
-                <span className="font-semibold text-ink">Looking ahead (stated plan): </span>
-                {futurePlans}
-              </p>
-            </div>
+            {doc.lookingAhead && (
+              <div className="mt-6 rounded-[4px] border border-line bg-stone p-5 text-[0.9375rem] leading-relaxed text-ink-soft">
+                <p>
+                  <span className="font-semibold text-ink">Looking ahead (stated plan): </span>
+                  {doc.lookingAhead}
+                </p>
+              </div>
+            )}
           </div>
           <div className="grid gap-4 self-start lg:col-span-5 lg:col-start-8">
-            <Reveal>
-              <figure>
-                <div className="relative aspect-[3/2] overflow-hidden rounded-[4px] border border-line">
-                  <Image
-                    src={partnershipSigning}
-                    alt="Siccotel and ZTE nubia teams at the partnership signing"
-                    fill
-                    placeholder="blur"
-                    sizes="(min-width: 1024px) 470px, 100vw"
-                    className="object-cover"
-                  />
-                </div>
-                <figcaption className="mt-2 text-sm text-muted">Signing the ZTE nubia partnership, 2025.</figcaption>
-              </figure>
-            </Reveal>
-            <Reveal delay={100}>
-              <figure>
-                <div className="relative aspect-[3/2] overflow-hidden rounded-[4px] border border-line">
-                  <Image
-                    src={dealersTour}
-                    alt="Siccotel and Inovi Telecom dealers on a rooftop overlooking Frankfurt"
-                    fill
-                    placeholder="blur"
-                    sizes="(min-width: 1024px) 470px, 100vw"
-                    className="object-cover"
-                  />
-                </div>
-                <figcaption className="mt-2 text-sm text-muted">The dealers’ Europe tour in Frankfurt.</figcaption>
-              </figure>
-            </Reveal>
+            {doc.photos.filter((p) => p.image?.src).map((photo, i) => (
+              <Reveal key={photo.image.src} delay={i * 100}>
+                <figure>
+                  <div className="relative aspect-[3/2] overflow-hidden rounded-[4px] border border-line">
+                    <Image {...fillProps(photo.image)} alt={photo.image.alt} sizes="(min-width: 1024px) 470px, 100vw" className="object-cover" />
+                  </div>
+                  {photo.caption && <figcaption className="mt-2 text-sm text-muted">{photo.caption}</figcaption>}
+                </figure>
+              </Reveal>
+            ))}
           </div>
         </div>
-        <div className="container-site mt-20">
-          <StatsGrid />
+        <div className="container-site mt-8 sm:mt-20">
+          <StatsGrid stats={doc.stats} />
         </div>
       </section>
 
       <section aria-labelledby="mission-title" className="on-dark bg-night text-white">
-        <div className="container-site grid gap-10 py-20 lg:grid-cols-12 lg:gap-8 lg:py-28">
+        <div className="section-space container-site grid gap-5 sm:gap-10 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">
-            <p className="eyebrow mb-4">Our mission</p>
-            <h2 id="mission-title" className="text-[2rem] leading-[1.08] font-semibold sm:text-[2.5rem]">
-              Technology, summed up in one word.
+            <p className="eyebrow mb-4">{doc.mission.eyebrow}</p>
+            <h2 id="mission-title" className="text-[1.75rem] leading-[1.12] font-semibold sm:text-[2.5rem] sm:leading-[1.08]">
+              {doc.mission.title}
             </h2>
           </div>
           <blockquote className="lg:col-span-7 lg:col-start-6">
-            <p className="font-display text-2xl leading-snug font-medium tracking-[-0.015em] sm:text-[2rem]">“{mission}”</p>
+            <p className="font-display text-xl leading-snug font-medium tracking-[-0.015em] sm:text-[2rem]">“{doc.mission.text}”</p>
           </blockquote>
         </div>
       </section>
 
-      <section aria-labelledby="values-title" className="py-20 lg:py-28">
+      <section aria-labelledby="values-title" className="section-space">
         <div className="container-site">
-          <SectionHeader eyebrow="Core values" title={<span id="values-title">What we stand for.</span>} intro={coreValuesIntro} />
-          <ul className="mt-12 grid grid-cols-2 border-t border-l border-line sm:grid-cols-3">
-            {coreValues.map((v, i) => (
-              <Reveal as="li" key={v} delay={(i % 3) * 60} className="flex min-w-0 flex-col items-start gap-3 border-r border-b border-line bg-white p-5 sm:flex-row sm:items-baseline sm:p-7">
+          <SectionHeader eyebrow={doc.values.eyebrow} title={<span id="values-title">{doc.values.title}</span>} intro={doc.values.intro} />
+          <ul className="mt-6 grid grid-cols-2 border-t border-l border-line sm:mt-12 sm:grid-cols-3">
+            {doc.values.items.filter(Boolean).map((v, i) => (
+              <Reveal as="li" key={v} delay={(i % 3) * 60} className="flex min-w-0 flex-col items-start gap-1 border-r border-b border-line bg-white p-4 sm:flex-row sm:items-baseline sm:gap-3 sm:p-7">
                 <span className="font-display text-sm text-accent tabular-nums">{String(i + 1).padStart(2, "0")}</span>
                 <span className="min-w-0 [overflow-wrap:anywhere] font-display text-lg font-semibold sm:text-xl">{v}</span>
               </Reveal>
@@ -107,32 +84,25 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section aria-labelledby="presence-title" className="border-y border-line bg-stone py-20 lg:py-28">
-        <div className="container-site grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
+      <section aria-labelledby="presence-title" className="border-y border-line bg-stone section-space">
+        <div className="container-site grid items-center gap-6 sm:gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-5">
-            <SectionHeader eyebrow="Our presence" title={<span id="presence-title">Affordable technology for every household.</span>} />
-            <p className="mt-6 text-lg leading-relaxed text-ink-soft">{presenceText}</p>
+            <SectionHeader eyebrow={doc.presence.eyebrow} title={<span id="presence-title">{doc.presence.title}</span>} />
+            <p className="mt-4 text-base leading-relaxed text-ink-soft sm:mt-6 sm:text-lg">{doc.presence.text}</p>
           </div>
-          <Reveal className="lg:col-span-6 lg:col-start-7">
-            <Image
-              src={regionalMap}
-              alt="Map of Pakistan showing Siccotel’s north, central and south sales regions"
-              sizes="(min-width: 1024px) 560px, 100vw"
-              className="h-auto w-full"
-            />
-          </Reveal>
+          {doc.presence.map?.src && (
+            <Reveal className="lg:col-span-6 lg:col-start-7">
+              <Image {...imageProps(doc.presence.map)} alt={doc.presence.map.alt} placeholder="empty" sizes="(min-width: 1024px) 560px, 100vw" className="h-auto w-full" />
+            </Reveal>
+          )}
         </div>
       </section>
 
-      <section id="journey" aria-labelledby="journey-title" className="py-20 lg:py-28">
+      <section id="journey" aria-labelledby="journey-title" className="section-space">
         <div className="container-site">
-          <SectionHeader
-            eyebrow="Our journey"
-            title={<span id="journey-title">Documented milestones.</span>}
-            intro="Milestones as published in Siccotel’s journey timeline."
-          />
-          <div className="mt-14">
-            <Timeline />
+          <SectionHeader eyebrow={doc.journey.eyebrow} title={<span id="journey-title">{doc.journey.title}</span>} intro={doc.journey.intro} />
+          <div className="mt-6 sm:mt-14">
+            <Timeline items={doc.journey.milestones} />
           </div>
           <div className="mt-4">
             <ButtonLink href="/partners" variant="secondary">
@@ -142,7 +112,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <EnquiryPaths title="Partner with Siccotel." />
+      <EnquiryPaths title="Partner with Siccotel." email={settings.email} />
     </>
   );
 }

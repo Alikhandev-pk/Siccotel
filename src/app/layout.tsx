@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Archivo, Inter } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/SiteHeader";
+import { SiteHeaderServer } from "@/components/SiteHeaderServer";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ScrollManager } from "@/components/motion/ScrollManager";
 import { PageMotion } from "@/components/motion/PageMotion";
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en-PK" className={`${inter.variable} ${archivo.variable} antialiased`} suppressHydrationWarning>
       <body className="flex min-h-dvh flex-col">
         <Suspense fallback={<div className="h-[calc(var(--header-h)+var(--utility-h)+1px)] bg-white" />}>
-          <SiteHeader />
+          <SiteHeaderServer />
         </Suspense>
         <main id="main" className="flex-1">
           {children}

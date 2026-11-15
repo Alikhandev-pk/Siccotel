@@ -1,17 +1,25 @@
 import { externalLinks } from "./company";
 
-export const mainNav = [
-  { label: "About", href: "/about" },
-  { label: "Our Business", href: "/business" },
-  { label: "Manufacturing", href: "/manufacturing" },
+/**
+ * Header navigation, desktop and mobile, in the client-approved order and
+ * wording. Each entry is a page URL without a hash, so it opens at the top.
+ */
+export const headerNav = [
+  { label: "About Us", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Assembly", href: "/assembly" },
+  { label: "Products", href: "/products" },
   { label: "Partners", href: "/partners" },
-  { label: "News", href: "/news" },
-  { label: "Contact", href: "/contact" },
+  { label: "News & Media", href: "/news" },
+  { label: "Contact Us", href: "/contact" },
 ] as const;
+
+/** Footer site links: the same pages, order and wording as the header. */
+export const mainNav = headerNav;
 
 /** Customer destinations, kept apart from the corporate navigation. */
 export const utilityNav = [
-  { label: "SiccoCare", detail: "Warranty and after-sales support", href: "/business#after-sales", external: false },
+  { label: "SiccoCare", detail: "Warranty and after-sales support", href: "/services#after-sales", external: false },
   { label: "Sicco Store", detail: "Shop genuine devices online", href: externalLinks.siccoStore, external: true },
 ] as const;
 

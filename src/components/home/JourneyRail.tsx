@@ -6,7 +6,8 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { dur, ease } from "@/lib/motion";
 
 /**
- * A rail that draws with scroll (horizontal on desktop, vertical below lg).
+ * A rail that draws with scroll on desktop. Below lg the milestones are a swipeable row
+ * with a static line, so nothing depends on scroll position there.
  * Milestones are never hidden in advance: each one settles from a slightly faded
  * state as the line reaches it, once, so a skipped or failed trigger leaves it readable.
  * GSAP owns the line and the [data-m-body] and [data-m-marker] elements.
@@ -22,7 +23,7 @@ export function JourneyRail({ items }: { items: Milestone[] }) {
 
     mm.add({ motion: "(prefers-reduced-motion: no-preference)", desktop: "(min-width: 1024px)" }, (context) => {
       const { motion, desktop } = context.conditions as { motion: boolean; desktop: boolean };
-      if (!motion) return;
+      if (!motion || !desktop) return;
       const line = q("[data-rail-fill]")[0];
       const nodes = q("[data-m]") as HTMLElement[];
       const lastIndex = Math.max(nodes.length - 1, 1);
@@ -41,12 +42,12 @@ export function JourneyRail({ items }: { items: Milestone[] }) {
         nodes.forEach((_, i) => { if (!settled.has(i) && progress + 0.08 >= i / lastIndex) settle(i); });
       };
 
-      const axis = desktop ? "scaleX" : "scaleY";
-      gsap.set(line, { [axis]: 0, transformOrigin: desktop ? "0% 50%" : "50% 0%" });
+      const axis = "scaleX";
+      gsap.set(line, { [axis]: 0, transformOrigin: "0% 50%" });
       const trigger = ScrollTrigger.create({
         trigger: root,
-        start: desktop ? "top 78%" : "top 75%",
-        end: desktop ? "top 30%" : "bottom 65%",
+        start: "top 78%",
+        end: "top 30%",
         scrub: 0.4,
         onUpdate: (self) => {
           gsap.set(line, { [axis]: self.progress });
@@ -66,23 +67,35 @@ export function JourneyRail({ items }: { items: Milestone[] }) {
 
   return (
     <div ref={rootRef} className="relative">
-      {/* Track: vertical on small screens, horizontal through the markers on desktop. */}
-      <span aria-hidden className="absolute top-1 bottom-1 left-[4px] w-[2px] bg-line lg:top-[4px] lg:right-0 lg:bottom-auto lg:left-0 lg:h-[2px] lg:w-auto" />
-      <span aria-hidden data-rail-fill="" className="absolute top-1 bottom-1 left-[4px] w-[2px] bg-accent lg:top-[4px] lg:right-0 lg:bottom-auto lg:left-0 lg:h-[2px] lg:w-auto" />
-      <ol className="relative grid gap-4 lg:grid-cols-7 lg:gap-6">
+      {/* Desktop track: one line through the markers, drawn with scroll. */}
+      <span aria-hidden className="absolute top-[4px] right-0 left-0 hidden h-[2px] bg-line lg:block" />
+      <span aria-hidden data-rail-fill="" className="absolute top-[4px] right-0 left-0 hidden h-[2px] bg-accent lg:block" />
+      {/*
+        Below lg the milestones are a row to swipe through, so the section stays short
+        on phones; the next card peeks in at the edge. Each card carries its own piece
+        of the line (before:), so the track spans the whole scrolling row.
+      */}
+      <ol
+        aria-label="Company milestones"
+        className="relative -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-5 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:-mx-6 sm:scroll-px-6 sm:px-6 lg:mx-0 lg:grid lg:snap-none lg:grid-cols-7 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden"
+      >
         {items.map((milestone) => (
-          <li key={milestone.period + milestone.title} data-m="" className="relative min-w-0 pl-6 lg:pt-9 lg:pl-0">
+          <li
+            key={milestone.period + milestone.title}
+            data-m=""
+            className="relative w-[72%] max-w-[17rem] min-w-0 shrink-0 snap-start pt-7 before:absolute before:top-[4px] before:-right-5 before:left-0 before:h-[2px] before:bg-line last:before:right-0 sm:w-[40%] lg:w-auto lg:max-w-none lg:pt-9 lg:before:hidden"
+          >
             <span
               aria-hidden
               data-m-marker=""
-              className="absolute top-1 left-0 block size-[10px] rounded-full bg-accent ring-4 ring-white lg:top-0"
+              className="absolute top-0 left-0 block size-[10px] rounded-full bg-accent ring-4 ring-white"
             />
             <div data-m-body="" className="group">
               <p className="font-display text-lg leading-none font-semibold tracking-[-0.025em] text-ink tabular-nums transition-colors duration-200 group-hover:text-accent lg:text-[1.35rem] xl:text-[1.5rem]">
                 {milestone.period}
               </p>
-              <h3 className="mt-1.5 text-[0.9375rem] leading-snug font-semibold text-ink lg:mt-3">{milestone.title}</h3>
-              <p className="mt-0.5 text-sm leading-relaxed text-muted lg:mt-1.5">{milestone.description}</p>
+              <h3 className="mt-1.5 text-base leading-snug font-semibold text-ink lg:mt-3 lg:text-[0.9375rem]">{milestone.title}</h3>
+              <p className="mt-0.5 text-[0.9375rem] leading-relaxed text-muted lg:mt-1.5 lg:text-sm">{milestone.description}</p>
             </div>
           </li>
         ))}

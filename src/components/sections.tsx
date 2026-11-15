@@ -1,12 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Mail, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
-import { contact, networkStats } from "@/content/company";
-import { appleRelationship, brandPartners, type Partner } from "@/content/partners";
-import { milestones, type Milestone } from "@/content/milestones";
 import { enquiryHref, enquiryTypes } from "@/content/navigation";
-import type { NewsArticle } from "@/content/news";
+import { fillProps } from "@/lib/cms/image";
+import type { Article, CmsImage, Milestone, Published, Stat } from "@/lib/cms/types";
 import { ArrowSwap, Reveal, TextLink } from "./ui";
 import { HeadingWords } from "./HeadingWords";
 
@@ -36,8 +34,8 @@ export function PageHero({
           dark ? "bg-[radial-gradient(closest-side,rgba(255,42,42,0.12),transparent)]" : "bg-[radial-gradient(closest-side,rgba(200,0,11,0.05),transparent)]"
         }`}
       />
-      <div className="container-site relative pt-16 pb-16 sm:pt-20 lg:pt-28 lg:pb-24">
-        <p className="eyebrow hero-in mb-6">{eyebrow}</p>
+      <div className="container-site relative pt-9 pb-9 sm:pt-14 sm:pb-12 lg:pt-20 lg:pb-16">
+        <p className="eyebrow hero-in mb-3 sm:mb-6">{eyebrow}</p>
         <h1 data-anim="heading" data-anim-on-load="" className="t-h1 max-w-4xl">
           <span className="hero-line">
             <span data-page-heading=""><HeadingWords>{title}</HeadingWords></span>
@@ -45,7 +43,7 @@ export function PageHero({
         </h1>
         {intro && (
           <div
-            className={`t-lead hero-in mt-7 max-w-2xl ${dark ? "text-night-muted" : "text-muted"}`}
+            className={`t-lead hero-in mt-4 max-w-2xl sm:mt-7 ${dark ? "text-night-muted" : "text-muted"}`}
             style={{ "--d": "220ms" } as CSSProperties}
           >
             {intro}
@@ -65,13 +63,19 @@ export function PageHero({
 /* ------------------------------------------------------------------ */
 /* Stats — real values rendered in HTML; motion only reveals them       */
 /* ------------------------------------------------------------------ */
-export function StatsGrid({ tone = "light" }: { tone?: "light" | "dark" }) {
+export function StatsGrid({
+  tone = "light",
+  stats,
+}: {
+  tone?: "light" | "dark";
+  stats: readonly Stat[];
+}) {
   const dark = tone === "dark";
   return (
     <dl className="grid grid-cols-2 gap-x-6 gap-y-5 sm:gap-y-8 lg:grid-cols-4 lg:gap-x-10">
-      {networkStats.map((s) => (
+      {stats.map((s) => (
         <div key={s.label} className="flex min-w-0 flex-col">
-          <dt className={`order-2 mt-1.5 max-w-[14rem] text-sm leading-snug sm:mt-3 sm:text-[0.9375rem] ${dark ? "text-night-muted" : "text-muted"}`}>
+          <dt className={`order-2 mt-1.5 max-w-[14rem] text-[0.9375rem] leading-snug sm:mt-3 ${dark ? "text-night-muted" : "text-muted"}`}>
             {s.label}
           </dt>
           <dd className="order-1">
@@ -88,14 +92,18 @@ export function StatsGrid({ tone = "light" }: { tone?: "light" | "dark" }) {
 /* ------------------------------------------------------------------ */
 /* Partner logos                                                       */
 /* ------------------------------------------------------------------ */
-export function PartnerLogo({ partner, height = 36, className = "" }: { partner: Partner; height?: number; className?: string }) {
-  if (!partner.logo) return null;
+export type LogoPartner = { name: string; logo?: CmsImage | null; logoScale?: number };
+
+export function PartnerLogo({ partner, height = 36, className = "" }: { partner: LogoPartner; height?: number; className?: string }) {
+  if (!partner.logo?.src) return null;
   const h = Math.round(height * (partner.logoScale ?? 1));
   // Constrain both dimensions so wide wordmarks and compact marks read at a similar optical size.
   const maxW = Math.round(h * 4.2);
   return (
     <Image
-      src={partner.logo}
+      src={partner.logo.src}
+      width={partner.logo.width}
+      height={partner.logo.height}
       alt={partner.name}
       sizes="200px"
       className={`w-auto object-contain ${className}`}
@@ -104,14 +112,15 @@ export function PartnerLogo({ partner, height = 36, className = "" }: { partner:
   );
 }
 
-/** A static logo row. The Apple note keeps the reseller and distributor relationships distinct. */
-export function PartnerStrip({ partners = brandPartners }: { partners?: Partner[] }) {
+/** A static logo row. */
+export function PartnerStrip({ partners, title = "Trusted by global device brands" }: { partners: LogoPartner[]; title?: string }) {
   return (
     <section aria-labelledby="partners-title" className="border-b border-line bg-white">
       <div className="container-site py-3 sm:py-6 lg:py-7">
         <div className="flex items-center justify-between gap-4 sm:gap-6">
-          <h2 id="partners-title" className="text-[0.6875rem] font-semibold tracking-[0.1em] text-muted uppercase sm:text-xs sm:tracking-[0.14em]">
-            Trusted by global device brands
+          <h2 id="partners-title" className="text-xs font-semibold tracking-[0.1em] text-muted uppercase sm:tracking-[0.14em]">
+            <span className="sm:hidden">Brand partners</span>
+            <span className="hidden sm:inline">{title}</span>
           </h2>
           <TextLink href="/partners" className="min-h-11 shrink-0 text-sm">
             All partners
@@ -124,10 +133,6 @@ export function PartnerStrip({ partners = brandPartners }: { partners?: Partner[
             </li>
           ))}
         </ul>
-        <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-muted sm:mt-2">
-          <span className="font-semibold text-ink">{appleRelationship.name}:</span> {appleRelationship.relationship}.{" "}
-          <span className="font-semibold text-ink">ZTE nubia:</span> exclusive distributor &amp; strategic partner.
-        </p>
       </div>
     </section>
   );
@@ -136,7 +141,7 @@ export function PartnerStrip({ partners = brandPartners }: { partners?: Partner[
 /* ------------------------------------------------------------------ */
 /* Timeline                                                            */
 /* ------------------------------------------------------------------ */
-export function Timeline({ items = milestones, compact = false }: { items?: Milestone[]; compact?: boolean }) {
+export function Timeline({ items, compact = false }: { items: Milestone[]; compact?: boolean }) {
   return (
     <ol className={`relative grid gap-0 ${compact ? "md:grid-cols-2 lg:grid-cols-4" : "md:grid-cols-2"}`}>
       {items.map((m, i) => (
@@ -144,7 +149,7 @@ export function Timeline({ items = milestones, compact = false }: { items?: Mile
           as="li"
           key={m.period + m.title}
           delay={(i % 2) * 80}
-          className="relative border-l border-line pb-12 pl-8 md:pr-10"
+          className="relative border-l border-line pb-7 pl-6 sm:pb-12 sm:pl-8 md:pr-10"
         >
           <span aria-hidden className="absolute top-2 -left-[5px] size-[9px] rounded-full bg-accent ring-4 ring-white on-dark:ring-night" />
           <p className="t-figure text-[1.75rem] text-ink on-dark:text-white">{m.period}</p>
@@ -156,6 +161,12 @@ export function Timeline({ items = milestones, compact = false }: { items?: Mile
   );
 }
 
+/** Optional display date on cards: "2026-11-14" → "14 Nov 2026". */
+function formatCardDate(date?: string) {
+  if (!date || !/^d{4}-d{2}-d{2}$/.test(date)) return "";
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+}
+
 /* ------------------------------------------------------------------ */
 /* News card                                                           */
 /* ------------------------------------------------------------------ */
@@ -164,12 +175,12 @@ export function NewsCard({
   priority = false,
   size = "default",
 }: {
-  article: NewsArticle;
+  article: Published<Article>;
   priority?: boolean;
   /** `compact` becomes a thumbnail row on phones; the whole card remains the link. */
   size?: "default" | "large" | "compact";
 }) {
-  const image = article.images[0];
+  const image = article.cover;
   const large = size === "large";
   const compact = size === "compact";
   return (
@@ -181,31 +192,33 @@ export function NewsCard({
           // Hover zoom lives on this wrapper; the image itself is moved by scroll parallax.
           <div className="absolute inset-0 transition-transform duration-[250ms] ease-out group-hover:scale-[1.02] group-has-[a:focus-visible]:scale-[1.02]">
             <Image
-              src={image.src}
-              alt={image.alt}
-              fill
+              {...fillProps(image)} alt={image.alt}
+              placeholder="empty"
               sizes={large ? "(min-width: 1024px) 720px, 100vw" : "(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"}
               className="object-cover"
-              style={{ objectPosition: image.objectPosition }}
+              style={{ objectPosition: article.coverPosition || "50% 50%" }}
               priority={priority}
             />
           </div>
         ) : (
-          <div className="on-dark flex h-full items-end bg-night p-6">
+          <div className={`on-dark flex h-full items-end bg-night ${compact ? "p-2.5 md:p-6" : "p-6"}`}>
             <div aria-hidden className="grid-texture absolute inset-0" />
-            <span className="relative font-display text-2xl leading-tight font-semibold text-white">
-              {article.context ?? "Siccotel news"}
+            {/* The phone thumbnail is 7.5rem wide, so its label is set small enough to fit. */}
+            <span className={`relative font-display leading-tight font-semibold text-white ${compact ? "line-clamp-3 text-[0.8125rem] md:line-clamp-none md:text-2xl" : "text-2xl"}`}>
+              {article.context || "Siccotel news"}
             </span>
           </div>
         )}
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
-        {article.context && (
-          <p className={`text-xs font-semibold tracking-[0.12em] text-accent uppercase ${compact ? "md:mt-5" : "mt-5"}`}>{article.context}</p>
+        {(article.context || article.date) && (
+          <p className={`text-xs font-semibold tracking-[0.12em] text-accent uppercase ${compact ? "md:mt-5" : "mt-5"}`}>
+            {[article.context, formatCardDate(article.date)].filter(Boolean).join(" · ")}
+          </p>
         )}
         <h3
-          className={`${article.context ? (compact ? "mt-1 md:mt-2" : "mt-2") : compact ? "md:mt-5" : "mt-5"} font-display leading-snug font-semibold tracking-[-0.02em] ${
-            large ? "text-2xl sm:text-[2rem] sm:leading-[1.15]" : compact ? "text-base md:text-xl" : "text-xl"
+          className={`${article.context || article.date ? (compact ? "mt-1 md:mt-2" : "mt-2") : compact ? "md:mt-5" : "mt-5"} font-display leading-snug font-semibold tracking-[-0.02em] ${
+            large ? "text-2xl sm:text-[2rem] sm:leading-[1.15]" : compact ? "text-[1.0625rem] md:text-xl" : "text-xl"
           }`}
         >
           <Link href={`/news/${article.slug}`} className="after:absolute after:inset-0 focus-visible:outline-none">
@@ -224,7 +237,7 @@ export function NewsCard({
 /* ------------------------------------------------------------------ */
 /* Enquiry routing CTA                                                 */
 /* ------------------------------------------------------------------ */
-export function EnquiryPaths({ title = "How can we work together?", intro }: { title?: string; intro?: string }) {
+export function EnquiryPaths({ title = "How can we work together?", intro, email }: { title?: string; intro?: string; email: string }) {
   return (
     <section className="on-dark relative overflow-hidden bg-night text-white" aria-labelledby="enquiry-paths-title">
       <div aria-hidden className="grid-texture absolute inset-0" />
@@ -250,30 +263,12 @@ export function EnquiryPaths({ title = "How can we work together?", intro }: { t
             <p className="t-lead mt-3 max-w-md text-night-muted sm:mt-6">
               {intro ?? "Choose the option that fits you best and your enquiry will reach the right team."}
             </p>
-            {/* Phone and email follow in the footer directly below, so phones show only WhatsApp here. */}
-            <ul className="mt-3 text-[0.9375rem] sm:mt-10 sm:space-y-3">
-              <li className="hidden sm:block">
-                <a href={contact.phone.href} className="group inline-flex min-h-11 items-center gap-3 text-white/90 hover:text-white sm:min-h-0">
-                  <Phone aria-hidden className="size-4 text-accent-on-dark" />
-                  <span className="link-line">{contact.phone.display}</span>
-                </a>
-              </li>
-              <li className="hidden sm:block">
-                <a href={`mailto:${contact.email}`} className="group inline-flex min-h-11 items-center gap-3 text-white/90 hover:text-white sm:min-h-0">
-                  <Mail aria-hidden className="size-4 text-accent-on-dark" />
-                  <span className="link-line">{contact.email}</span>
-                </a>
-              </li>
+            {/* Email follows in the footer directly below, so phones skip it here. */}
+            <ul className="mt-10 hidden text-[0.9375rem] sm:block">
               <li>
-                <a
-                  href={contact.whatsapp.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex min-h-11 items-center gap-3 text-white/90 hover:text-white sm:min-h-0"
-                >
-                  <MessageCircle aria-hidden className="size-4 text-accent-on-dark" />
-                  <span className="link-line">WhatsApp {contact.whatsapp.display}</span>
-                  <span className="sr-only"> (opens WhatsApp in a new tab)</span>
+                <a href={`mailto:${email}`} className="group inline-flex items-center gap-3 text-white/90 hover:text-white">
+                  <Mail aria-hidden className="size-4 text-accent-on-dark" />
+                  <span className="link-line">{email}</span>
                 </a>
               </li>
             </ul>

@@ -1,23 +1,26 @@
 import Link from "next/link";
-import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
-import { company, contact, externalLinks, social } from "@/content/company";
+import { ArrowUpRight, Mail, MapPin } from "lucide-react";
+import { company } from "@/content/company";
+import { getSettings } from "@/lib/cms/public";
 import { mainNav, utilityNav } from "@/content/navigation";
 import { SocialIcon } from "./SocialIcon";
 import { SiccotelLogo } from "./SiccotelLogo";
 
-const related = [
-  { label: "Sicco Store", href: externalLinks.siccoStore },
-  { label: "Siccotel Telecom", href: externalLinks.siccotelTelecom },
-  { label: "PTA device check", href: externalLinks.ptaDirbs },
-];
-
-export function SiteFooter() {
+export async function SiteFooter() {
+  const settings = await getSettings();
+  const contact = settings;
+  const social = settings.social;
+  const related = [
+    { label: "Sicco Store", href: settings.links.siccoStore },
+    { label: "Siccotel Telecom", href: settings.links.siccotelTelecom },
+    { label: "PTA device check", href: settings.links.ptaDirbs },
+  ];
   return (
-    <footer className="on-dark border-t border-night-line bg-night text-white">
-      <div className="container-site grid grid-cols-2 gap-x-4 gap-y-6 py-8 sm:gap-9 sm:py-12 lg:grid-cols-12 lg:gap-8 lg:py-14">
+    <footer className="site-footer on-dark border-t border-night-line bg-night text-white">
+      <div className="container-site grid grid-cols-2 gap-x-4 gap-y-6 py-8 sm:gap-9 sm:py-10 lg:grid-cols-12 lg:gap-8 lg:py-12">
         <div className="col-span-2 lg:col-span-4">
           <SiccotelLogo tone="light" className="h-8 w-auto" />
-          <p className="mt-3 max-w-sm text-[0.9375rem] leading-relaxed text-night-muted sm:mt-5">{company.shortDescription}</p>
+          <p className="mt-3 max-w-sm text-base leading-relaxed text-night-muted sm:mt-5 sm:text-[0.9375rem]">{company.shortDescription}</p>
           <ul className="mt-3 flex gap-2 sm:mt-6">
             {social.map((s) => (
               <li key={s.href}>
@@ -85,12 +88,6 @@ export function SiteFooter() {
                   </span>
                 ))}
               </address>
-            </li>
-            <li className="flex items-center gap-3 sm:items-start">
-              <Phone aria-hidden className="size-4 shrink-0 text-accent-on-dark sm:mt-0.5" />
-              <a href={contact.phone.href} className="inline-flex min-h-11 items-center text-white/90 hover:text-white hover:underline underline-offset-4 sm:min-h-0">
-                {contact.phone.display}
-              </a>
             </li>
             <li className="flex items-center gap-3 sm:items-start">
               <Mail aria-hidden className="size-4 shrink-0 text-accent-on-dark sm:mt-0.5" />

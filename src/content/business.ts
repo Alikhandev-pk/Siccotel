@@ -26,7 +26,7 @@ export const businessActivities: BusinessActivity[] = [
       "End-to-end execution, from imports through to the final sale",
     ],
     next: { label: "Discuss a brand partnership", enquiry: "brand" },
-    detailHref: "/business#distribution",
+    detailHref: "/services#distribution",
   },
   {
     id: "manufacturing",
@@ -42,7 +42,7 @@ export const businessActivities: BusinessActivity[] = [
       "Strategic partners include HMD, Nokia, Zentality and Deploy",
     ],
     next: { label: "Make a manufacturing enquiry", enquiry: "manufacturing" },
-    detailHref: "/manufacturing",
+    detailHref: "/assembly",
   },
   {
     id: "retail",
@@ -58,7 +58,7 @@ export const businessActivities: BusinessActivity[] = [
       "Own mobile phone brand, HIQO, launched in 2011",
     ],
     next: { label: "Become a dealer or retail partner", enquiry: "dealer" },
-    detailHref: "/business#retail",
+    detailHref: "/services#retail",
   },
 ];
 

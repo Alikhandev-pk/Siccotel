@@ -4,7 +4,6 @@ import { Suspense, useCallback, useEffect, useId, useRef, useState, type FormEve
 import { useSearchParams } from "next/navigation";
 import { CircleAlert, CircleCheck, LoaderCircle, Send } from "lucide-react";
 import { enquiryTypes } from "@/content/navigation";
-import { contact } from "@/content/company";
 import { emptyEnquiry, limits, validateEnquiry, type EnquiryErrors, type EnquiryInput } from "@/lib/enquiry";
 
 type Status =
@@ -35,7 +34,8 @@ function EnquiryTypeSync({ onChange }: { onChange: (type: EnquiryInput["enquiryT
   return null;
 }
 
-export function EnquiryForm({ deliveryConfigured }: { deliveryConfigured: boolean }) {
+export function EnquiryForm({ deliveryConfigured, email }: { deliveryConfigured: boolean; email: string }) {
+  const contact = { email };
   const id = useId();
   const [values, setValues] = useState<EnquiryInput>(emptyEnquiry);
   const [errors, setErrors] = useState<EnquiryErrors>({});
@@ -133,7 +133,7 @@ export function EnquiryForm({ deliveryConfigured }: { deliveryConfigured: boolea
     }`;
 
   const label = (k: keyof EnquiryInput, children: string, optional?: boolean) => (
-    <label htmlFor={fid(k)} className="block text-sm font-semibold text-ink">
+    <label htmlFor={fid(k)} className="block text-[0.9375rem] font-semibold text-ink sm:text-sm">
       {children}
       {optional ? (
         <span className="font-normal text-muted"> (optional)</span>
@@ -167,9 +167,9 @@ export function EnquiryForm({ deliveryConfigured }: { deliveryConfigured: boolea
         <CircleCheck aria-hidden className="size-8 text-[#1f7a4d]" />
         <h3 className="mt-4 text-2xl font-semibold">Thank you — your enquiry has been sent.</h3>
         <p className="mt-3 leading-relaxed text-ink-soft">
-          The Siccotel team will be in touch. For anything urgent, call{" "}
-          <a href={contact.phone.href} className="font-semibold text-ink underline underline-offset-4">
-            {contact.phone.display}
+          The Siccotel team will be in touch. For anything urgent, email{" "}
+          <a href={`mailto:${contact.email}`} className="font-semibold text-ink underline underline-offset-4">
+            {contact.email}
           </a>
           .
         </p>
@@ -185,12 +185,12 @@ export function EnquiryForm({ deliveryConfigured }: { deliveryConfigured: boolea
   }
 
   return (
-    <form ref={formRef} noValidate onSubmit={onSubmit} aria-busy={isSubmitting} className="space-y-6">
+    <form ref={formRef} noValidate onSubmit={onSubmit} aria-busy={isSubmitting} className="space-y-5 sm:space-y-6">
       <Suspense fallback={null}>
         <EnquiryTypeSync onChange={syncEnquiryType} />
       </Suspense>
       {!deliveryConfigured && (
-        <div className="rounded-[4px] border border-line-strong bg-stone p-5 text-[0.9375rem] leading-relaxed">
+        <div className="rounded-[4px] border border-line-strong bg-stone p-4 text-[0.9375rem] leading-relaxed sm:p-5">
           <h3 className="flex items-start gap-2 font-semibold text-ink">
             <CircleAlert aria-hidden className="mt-0.5 size-5 shrink-0 text-accent" />
             Online enquiry delivery is currently unavailable.
@@ -199,10 +199,6 @@ export function EnquiryForm({ deliveryConfigured }: { deliveryConfigured: boolea
             This form cannot send your message yet. Please email{" "}
             <a href={`mailto:${contact.email}`} className="font-semibold text-ink underline underline-offset-4">
               {contact.email}
-            </a>{" "}
-            or call{" "}
-            <a href={contact.phone.href} className="font-semibold text-ink underline underline-offset-4">
-              {contact.phone.display}
             </a>
             .
           </p>
@@ -213,7 +209,7 @@ export function EnquiryForm({ deliveryConfigured }: { deliveryConfigured: boolea
           ref={summaryRef}
           tabIndex={-1}
           role="alert"
-          className="rounded-[4px] border border-accent/40 bg-[#fff5f5] p-5 focus:outline-none"
+          className="rounded-[4px] border border-accent/40 bg-[#fff5f5] p-4 focus:outline-none sm:p-5"
         >
           <h3 className="flex items-center gap-2 font-semibold text-accent">
             <CircleAlert aria-hidden className="size-5" />
@@ -222,7 +218,7 @@ export function EnquiryForm({ deliveryConfigured }: { deliveryConfigured: boolea
           <ul className="mt-2 space-y-1 pl-7 text-sm">
             {errorList.map((k) => (
               <li key={k}>
-                <a href={`#${fid(k)}`} className="text-ink underline underline-offset-4 hover:text-accent">
+                <a href={`#${fid(k)}`} className="inline-block py-1.5 text-ink underline underline-offset-4 hover:text-accent sm:py-0">
                   {errors[k]}
                 </a>
               </li>
@@ -231,7 +227,7 @@ export function EnquiryForm({ deliveryConfigured }: { deliveryConfigured: boolea
         </div>
       )}
 
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
         <div>
           {label("fullName", "Full name")}
           <input
@@ -361,11 +357,7 @@ export function EnquiryForm({ deliveryConfigured }: { deliveryConfigured: boolea
             </p>
             <p className="mt-2 text-ink-soft">{status.message}</p>
             <p className="mt-3 text-ink-soft">
-              Phone:{" "}
-              <a href={contact.phone.href} className="font-semibold text-ink underline underline-offset-4">
-                {contact.phone.display}
-              </a>{" "}
-              · Email:{" "}
+              Email:{" "}
               <a href={`mailto:${contact.email}`} className="font-semibold text-ink underline underline-offset-4">
                 {contact.email}
               </a>
@@ -381,7 +373,7 @@ export function EnquiryForm({ deliveryConfigured }: { deliveryConfigured: boolea
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[3px] bg-accent px-6 font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-[3px] bg-accent px-6 font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
         >
           {isSubmitting ? (
             <>

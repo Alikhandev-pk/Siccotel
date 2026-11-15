@@ -52,7 +52,7 @@ export const heroIntro = {
   eyebrow: "Distribution · Manufacturing · Retail",
   headline: ["Connecting Pakistan.", "Powering Possibility."],
   description: "Bringing global device brands to Pakistan through nationwide distribution, local assembly and retail.",
-  action: { label: "Explore Our Business", href: "/business" },
+  action: { label: "Explore Our Business", href: "/services" },
   /** Phones have no header button, so the hero carries the partnership route there. */
   partner: { label: "Partner With Us", href: "/contact#enquiry" },
 } as const;

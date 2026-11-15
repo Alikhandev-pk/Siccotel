@@ -4,8 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight, Mail, Menu, Phone, X } from "lucide-react";
-import { mainNav, utilityNav } from "@/content/navigation";
-import { contact } from "@/content/company";
+import { headerNav, utilityNav as baseUtilityNav } from "@/content/navigation";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { ArrowSwap } from "./ui";
 import { SiccotelLogo } from "./SiccotelLogo";
@@ -15,11 +14,21 @@ import { SiccotelLogo } from "./SiccotelLogo";
  * away through the negative sticky offset, so no script decides the header's
  * appearance and page content can never show through it.
  */
-export function SiteHeader() {
+export type HeaderContact = { email: string; phoneDisplay: string; phoneHref: string; storeUrl: string };
+
+export function SiteHeader({ contact }: { contact: HeaderContact }) {
+  const utilityNav = baseUtilityNav.map((item) => (item.external ? { ...item, href: contact.storeUrl || item.href } : item));
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  /** A menu link was tapped: its destination decides the scroll position, including same-page anchors. */
+  const followingLink = useRef(false);
+
+  const closeForLink = () => {
+    followingLink.current = true;
+    setOpen(false);
+  };
 
   const close = useCallback((returnFocus = true) => {
     setOpen(false);
@@ -87,10 +96,11 @@ export function SiteHeader() {
       if (panel) gsap.set([panel, ...panel.querySelectorAll("[data-menu-item]")], { clearProps: "all" });
       document.body.style.overflow = overflow;
       root.style.overflow = rootOverflow;
-      // Focus moving onto the sticky toggle can scroll the locked page; put it back unless the route changed.
-      if (window.location.pathname === openedAt.path && Math.abs(window.scrollY - openedAt.y) > 1) {
+      // Focus moving onto the sticky toggle can scroll the locked page; put it back unless a link was followed.
+      if (!followingLink.current && window.location.pathname === openedAt.path && Math.abs(window.scrollY - openedAt.y) > 1) {
         window.scrollTo({ top: openedAt.y, left: 0, behavior: "instant" });
       }
+      followingLink.current = false;
       document.removeEventListener("keydown", onKey);
       window.removeEventListener("resize", onResize);
     };
@@ -111,9 +121,11 @@ export function SiteHeader() {
         <div className="container-site flex h-full items-center justify-between gap-6 text-[0.8125rem]">
           <ul className="flex items-center gap-5 text-muted">
             <li>
-              <a href={contact.phone.href} className="inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-ink">
-                <Phone aria-hidden className="size-3.5" /> {contact.phone.display}
-              </a>
+              {contact.phoneDisplay && (
+                <a href={contact.phoneHref} className="inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-ink">
+                  <Phone aria-hidden className="size-3.5" /> {contact.phoneDisplay}
+                </a>
+              )}
             </li>
             <li>
               <a href={`mailto:${contact.email}`} className="inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-ink">
@@ -143,28 +155,29 @@ export function SiteHeader() {
         </div>
       </div>
 
-      <div className="container-site flex h-[var(--header-h)] items-center justify-between gap-6">
+      {/* Spacing tightens from lg to xl so seven labels and the button fit at 1024px. */}
+      <div className="container-site flex h-[var(--header-h)] items-center justify-between gap-6 lg:gap-4 xl:gap-6">
         <Link href="/" className="flex min-h-11 shrink-0 items-center" aria-label="Siccotel — home">
           <SiccotelLogo title="" className="block h-7 w-auto sm:h-8" />
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">
-          <ul className="flex items-center gap-1">
-            {mainNav.map((item) => {
+          <ul className="flex items-center xl:gap-1">
+            {headerNav.map((item) => {
               const active = isActive(item.href);
               return (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     aria-current={active ? "page" : undefined}
-                    className={`group relative inline-flex min-h-11 items-center px-2 text-sm font-medium whitespace-nowrap transition-colors duration-200 xl:px-3 xl:text-[0.9375rem] ${
+                    className={`group relative inline-flex min-h-11 items-center px-1.5 text-sm font-medium whitespace-nowrap transition-colors duration-200 xl:px-3 xl:text-[0.9375rem] ${
                       active ? "text-ink" : "text-ink-soft hover:text-ink"
                     }`}
                   >
                     {item.label}
                     <span
                       aria-hidden
-                      className={`absolute inset-x-2 bottom-2 h-[2px] origin-left bg-accent transition-transform duration-200 xl:inset-x-3 ${
+                      className={`absolute inset-x-1.5 bottom-2 h-[2px] origin-left bg-accent transition-transform duration-200 xl:inset-x-3 ${
                         active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100"
                       }`}
                     />
@@ -203,14 +216,14 @@ export function SiteHeader() {
         hidden={!open}
         className="fixed inset-x-0 bottom-0 top-[var(--header-h)] overflow-y-auto overscroll-contain border-t border-line bg-white text-ink lg:hidden"
       >
-        <nav aria-label="Mobile" className="container-site py-4">
-          <ul className="border-t border-line">
-            {mainNav.map((item) => (
+        <nav aria-label="Mobile" className="container-site pb-6">
+          <ul>
+            {headerNav.map((item) => (
               <li key={item.href} data-menu-item="" className="border-b border-line">
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  onClick={() => setOpen(false)}
+                  onClick={closeForLink}
                   className={`flex min-h-14 items-center justify-between gap-4 font-display text-xl font-semibold tracking-[-0.02em] ${
                     isActive(item.href) ? "text-accent" : "text-ink"
                   }`}
@@ -229,19 +242,19 @@ export function SiteHeader() {
                     {item.label}
                     {item.external && <ArrowUpRight aria-hidden className="size-4" />}
                   </span>
-                  <span className="mt-1 block text-xs leading-snug text-muted">{item.detail}</span>
+                  <span className="mt-1 block text-[0.8125rem] leading-snug text-muted">{item.detail}</span>
                 </>
               );
               const cls = "block h-full min-h-20 rounded-[4px] border border-line bg-stone p-3.5";
               return (
                 <li key={item.href}>
                   {item.external ? (
-                    <a href={item.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className={cls}>
+                    <a href={item.href} target="_blank" rel="noopener noreferrer" onClick={closeForLink} className={cls}>
                       {inner}
                       <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   ) : (
-                    <Link href={item.href} onClick={() => setOpen(false)} className={cls}>
+                    <Link href={item.href} onClick={closeForLink} className={cls}>
                       {inner}
                     </Link>
                   )}
@@ -252,16 +265,16 @@ export function SiteHeader() {
           <div className="mt-5 grid gap-3" data-menu-item="">
             <Link
               href="/contact#enquiry"
-              onClick={() => setOpen(false)}
+              onClick={closeForLink}
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[3px] bg-accent px-5 font-semibold text-white"
             >
               Partner With Us <ArrowRight aria-hidden className="size-4" />
             </Link>
             <a
-              href={contact.phone.href}
+              href={`mailto:${contact.email}`}
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[3px] border border-ink/15 px-5 font-semibold text-ink"
             >
-              <Phone aria-hidden className="size-4" /> {contact.phone.display}
+              <Mail aria-hidden className="size-4" /> {contact.email}
             </a>
           </div>
         </nav>

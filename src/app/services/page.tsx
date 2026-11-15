@@ -1,65 +1,47 @@
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import { Check, ShieldCheck, Smartphone } from "lucide-react";
-import partnershipCeremony from "@/assets/news/zte-nubia-partnership-ceremony.jpg";
-import aura2 from "@/assets/products/hmd-aura-2.jpg";
-import ecommerceClientsArt from "@/assets/company/ecommerce-clients.png";
-import { afterSales, businessActivities, type BusinessActivity } from "@/content/business";
 import { ecommerceClients } from "@/content/retail";
-import { externalLinks } from "@/content/company";
-import { enquiryHref } from "@/content/navigation";
+import { enquiryHref, type EnquiryType } from "@/content/navigation";
+import { fillProps, imageProps } from "@/lib/cms/image";
+import { getDoc, getSettings } from "@/lib/cms/public";
+import type { ServiceActivity, SettingsDoc } from "@/lib/cms/types";
 import { EnquiryPaths, PageHero } from "@/components/sections";
 import { ButtonLink, Reveal, TextLink } from "@/components/ui";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
-  title: "Our Business",
+  title: "Services",
   description:
-    "Siccotel’s three connected businesses: nationwide smartphone distribution for global brands, local device assembly through Siccotel Telecom, and retail and e-commerce.",
-  path: "/business",
+    "Siccotel’s services: nationwide smartphone distribution for global brands, local device assembly through Siccotel Telecom, retail and e-commerce, and SiccoCare after-sales support.",
+  path: "/services",
 });
 
-const visuals: Record<string, { image: StaticImageData; alt: string; caption: string; contain?: boolean }> = {
-  distribution: {
-    image: partnershipCeremony,
-    alt: "Siccotel and ZTE nubia teams at the partnership ceremony",
-    caption: "Siccotel and ZTE nubia mark their distribution partnership.",
-  },
-  manufacturing: {
-    image: aura2,
-    alt: "HMD Aura 2 smartphone in teal",
-    caption: "HMD Aura 2, featured by Siccotel Telecom.",
-    contain: true,
-  },
-  retail: {
-    image: ecommerceClientsArt,
-    alt: "Logos of e-commerce clients: Ufone, Alfamall, Standard Chartered, Daraz, JazzCash, PriceOye, Faysal Bank, Meezan Bank, foodpanda, Bykea, easypaisa and Kistpay",
-    caption: "E-commerce clients, as listed by Siccotel.",
-    contain: true,
-  },
-};
+/** Product shots and logo artwork are shown whole; photographs fill the frame. */
+const containIds = new Set(["manufacturing", "retail"]);
+const enquiryFor: Record<string, EnquiryType> = { distribution: "brand", manufacturing: "manufacturing", retail: "dealer" };
 
-function ActivitySection({ activity, index }: { activity: BusinessActivity; index: number }) {
-  const visual = visuals[activity.id];
+function ActivitySection({ activity, index, links }: { activity: ServiceActivity; index: number; links: SettingsDoc["links"] }) {
+  const visual = { ...activity.photo, contain: containIds.has(activity.id) };
   const reversed = index % 2 === 1;
   return (
     <section
       id={activity.id}
       aria-labelledby={`${activity.id}-title`}
-      className={`py-20 lg:py-28 ${index % 2 === 1 ? "bg-stone" : ""} border-b border-line`}
+      className={`section-space ${index % 2 === 1 ? "bg-stone" : ""} border-b border-line`}
     >
-      <div className="container-site grid items-start gap-12 lg:grid-cols-12 lg:gap-8">
+      <div className="container-site grid items-start gap-7 sm:gap-12 lg:grid-cols-12 lg:gap-8">
         <div className={`lg:col-span-6 ${reversed ? "lg:order-2 lg:col-start-7" : ""}`}>
           <p className="font-display text-sm font-semibold text-muted tabular-nums">0{index + 1}</p>
-          <p className="eyebrow mt-4 mb-4">{activity.kicker}</p>
-          <h2 id={`${activity.id}-title`} className="text-[2rem] leading-[1.08] font-semibold sm:text-[2.75rem]">
+          <p className="eyebrow mt-2 mb-3 sm:mt-4 sm:mb-4">{activity.kicker}</p>
+          <h2 id={`${activity.id}-title`} className="text-[1.75rem] leading-[1.12] font-semibold sm:text-[2.75rem] sm:leading-[1.08]">
             {activity.title}
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-ink-soft">{activity.summary}</p>
-          <p className="mt-6 inline-flex rounded-full border border-line bg-white px-4 py-1.5 text-sm">
+          <p className="mt-3 text-base leading-relaxed text-ink-soft sm:mt-5 sm:text-lg">{activity.summary}</p>
+          <p className="mt-4 rounded-[6px] border border-line bg-white px-3 py-2 text-[0.9375rem] sm:mt-6 sm:inline-flex sm:rounded-full sm:px-4 sm:py-1.5 sm:text-sm">
             <span className="font-semibold">Who it’s for:</span>&nbsp;
             <span className="text-muted">{activity.audience}</span>
           </p>
-          <ul className="mt-8 space-y-3">
+          <ul className="mt-5 space-y-2.5 sm:mt-8 sm:space-y-3">
             {activity.points.map((pt) => (
               <li key={pt} className="flex gap-3 leading-relaxed text-ink-soft">
                 <Check aria-hidden className="mt-1 size-4 shrink-0 text-accent" strokeWidth={2.5} />
@@ -68,7 +50,7 @@ function ActivitySection({ activity, index }: { activity: BusinessActivity; inde
             ))}
           </ul>
           {activity.id === "retail" && (
-            <div className="mt-8 border-t border-line/60 pt-6">
+            <div className="mt-6 border-t border-line/60 pt-5 sm:mt-8 sm:pt-6">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-3">
                 E-commerce clients, as listed by Siccotel
               </p>
@@ -79,24 +61,24 @@ function ActivitySection({ activity, index }: { activity: BusinessActivity; inde
                     href={partner.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1 text-xs font-medium text-ink hover:border-accent hover:text-accent transition-colors"
+                    className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line bg-white px-3 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent sm:min-h-0 sm:py-1 sm:text-xs"
                   >
                     <span>{partner.name}</span>
-                    <span className="text-[0.6875rem] text-muted">{partner.sector}</span>
+                    <span className="hidden text-[0.6875rem] text-muted sm:inline">{partner.sector}</span>
                   </a>
                 ))}
               </div>
             </div>
           )}
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            {activity.next.enquiry && <ButtonLink href={enquiryHref(activity.next.enquiry)}>{activity.next.label}</ButtonLink>}
+          <div className="mt-6 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap">
+            {activity.cta && <ButtonLink href={enquiryHref(enquiryFor[activity.id] ?? "general")}>{activity.cta}</ButtonLink>}
             {activity.id === "manufacturing" && (
-              <ButtonLink href="/manufacturing" variant="secondary">
-                Manufacturing overview
+              <ButtonLink href="/assembly" variant="secondary">
+                Assembly overview
               </ButtonLink>
             )}
             {activity.id === "retail" && (
-              <ButtonLink href={externalLinks.siccoStore} variant="secondary" external>
+              <ButtonLink href={links.siccoStore} variant="secondary" external>
                 Visit Sicco Store
               </ButtonLink>
             )}
@@ -106,20 +88,25 @@ function ActivitySection({ activity, index }: { activity: BusinessActivity; inde
           <figure>
             <div
               className={`relative overflow-hidden rounded-[4px] border border-line ${
-                visual.contain ? "bg-white p-6 sm:p-10" : "aspect-[4/3]"
+                visual.contain ? "bg-white p-4 sm:p-10" : "aspect-[4/3]"
               }`}
             >
-              {visual.contain ? (
-                <Image src={visual.image} alt={visual.alt} sizes="(min-width: 1024px) 470px, 100vw" className="mx-auto h-auto max-h-[420px] w-auto" />
-              ) : (
+              {!visual.image?.src ? null : visual.contain ? (
+                // Sized before it loads (same box as the loaded image), so lazy loading
+                // cannot shift the page, e.g. under a /services#after-sales anchor.
                 <Image
-                  src={visual.image}
-                  alt={visual.alt}
-                  fill
-                  placeholder="blur"
+                  {...imageProps(visual.image)}
+                  alt={visual.image.alt}
+                  placeholder="empty"
                   sizes="(min-width: 1024px) 470px, 100vw"
-                  className="object-cover"
+                  className="mx-auto h-auto [--max-h:260px] sm:[--max-h:420px]"
+                  style={{
+                    aspectRatio: `${visual.image.width} / ${visual.image.height}`,
+                    width: `min(100%, ${visual.image.width}px, calc(var(--max-h) * ${visual.image.width / visual.image.height}))`,
+                  }}
                 />
+              ) : (
+                <Image {...fillProps(visual.image)} alt={visual.image.alt} sizes="(min-width: 1024px) 470px, 100vw" className="object-cover" />
               )}
             </div>
             <figcaption className="mt-2 text-sm text-muted">{visual.caption}</figcaption>
@@ -130,15 +117,15 @@ function ActivitySection({ activity, index }: { activity: BusinessActivity; inde
   );
 }
 
-export default function BusinessPage() {
+export default async function ServicesPage() {
+  const [doc, settings] = await Promise.all([getDoc("services"), getSettings()]);
+  const { afterSales } = doc;
+  const externalLinks = settings.links;
+  const businessActivities = doc.activities;
   return (
     <>
-      <PageHero
-        eyebrow="Our business"
-        title="One partner, from import to the final sale."
-        intro="Siccotel combines distribution, local manufacturing and retail. Each part of the business serves a different audience — here is what we do and how to work with us."
-      >
-        <nav aria-label="On this page" className="mt-10">
+      <PageHero eyebrow={doc.hero.eyebrow} title={doc.hero.title} intro={doc.hero.intro}>
+        <nav aria-label="On this page" className="mt-5 sm:mt-10">
           <ul className="flex flex-wrap gap-2">
             {businessActivities.map((a) => (
               <li key={a.id}>
@@ -163,22 +150,22 @@ export default function BusinessPage() {
       </PageHero>
 
       {businessActivities.map((a, i) => (
-        <ActivitySection key={a.id} activity={a} index={i} />
+        <ActivitySection key={a.id} activity={a} index={i} links={settings.links} />
       ))}
 
-      <section id="after-sales" aria-labelledby="after-sales-title" className="py-20 lg:py-28">
-        <div className="container-site grid gap-12 lg:grid-cols-12 lg:gap-8">
+      <section id="after-sales" aria-labelledby="after-sales-title" className="section-space">
+        <div className="container-site grid gap-6 sm:gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-6">
-            <p className="eyebrow mb-4">For customers</p>
-            <h2 id="after-sales-title" className="text-[2rem] leading-[1.08] font-semibold sm:text-[2.75rem]">
+            <p className="eyebrow mb-4">{afterSales.eyebrow}</p>
+            <h2 id="after-sales-title" className="text-[1.75rem] leading-[1.12] font-semibold sm:text-[2.75rem] sm:leading-[1.08]">
               {afterSales.title}
             </h2>
-            <p className="mt-5 text-lg leading-relaxed text-ink-soft">{afterSales.text}</p>
-            <div className="mt-8">
+            <p className="mt-3 text-base leading-relaxed text-ink-soft sm:mt-5 sm:text-lg">{afterSales.text}</p>
+            <div className="mt-4 sm:mt-8">
               <TextLink href={enquiryHref("general")}>Contact customer support</TextLink>
             </div>
           </div>
-          <ul className="grid gap-4 self-start sm:grid-cols-2 lg:col-span-5 lg:col-start-8 lg:grid-cols-1">
+          <ul className="grid gap-3 self-start sm:grid-cols-2 sm:gap-4 lg:col-span-5 lg:col-start-8 lg:grid-cols-1">
             {[
               {
                 icon: Smartphone,
@@ -204,7 +191,7 @@ export default function BusinessPage() {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex h-full items-start gap-4 rounded-[4px] border border-line p-5 transition-colors hover:border-ink/40 hover:bg-stone"
+                  className="group flex h-full items-start gap-3 rounded-[4px] border border-line p-4 transition-colors hover:border-ink/40 hover:bg-stone sm:gap-4 sm:p-5"
                 >
                   <item.icon aria-hidden className="mt-0.5 size-5 shrink-0 text-accent" strokeWidth={1.75} />
                   <span>
@@ -219,7 +206,7 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      <EnquiryPaths />
+      <EnquiryPaths email={settings.email} />
     </>
   );
 }

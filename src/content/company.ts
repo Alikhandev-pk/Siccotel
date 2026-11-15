@@ -16,14 +16,17 @@ export const company = {
 } as const;
 
 /**
- * The phone and WhatsApp numbers are unconfirmed: Siccotel's own sites conflict.
- * Do not change them without client confirmation; see "Client Confirmation
- * Required" in docs/CONTENT_AUDIT.md.
+ * The header top bar's phone number, as the client requested on 14 November
+ * 2026. It is deliberately not part of `contact`: the footer, Contact page,
+ * enquiry form, structured data and WhatsApp still show no number until the
+ * client confirms one for them. See "Client Confirmation Required" in
+ * docs/CONTENT_AUDIT.md.
  */
+export const topBarPhone = { display: "+92 326 8400903", href: "tel:+923268400903" } as const;
+
+/** No site-wide phone or WhatsApp number is published: Siccotel's own sites conflict. */
 export const contact = {
   email: "sales@siccotel.com",
-  phone: { display: "+92 300 0174226", href: "tel:+923000174226" },
-  whatsapp: { display: "+92 300 0174226", href: "https://wa.me/923000174226" },
   headOffice: {
     label: "Head office",
     lines: [
@@ -69,6 +72,14 @@ export const externalLinks = {
 export const networkStats = [
   { value: "2001", label: "Established in Karachi" },
   { value: "6+", label: "Regional hubs & offices" },
+  { value: "800+", label: "Wholesalers in the network" },
+  { value: "4,500+", label: "Retailers nationwide" },
+] as const;
+
+/** Homepage "Company at a glance" row, as requested by the client (November 2026). */
+export const homeStats = [
+  { value: "10+", label: "Years of Experience" },
+  { value: "8,000+", label: "Happy Customers" },
   { value: "800+", label: "Wholesalers in the network" },
   { value: "4,500+", label: "Retailers nationwide" },
 ] as const;

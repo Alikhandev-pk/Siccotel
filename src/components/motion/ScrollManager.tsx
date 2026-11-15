@@ -26,6 +26,8 @@ let pendingRestore: number | null = null;
 let restoring = false;
 /** The pathname whose content is currently committed on screen. */
 let committedPath = "";
+/** True until the first page of this document has committed. */
+let firstCommit = true;
 
 type NavigationEntry = { key: string };
 const navigationApi = () =>
@@ -84,7 +86,15 @@ export function ScrollManager() {
       const link = (event.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
       if (!link || (link.target && link.target !== "_self") || link.hasAttribute("download")) return;
       const url = new URL(link.href, window.location.href);
-      if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return;
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname === window.location.pathname) {
+        // A link to the page already shown (e.g. its own menu item) starts it again
+        // from the top; Next.js keeps the position because the page is in view.
+        // Hash and query links keep their own behavior. The frame lets a closing
+        // mobile menu release its scroll lock first.
+        if (!url.hash && url.search === window.location.search) requestAnimationFrame(() => jumpTo(0));
+        return;
+      }
       pendingNavigation = { path: url.pathname, hash: url.hash };
     };
     const onPopState = () => {
@@ -175,12 +185,20 @@ export function ScrollManager() {
     pendingNavigation = null;
     const restore = pendingRestore;
     pendingRestore = null;
+    // A fresh visit to /page#section: the browser jumps there once, before lazy
+    // content above the target has its final height. Keep it aligned like a link.
+    const initialHash = firstCommit && !navigation && restore === null ? window.location.hash : "";
+    firstCommit = false;
+    const hash = navigation?.hash || initialHash;
     let hashTarget: HTMLElement | null = null;
     if (restore !== null) {
       jumpTo(restore);
     } else if (navigation && navigation.path === window.location.pathname) {
       hashTarget = navigation.hash ? getHashTarget(navigation.hash) : null;
       jumpTo(hashTarget ? targetTop(hashTarget) : 0);
+    } else if (initialHash) {
+      hashTarget = getHashTarget(initialHash);
+      if (hashTarget) jumpTo(targetTop(hashTarget));
     }
 
     // Visitors who start scrolling keep control; hash re-alignment stops.
@@ -195,10 +213,20 @@ export function ScrollManager() {
         if (Math.abs(window.scrollY - restore) > 1) jumpTo(restore);
         return;
       }
-      if (!navigation?.hash) return;
-      hashTarget ??= getHashTarget(navigation.hash);
-      if (hashTarget) jumpTo(targetTop(hashTarget));
+      if (!hash) return;
+      hashTarget ??= getHashTarget(hash);
+      if (hashTarget && Math.abs(window.scrollY - targetTop(hashTarget)) > 1) jumpTo(targetTop(hashTarget));
     };
+    // Content that settles later (lazy images, fonts) re-aligns a hash target for a
+    // short while; any scroll, tap or key press by the visitor ends it.
+    const alignUntil = performance.now() + 3000;
+    const layoutWatch = hash
+      ? new ResizeObserver(() => {
+          if (performance.now() < alignUntil) realign();
+          else layoutWatch?.disconnect();
+        })
+      : null;
+    layoutWatch?.observe(document.body);
 
     // Late images can move a hash target, so align again after them.
     const frame = requestAnimationFrame(() => {
@@ -217,6 +245,7 @@ export function ScrollManager() {
     return () => {
       cancelAnimationFrame(frame);
       window.clearTimeout(settle);
+      layoutWatch?.disconnect();
       restoring = false;
       userEvents.forEach((type) => window.removeEventListener(type, markUser));
     };

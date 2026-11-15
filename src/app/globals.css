@@ -46,6 +46,11 @@
     --utility-h: 2.25rem;
   }
 }
+@media (max-width: 1023px) {
+  :root {
+    --header-h: 4rem;
+  }
+}
 
 @layer base {
   html {
@@ -304,7 +309,61 @@
   to { opacity: 1; }
 }
 
-.section-space { padding-block: clamp(2.25rem, 6vw, 5.5rem); }
+/* Shared section rhythm for the homepage and inner pages: 36px on phones and tablets, up to 64px on desktop. */
+.section-space { padding-block: clamp(2.25rem, 4.5vw, 4rem); }
+
+/* Phones: page headings sit at 30–34px, so a long title stays on few lines. */
+@media (max-width: 639px) {
+  .t-h1,
+  .hero-title {
+    font-size: clamp(1.875rem, 1.4rem + 2.2vw, 2.125rem);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+  /* The map is scaled down, so its marker scales up to stay visible. */
+  .reach-marker {
+    r: 14px;
+  }
+}
+
+/*
+ * Nationwide Reach map overlay. It multiplies onto the artwork, so a highlighted
+ * region tints the map while its printed labels and lines stay as dark as before.
+ * Transparent fills still take clicks.
+ */
+.reach-overlay {
+  mix-blend-mode: multiply;
+}
+.reach-region {
+  fill: var(--region);
+  fill-opacity: 0;
+  cursor: pointer;
+  transition: fill-opacity 200ms ease-out;
+}
+@media (hover: hover) {
+  .reach-region:hover {
+    fill-opacity: 0.08;
+  }
+}
+.reach-region[data-selected] {
+  fill-opacity: 0.16;
+  stroke: var(--region);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.reach-pin {
+  fill: transparent;
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .reach-pin:hover {
+    stroke: var(--color-ink);
+    stroke-opacity: 0.45;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+}
 
 /* Inner-page heading line; all content stays readable if animation is unavailable. */
 .hero-line {
@@ -344,4 +403,70 @@
     animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Homepage client grid on phones: the first 12 logos until "Show all" (ClientsReveal). */
+@media (max-width: 639.98px) {
+  .clients-collapsed li:nth-child(n + 13) {
+    display: none;
+  }
+}
+
+/* The admin area replaces the public header and footer with its own frame. */
+body:has([data-admin-shell]) .site-header,
+body:has([data-admin-shell]) .site-footer {
+  display: none;
+}
+
+/* Admin dark theme: the public site's tokens, redefined inside the admin area only. */
+body:has([data-admin-shell]) {
+  background-color: #0b0c0e;
+}
+[data-admin-shell] {
+  color-scheme: dark;
+  --color-ink: #f2f3f5;
+  --color-ink-soft: #d0d4da;
+  --color-muted: #9aa1aa;
+  --color-line: #2a2d32;
+  --color-line-strong: #3b3f46;
+  --color-stone: #1c1f23;
+  --color-stone-2: #24272c;
+  --admin-surface: #15171a;
+  background-color: #0b0c0e;
+  color: var(--color-ink);
+}
+[data-admin-shell] .bg-white {
+  background-color: var(--admin-surface);
+}
+[data-admin-shell] .bg-\[\#f6f6f4\],
+[data-admin-shell] .bg-\[\#f6f6f4\]\/95 {
+  background-color: rgb(11 12 14 / 0.95);
+}
+[data-admin-shell] .text-accent {
+  color: var(--color-accent-on-dark);
+}
+/* Inverted buttons stay readable: light fill, dark label. */
+[data-admin-shell] .bg-ink {
+  background-color: #f2f3f5;
+}
+[data-admin-shell] .bg-ink.text-white {
+  color: #0b0c0e;
+}
+/* Status messages. */
+[data-admin-shell] .bg-\[\#eef8f1\] {
+  background-color: #0f2a1c;
+}
+[data-admin-shell] .text-\[\#1f6b43\] {
+  color: #6fdc9f;
+}
+[data-admin-shell] .bg-\[\#fff5f5\] {
+  background-color: #2f1416;
+}
+[data-admin-shell] .bg-\[\#fff8e6\] {
+  background-color: #2e2410;
+  color: #f5d48a;
+}
+[data-admin-shell] input::placeholder,
+[data-admin-shell] textarea::placeholder {
+  color: #6b727c;
 }

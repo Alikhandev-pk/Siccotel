@@ -11,6 +11,26 @@ import foodpanda from "@/assets/retail/clients/foodpanda.png";
 import bykea from "@/assets/retail/clients/bykea.png";
 import easypaisa from "@/assets/retail/clients/easypaisa.png";
 import kistpay from "@/assets/retail/clients/kistpay.png";
+import ebm from "@/assets/retail/clients/ebm.png";
+import candyland from "@/assets/retail/clients/candyland.png";
+import cocaCola from "@/assets/retail/clients/coca-cola.png";
+import jsBank from "@/assets/retail/clients/js-bank.png";
+import dalda from "@/assets/retail/clients/dalda.png";
+import youngs from "@/assets/retail/clients/youngs.png";
+import pharmevo from "@/assets/retail/clients/pharmevo.png";
+import martinDow from "@/assets/retail/clients/martin-dow.png";
+import hbl from "@/assets/retail/clients/hbl.png";
+import gsk from "@/assets/retail/clients/gsk.png";
+import khaadi from "@/assets/retail/clients/khaadi.png";
+import dpWorld from "@/assets/retail/clients/dp-world.png";
+import imtiaz from "@/assets/retail/clients/imtiaz.png";
+import alif from "@/assets/retail/clients/alif.png";
+import airlift from "@/assets/retail/clients/airlift.png";
+import ismailIndustries from "@/assets/retail/clients/ismail-industries.png";
+import ibexGlobal from "@/assets/retail/clients/ibex-global.png";
+import nationalFoods from "@/assets/retail/clients/national-foods.png";
+import shan from "@/assets/retail/clients/shan.png";
+import engro from "@/assets/retail/clients/engro.png";
 import { externalLinks } from "./company";
 
 /**
@@ -45,7 +65,6 @@ export const retail = {
       "1-year official brand warranty on PTA-approved products",
     ],
   },
-  sourceNote: "Siccotel lists these twelve companies as e-commerce clients. The source gives no further relationship detail.",
 };
 
 export type EcommerceClient = {
@@ -54,6 +73,7 @@ export type EcommerceClient = {
   sector: string;
   url: string;
   logo: StaticImageData;
+  serveAsIs?: boolean;
 };
 
 export type ClientGroup = { title: string; clients: EcommerceClient[] };
@@ -72,7 +92,7 @@ export const ecommerceClientGroups: ClientGroup[] = [
     title: "Banks",
     clients: [
       { name: "Alfamall", sector: "Online mall by Bank Alfalah", url: "https://alfamall.com/", logo: alfamall },
-      { name: "Standard Chartered", sector: "Bank", url: "https://www.sc.com/pk/", logo: standardChartered },
+      { name: "Standard Chartered", sector: "Bank", url: "https://www.sc.com/pk/", logo: standardChartered, serveAsIs: true },
       { name: "Faysal Bank", sector: "Bank", url: "https://www.faysalbank.com/", logo: faysalBank },
       { name: "Meezan Bank", sector: "Islamic bank", url: "https://www.meezanbank.com/", logo: meezanBank },
     ],
@@ -89,3 +109,48 @@ export const ecommerceClientGroups: ClientGroup[] = [
 ];
 
 export const ecommerceClients = ecommerceClientGroups.flatMap((group) => group.clients);
+
+/** A logo tile. Tiles without an approved `url` are shown without a link. */
+export type ClientLogo = {
+  name: string;
+  logo: StaticImageData;
+  url?: string;
+  sector?: string;
+  /**
+   * Serve the file without image optimisation. Used for small client-supplied
+   * files (under ~80px tall), which the optimiser would otherwise size for a
+   * wider candidate than the file holds, rendering them below the tile's logo height.
+   */
+  serveAsIs?: boolean;
+};
+
+/**
+ * Corporate clients added at the client's request (November 2026), in the
+ * order of their brief. Logos come from each company's own website, its archived
+ * official website or its annual report; see docs/CONTENT_AUDIT.md for sources.
+ */
+export const corporateClients: ClientLogo[] = [
+  { name: "Alif", logo: alif },
+  { name: "Airlift", logo: airlift },
+  { name: "EBM (English Biscuit Manufacturers)", logo: ebm },
+  { name: "CandyLand", logo: candyland },
+  { name: "Coca-Cola", logo: cocaCola },
+  { name: "Ismail Industries Limited", logo: ismailIndustries },
+  { name: "IBEX Global", logo: ibexGlobal },
+  { name: "National Foods", logo: nationalFoods, serveAsIs: true },
+  { name: "JS Bank", logo: jsBank },
+  { name: "Dalda", logo: dalda },
+  { name: "Shan", logo: shan },
+  { name: "Young’s", logo: youngs },
+  { name: "PharmEvo", logo: pharmevo },
+  { name: "Martin Dow", logo: martinDow },
+  { name: "HBL", logo: hbl },
+  { name: "GSK", logo: gsk, serveAsIs: true },
+  { name: "Khaadi", logo: khaadi },
+  { name: "Engro", logo: engro },
+  { name: "DP World", logo: dpWorld },
+  { name: "Imtiaz", logo: imtiaz },
+];
+
+/** The homepage "Corporate & E-commerce Clients" grid: the original twelve first, then corporate clients. */
+export const homepageClients: ClientLogo[] = [...ecommerceClients, ...corporateClients];

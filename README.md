@@ -16,7 +16,7 @@ npm run build
 npm start
 ```
 
-The homepage opens with a carousel of campaign banners from siccotel.com, followed by brand partners, company overview, distribution/manufacturing/retail, store and support paths, regional map, manufacturing, company journey, news and enquiry paths. Banners are configured in `src/content/hero.ts`; replace them there when a campaign ends. Existing About, Business, Manufacturing, Partners, News and Contact routes retain fuller content. Official sources and photograph provenance are in [docs/CONTENT_AUDIT.md](docs/CONTENT_AUDIT.md); implementation and verification details are in [docs/UPGRADE_REPORT.md](docs/UPGRADE_REPORT.md).
+The homepage opens with a carousel of campaign banners from siccotel.com, followed by brand partners, company overview, distribution/manufacturing/retail, store and support paths, regional map, manufacturing, company journey, news and enquiry paths. Banners are configured in `src/content/hero.ts`; replace them there when a campaign ends. The header links to seven pages: About Us (`/about`), Services (`/services`), Assembly (`/assembly`), Products (`/products`), Partners (`/partners`), News & Media (`/news`) and Contact Us (`/contact`). The former `/business` and `/manufacturing` URLs redirect to `/services` and `/assembly`. Official sources and photograph provenance are in [docs/CONTENT_AUDIT.md](docs/CONTENT_AUDIT.md); implementation and verification details are in [docs/UPGRADE_REPORT.md](docs/UPGRADE_REPORT.md).
 
 ## Configuration
 
@@ -31,3 +31,7 @@ Content and final statistics are server rendered. Hero banners are contained rat
 Earlier hero provenance and verification results are in [docs/FINALIZATION_REPORT.md](docs/FINALIZATION_REPORT.md); banner sources are in [docs/CONTENT_AUDIT.md](docs/CONTENT_AUDIT.md).
 
 Regional map city names are not proof of offices. Only published Karachi addresses appear as facilities. Publication dates are omitted where the source supplies only event context.
+
+## Admin panel (CMS)
+
+Content is editable at `/admin`: banners, products, news, the media library, the homepage, every page's copy and images, and the contact settings. It uses MySQL (or MariaDB) and a persistent uploads folder, and stays inactive until configured: the site shows its built-in content until then. Setup, first-admin provisioning, the website import and the security model are in [docs/ADMIN_SETUP.md](docs/ADMIN_SETUP.md).

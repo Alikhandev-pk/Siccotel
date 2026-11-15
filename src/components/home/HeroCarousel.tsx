@@ -1,12 +1,12 @@
 "use client";
 
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { useCallback, useRef, useState, useSyncExternalStore, type PointerEvent as ReactPointerEvent } from "react";
 import { ArrowUpRight, Pause, Play } from "lucide-react";
-import { heroBanners, heroIntro, type HeroBanner } from "@/content/hero";
+import type { Banner, HomeDoc, Published } from "@/lib/cms/types";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { ease, hero, heroCrossfadeSeconds, heroSlideSeconds } from "@/lib/motion";
-import { ButtonLink, TextLink } from "../ui";
+import { ButtonLink } from "../ui";
 
 /** Delay of the CSS failsafe (globals.css, hero-failsafe), in milliseconds. */
 const FAILSAFE_DELAY_MS = 1200;
@@ -40,17 +40,24 @@ async function bannerReady(root: HTMLElement | null, index: number) {
   }
 }
 
-function Banner({ banner, first }: { banner: HeroBanner; first: boolean }) {
+type HeroBanner = Published<Banner>;
+
+/** Desktop art, with optional phone art via <picture>; phones fall back to the desktop image. */
+function BannerImage({ banner, first }: { banner: HeroBanner; first: boolean }) {
+  const loading = first ? { preload: true } : { loading: "eager" as const };
+  if (!banner.mobile?.src) {
+    return <Image src={banner.desktop.src} alt={banner.desktop.alt} fill sizes="100vw" quality={90} {...loading} className="object-contain" />;
+  }
+  const common = { alt: banner.desktop.alt, sizes: "100vw", quality: 90 };
+  const { props: { srcSet: desktopSet } } = getImageProps({ ...common, src: banner.desktop.src, width: banner.desktop.width, height: banner.desktop.height });
+  const { props: { srcSet: mobileSet, ...rest } } = getImageProps({ ...common, src: banner.mobile.src, width: banner.mobile.width, height: banner.mobile.height, ...(first ? { preload: true } : { loading: "eager" as const }) });
   return (
-    <Image
-      src={banner.src}
-      alt={banner.alt}
-      fill
-      sizes="100vw"
-      quality={90}
-      {...(first ? { preload: true } : { loading: "eager" as const })}
-      className="object-contain"
-    />
+    <picture>
+      <source media="(min-width: 640px)" srcSet={desktopSet} />
+      <source media="(max-width: 639px)" srcSet={mobileSet} />
+      {/* eslint-disable-next-line jsx-a11y/alt-text -- alt is in rest */}
+      <img {...rest} className="absolute inset-0 size-full object-contain" />
+    </picture>
   );
 }
 
@@ -63,14 +70,15 @@ function Banner({ banner, first }: { banner: HeroBanner; first: boolean }) {
  * Ownership: GSAP owns slide opacity and the entrance on [data-hero] wrappers;
  * CSS owns the pause control, which appears only on keyboard focus.
  */
-export function HeroCarousel() {
+export function HeroCarousel({ banners, intro }: { banners: HeroBanner[]; intro: HomeDoc["hero"] }) {
   const rootRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
   const [mounted, setMounted] = useState<ReadonlySet<number>>(() => new Set([0]));
   const [userPaused, setUserPaused] = useState(false);
   const [focusHeld, setFocusHeld] = useState(false);
   const reducedMotion = useSyncExternalStore(subscribeReducedMotion, getReducedMotion, getServerReducedMotion);
-  const autoplay = !reducedMotion && !userPaused;
+  const total = banners.length;
+  const autoplay = !reducedMotion && !userPaused && total > 1;
   const paused = userPaused || focusHeld;
 
   const activeRef = useRef(0);
@@ -81,7 +89,6 @@ export function HeroCarousel() {
   const holds = useRef({ focus: false, hidden: false });
   const swipe = useRef<{ x: number; y: number } | null>(null);
 
-  const total = heroBanners.length;
   const mountSlide = useCallback((index: number) => {
     setMounted((current) => (current.has(index) ? current : new Set([...current, index])));
   }, []);
@@ -168,7 +175,7 @@ export function HeroCarousel() {
   // Autoplay: one timer, replaced whenever the slide or the play state changes.
   useGSAP(
     () => {
-      if (!autoplay) return;
+      if (!autoplay || total < 2) return;
       const next = (active + 1) % total;
       // A slide change starts the fade, so its 5 seconds begin when the fade ends.
       const delay = heroSlideSeconds + (transition.current ? heroCrossfadeSeconds : 0);
@@ -244,14 +251,14 @@ export function HeroCarousel() {
     if (!start) return;
     const dx = event.clientX - start.x;
     const dy = event.clientY - start.y;
-    if (Math.abs(dx) >= SWIPE_PX && Math.abs(dx) > Math.abs(dy)) goTo((active + (dx < 0 ? 1 : -1) + total) % total);
+    if (total > 1 && Math.abs(dx) >= SWIPE_PX && Math.abs(dx) > Math.abs(dy)) goTo((active + (dx < 0 ? 1 : -1) + total) % total);
   };
 
-  const activeBanner = heroBanners[active];
-  const lastLine = heroIntro.headline.length - 1;
+  const activeBanner = banners[active] ?? banners[0];
 
   return (
     <section ref={rootRef} aria-roledescription="carousel" aria-label="Featured device campaigns" data-motion-scope="" className="home-hero">
+      {total > 0 && (
       <div
         className="hero-banner"
         onPointerDown={onSwipeStart}
@@ -259,7 +266,7 @@ export function HeroCarousel() {
         onPointerCancel={() => { swipe.current = null; }}
       >
         <div data-hero="banner" className="absolute inset-0">
-          {heroBanners.map((banner, i) => (
+          {banners.map((banner, i) => (
             <div
               key={banner.id}
               data-banner={i}
@@ -270,25 +277,27 @@ export function HeroCarousel() {
               className={`absolute inset-0 ${i === 0 ? "" : "invisible opacity-0"}`}
               style={{ backgroundColor: banner.background }}
             >
-              {mounted.has(i) && <Banner banner={banner} first={i === 0} />}
+              {mounted.has(i) && <BannerImage banner={banner} first={i === 0} />}
             </div>
           ))}
         </div>
-        {!reducedMotion && (
+        {!reducedMotion && total > 1 && (
           <button type="button" onClick={togglePause} className="hero-pause">
             {paused ? <Play aria-hidden className="size-4" /> : <Pause aria-hidden className="size-4" />}
             {paused ? "Resume banner rotation" : "Pause banner rotation"}
           </button>
         )}
       </div>
+      )}
 
       <div className="container-site lg:grid lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-8">
         {/*
           Names what the artwork is showing; on phones its own text is too small to rely on.
           There it is one tinted row, attached to the banner so the two read as a unit.
         */}
+        {total > 0 && (
         <div data-hero="caption" className="hero-captions -mx-4 bg-stone px-4 py-1.5 sm:-mx-6 sm:px-6 lg:order-last lg:col-span-4 lg:mx-0 lg:border-l lg:border-line lg:bg-transparent lg:py-0 lg:pr-0 lg:pl-10">
-          {heroBanners.map((banner, i) => (
+          {banners.map((banner, i) => (
             <div
               key={banner.id}
               data-banner-caption={i}
@@ -297,55 +306,59 @@ export function HeroCarousel() {
               className={`flex items-center justify-between gap-3 lg:block ${i === 0 ? "" : "invisible opacity-0"}`}
             >
               <div className="min-w-0">
-                <p className="text-[0.6875rem] font-semibold tracking-[0.12em] text-accent uppercase lg:text-xs">{banner.brand}</p>
-                <p className="font-display text-[0.9375rem] leading-snug font-semibold tracking-[-0.015em] text-ink lg:mt-1.5 lg:text-lg">{banner.title}</p>
+                <p className="text-xs font-semibold tracking-[0.1em] text-accent uppercase lg:tracking-[0.12em]">{banner.brand}</p>
+                <p className="font-display text-base leading-snug font-semibold tracking-[-0.015em] text-ink lg:mt-1.5 lg:text-lg">{banner.title}</p>
               </div>
+              {banner.ctaHref && (
               <a
-                href={banner.link.href}
+                href={banner.ctaHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${banner.link.label}: ${banner.brand} ${banner.title} (opens in a new tab)`}
-                className="group inline-flex min-h-11 shrink-0 items-center gap-1 text-sm font-semibold text-accent lg:mt-2 lg:gap-1.5"
+                aria-label={`${banner.ctaLabel || "Open link"}: ${banner.brand} ${banner.title} (opens in a new tab)`}
+                className="group inline-flex min-h-11 shrink-0 items-center gap-1 text-[0.9375rem] font-semibold text-accent lg:mt-2 lg:gap-1.5 lg:text-sm"
               >
-                <span className="link-line pb-0.5 lg:hidden">Sicco Store</span>
-                <span className="link-line hidden pb-0.5 lg:inline">{banner.link.label}</span>
+                <span className="link-line pb-0.5 lg:hidden">{banner.ctaHref.includes("siccostore") ? "Sicco Store" : banner.ctaLabel || "Open"}</span>
+                <span className="link-line hidden pb-0.5 lg:inline">{banner.ctaLabel || "Open link"}</span>
                 <ArrowUpRight aria-hidden className="size-4" />
               </a>
+              )}
             </div>
           ))}
         </div>
+        )}
 
         <div data-hero="intro" className="grid gap-4 py-5 sm:py-6 lg:col-span-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-8 lg:py-0">
           <div className="min-w-0">
-            <p className="eyebrow mb-2.5 text-[0.6875rem] tracking-[0.12em] sm:mb-3 sm:text-xs sm:tracking-[0.16em]">{heroIntro.eyebrow}</p>
+            <p className="eyebrow mb-2.5 text-xs tracking-[0.06em] sm:mb-3 sm:tracking-[0.16em]">{intro.eyebrow}</p>
             <h1 className="hero-title">
-              {heroIntro.headline.map((line, i) => (
+              {[intro.headline1, intro.headline2].filter(Boolean).map((line) => (
                 <span key={line} className="block">
-                  {i === lastLine ? line.slice(0, -1) : line}
-                  {i === lastLine && <span className="text-brand">.</span>}
+                  {line}
                 </span>
               ))}
             </h1>
-            <p className="mt-2.5 max-w-[34rem] leading-relaxed text-muted sm:mt-3">{heroIntro.description}</p>
+            <p className="mt-2.5 max-w-[34rem] leading-relaxed text-muted sm:mt-3">{intro.description}</p>
           </div>
           {/* The header carries Partner With Us from sm up. Below that the hero does, with Explore as the secondary route. */}
-          <div className="flex items-center gap-4 sm:hidden">
-            <ButtonLink href={heroIntro.partner.href} className="flex-1">
-              {heroIntro.partner.label}
+          <div className="grid grid-cols-2 gap-2 sm:hidden">
+            <ButtonLink href="/contact#enquiry" icon={false} className="px-2!">
+              Partner With Us
             </ButtonLink>
-            <TextLink href={heroIntro.action.href} className="min-h-11 shrink-0 text-sm">
-              Our Business
-            </TextLink>
+            <ButtonLink href={intro.actionHref} variant="secondary" icon={false} className="px-2!">
+              Our Services
+            </ButtonLink>
           </div>
           <div className="hidden sm:block lg:justify-self-end">
-            <ButtonLink href={heroIntro.action.href}>{heroIntro.action.label}</ButtonLink>
+            <ButtonLink href={intro.actionHref}>{intro.actionLabel}</ButtonLink>
           </div>
         </div>
       </div>
 
-      <p aria-live={paused || reducedMotion ? "polite" : "off"} aria-atomic="true" className="sr-only">
-        {`Slide ${active + 1} of ${total}: ${activeBanner.brand} ${activeBanner.title}`}
-      </p>
+      {activeBanner && (
+        <p aria-live={paused || reducedMotion ? "polite" : "off"} aria-atomic="true" className="sr-only">
+          {`Slide ${active + 1} of ${total}: ${activeBanner.brand} ${activeBanner.title}`}
+        </p>
+      )}
     </section>
   );
 }
