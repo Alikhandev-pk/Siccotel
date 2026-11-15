@@ -1,114 +1,242 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { Building2, Factory } from "lucide-react";
-import regionalMap from "@/assets/company/pakistan-regional-network-map.png";
-import { contact } from "@/content/company";
-import { hqCityId } from "@/content/locations";
+import { useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from "react";
+import { Building2, ChevronRight, Factory, MapPin } from "lucide-react";
 import { enquiryHref } from "@/content/navigation";
+import type { RegionId } from "@/content/reach-artwork";
+import type { ReachArtwork } from "@/lib/cms/artwork";
+import type { HomeDoc, SettingsDoc } from "@/lib/cms/types";
 import { TextLink } from "../ui";
 
-// These coordinates align to markers in the unmodified 1080 × 843 source map.
-const MAP_WIDTH = 1080;
-const MAP_HEIGHT = 843;
+const HQ_CITY = "karachi";
+/** A tap within this many CSS pixels of a city dot selects the nearest city. */
+const PIN_HIT_PX = 18;
 
-const networkCities = [
-  { id: "peshawar", name: "Peshawar", x: 49.4, y: 29.3 },
-  { id: "rawalpindi", name: "Rawalpindi", x: 55.3, y: 33.5 },
-  { id: "sialkot", name: "Sialkot", x: 61.3, y: 38.9 },
-  { id: "gujranwala", name: "Gujranwala", x: 59.6, y: 40.3 },
-  { id: "lahore", name: "Lahore", x: 61.2, y: 44.6 },
-  { id: "faisalabad", name: "Faisalabad", x: 55.6, y: 46.1 },
-  { id: "multan", name: "Multan", x: 49.2, y: 53.3 },
-  { id: "quetta", name: "Quetta", x: 29.5, y: 52.9 },
-  { id: "sukkur", name: "Sukkur", x: 39.4, y: 68.6 },
-  { id: "karachi", name: "Karachi", x: 31.3, y: 82.7 },
-];
+/**
+ * The client's regional map, unchanged, with a transparent SVG laid exactly over
+ * it in the map's layout space (artwork.layoutWidth × layoutHeight). The SVG holds
+ * the region outlines traced from the artwork and a hit area on each city dot, so
+ * both scale with the image. Outlines and markers are only drawn when the server
+ * has confirmed they belong to this exact map file (see lib/cms/artwork.ts).
+ */
+export function ReachMap({ reach, artwork, settings }: { reach: HomeDoc["reach"]; artwork: ReachArtwork; settings: SettingsDoc }) {
+  const { regions, markers, layoutWidth: W, layoutHeight: H } = artwork;
+  const cities = reach.cities;
+  const offices = [
+    { icon: Building2, ...settings.headOffice },
+    { icon: Factory, ...settings.factory },
+  ];
 
-const offices = [
-  { icon: Building2, ...contact.headOffice },
-  { icon: Factory, ...contact.factory },
-];
+  const [regionId, setRegionId] = useState<RegionId | null>(() => regions?.find((r) => r.id === "north")?.id ?? regions?.[0]?.id ?? null);
+  const [cityId, setCityId] = useState<string | null>(null);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
 
-export function ReachMap() {
-  const [selected, setSelected] = useState(hqCityId);
-  const city = networkCities.find((location) => location.id === selected)!;
-  const isHq = city.id === hqCityId;
+  const region = regions?.find((r) => r.id === regionId) ?? null;
+  const listed = region ? cities.filter((c) => region.cityIds.includes(c.id)) : cities;
+  const city = cities.find((c) => c.id === cityId) ?? null;
+
+  function selectRegion(id: RegionId) {
+    if (id === regionId) return;
+    setRegionId(id);
+    setCityId(null);
+  }
+
+  function selectCity(id: string) {
+    const home = regions?.find((r) => r.cityIds.includes(id));
+    if (home) setRegionId(home.id);
+    setCityId(id);
+  }
+
+  /** Arrow keys, Home and End move between the region tabs (WAI-ARIA tabs pattern). */
+  function onTabKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    if (!regions) return;
+    const last = regions.length - 1;
+    const next = { ArrowRight: index + 1, ArrowDown: index + 1, ArrowLeft: index - 1, ArrowUp: index - 1, Home: 0, End: last }[event.key];
+    if (next === undefined) return;
+    event.preventDefault();
+    const target = next < 0 ? last : next > last ? 0 : next;
+    selectRegion(regions[target].id);
+    tabs.current[target]?.focus();
+  }
+
+  /** A click near a city dot selects that city; anywhere else in a region selects the region. */
+  function onMapClick(event: MouseEvent<SVGSVGElement>) {
+    const box = event.currentTarget.getBoundingClientRect();
+    const px = event.clientX - box.left;
+    const py = event.clientY - box.top;
+    if (markers) {
+      let nearest: { id: string; d: number } | null = null;
+      for (const c of cities) {
+        const d = Math.hypot((c.x / 100) * box.width - px, (c.y / 100) * box.height - py);
+        if (d <= PIN_HIT_PX && (!nearest || d < nearest.d)) nearest = { id: c.id, d };
+      }
+      if (nearest) return selectCity(nearest.id);
+    }
+    const hit = (event.target as Element).closest("[data-region]")?.getAttribute("data-region");
+    if (hit) selectRegion(hit as RegionId);
+  }
+
+  // The selected outline is drawn last, so its border sits above its neighbours.
+  const drawOrder = regions ? [...regions.filter((r) => r.id !== regionId), ...regions.filter((r) => r.id === regionId)] : [];
 
   return (
-    <div className="grid items-start gap-5 lg:grid-cols-12 lg:gap-10">
-      <figure className="min-w-0 lg:col-span-7">
-        <div className="relative overflow-hidden rounded-[8px] border border-line bg-white">
-          <Image
-            src={regionalMap}
-            alt="Siccotel's published regional network map, showing named cities in Pakistan's north, central and south regions"
-            sizes="(min-width: 1280px) 720px, (min-width: 1024px) 58vw, 100vw"
-            className="h-auto w-full"
-          />
-          <svg aria-hidden="true" viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`} className="pointer-events-none absolute inset-0 h-full w-full">
-            <circle
-              cx={(city.x / 100) * MAP_WIDTH}
-              cy={(city.y / 100) * MAP_HEIGHT}
-              r="19"
-              fill="#c8000b"
-              fillOpacity="0.12"
-              stroke="#a80009"
-              strokeWidth="2.5"
-            />
-          </svg>
-        </div>
-        <figcaption className="mt-2.5 text-xs leading-relaxed text-muted">
-          Siccotel&apos;s published regional map. City markers show map locations, not individual offices.
-        </figcaption>
-      </figure>
+    <div className="grid items-start gap-5 lg:grid-cols-12 lg:gap-8">
+      <div className="min-w-0 rounded-[8px] border border-line bg-white p-3 sm:p-5 lg:col-span-7">
+        {regions && (
+          <div role="tablist" aria-label="Regions" className="flex flex-wrap gap-2">
+            {regions.map((r, i) => {
+              const active = r.id === regionId;
+              return (
+                <button
+                  key={r.id}
+                  ref={(el) => {
+                    tabs.current[i] = el;
+                  }}
+                  type="button"
+                  role="tab"
+                  id={`reach-tab-${r.id}`}
+                  aria-selected={active}
+                  aria-controls="reach-panel"
+                  tabIndex={active ? 0 : -1}
+                  onClick={() => selectRegion(r.id)}
+                  onKeyDown={(e) => onTabKeyDown(e, i)}
+                  className={`inline-flex min-h-11 min-w-[5.5rem] items-center justify-center rounded-[6px] border px-4 text-sm font-semibold transition-colors duration-200 sm:min-w-28 sm:text-[0.9375rem] ${
+                    active ? "border-ink bg-ink text-white" : "border-line-strong bg-white text-ink hover:border-ink/60"
+                  }`}
+                >
+                  {r.name}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
-      <div className="min-w-0 space-y-5 lg:col-span-5 lg:space-y-7">
-        <div>
+        {/* The image and overlay share this box, so they scale together at every width. */}
+        <div className={`relative ${regions ? "mt-3 sm:mt-4" : ""}`}>
+          <Image
+            src={reach.map.src}
+            width={reach.map.width}
+            height={reach.map.height}
+            alt={reach.map.alt}
+            sizes="(min-width: 1280px) 680px, (min-width: 1024px) 54vw, 100vw"
+            quality={90}
+            className="block h-auto w-full"
+          />
+          {(regions || markers) && (
+            <svg
+              aria-hidden="true"
+              viewBox={`0 0 ${W} ${H}`}
+              preserveAspectRatio="none"
+              onClick={onMapClick}
+              className="reach-overlay absolute inset-0 size-full"
+            >
+              {drawOrder.map((r) => (
+                <path
+                  key={r.id}
+                  d={r.path}
+                  data-region={r.id}
+                  data-selected={r.id === regionId ? "" : undefined}
+                  className="reach-region"
+                  style={{ "--region": r.color } as CSSProperties}
+                />
+              ))}
+              {markers &&
+                cities.map((c) => {
+                  const cx = (c.x / 100) * W;
+                  const cy = (c.y / 100) * H;
+                  return (
+                    <g key={c.id} data-city={c.id}>
+                      <circle cx={cx} cy={cy} r="7" className="reach-pin" />
+                      {c.id === cityId && (
+                        <circle
+                          cx={cx}
+                          cy={cy}
+                          r="9"
+                          className="reach-marker"
+                          fill="#c8000b"
+                          fillOpacity="0.12"
+                          stroke="#a80009"
+                          strokeWidth="1.5"
+                          pointerEvents="none"
+                        />
+                      )}
+                    </g>
+                  );
+                })}
+            </svg>
+          )}
+        </div>
+      </div>
+
+      <div className="min-w-0 rounded-[8px] border border-line bg-white p-5 sm:p-6 lg:col-span-5">
+        <div {...(region ? { role: "tabpanel", id: "reach-panel", "aria-labelledby": `reach-tab-${region.id}` } : {})}>
+          {region && (
+            <h3 className="flex items-center gap-3 border-b border-line pb-4 text-2xl font-semibold sm:text-[1.75rem]">
+              <span aria-hidden className="size-3 shrink-0 rounded-full ring-1 ring-black/10" style={{ backgroundColor: region.color }} />
+              {region.name} Region
+            </h3>
+          )}
+          <h4 id="reach-list-label" className={`text-xs font-semibold tracking-[0.12em] text-muted uppercase ${region ? "mt-4" : ""}`}>
+            Cities on the regional map
+          </h4>
+          {listed.length > 0 ? (
+            <ul aria-labelledby="reach-list-label" className="mt-3 grid gap-2">
+              {listed.map((c) => {
+                const active = c.id === cityId;
+                return (
+                  <li key={c.id}>
+                    <button
+                      type="button"
+                      aria-pressed={active}
+                      aria-controls="reach-detail"
+                      onClick={() => selectCity(c.id)}
+                      className={`flex min-h-12 w-full items-center gap-3 rounded-[6px] border px-3.5 text-left text-[0.9375rem] font-semibold transition-colors duration-200 ${
+                        active ? "border-ink bg-stone text-ink" : "border-line-strong bg-white text-ink hover:border-ink/60"
+                      }`}
+                    >
+                      <MapPin aria-hidden className="size-5 shrink-0 text-accent" strokeWidth={2} />
+                      <span className="flex-1">{c.name}</span>
+                      <ChevronRight aria-hidden className="size-4 shrink-0 text-muted" />
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="mt-3 text-sm text-ink-soft">No cities are marked in this region.</p>
+          )}
+          <p id="reach-detail" aria-live="polite" className="mt-4 text-[0.9375rem] leading-relaxed text-ink-soft lg:text-sm">
+            {city ? (
+              <>
+                <span className="font-semibold text-ink">{city.name}</span>
+                {city.id === HQ_CITY
+                  ? " is home to the head office and assembly plant, at the addresses below."
+                  : " is marked on the regional map. No separate office address is published; contact the sales team for local enquiries."}
+              </>
+            ) : (
+              "Select a city to view its details."
+            )}
+          </p>
+        </div>
+
+        <div className="mt-3">
+          <TextLink href={enquiryHref("dealer")} className="min-h-11 text-sm">Dealer &amp; retail enquiries</TextLink>
+        </div>
+
+        <div className="mt-4 border-t border-line pt-5">
           <h3 className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">Published addresses, Karachi</h3>
-          <ul className="mt-2.5 divide-y divide-line border-y border-line lg:mt-3">
+          <ul className="mt-2.5 divide-y divide-line lg:mt-3">
             {offices.map(({ icon: Icon, label, lines }) => (
-              <li key={label} className="flex gap-3 py-2.5 lg:py-3.5">
+              <li key={label} className="flex gap-3 py-2.5 lg:py-3">
                 <Icon aria-hidden className="mt-0.5 size-5 shrink-0 text-accent" strokeWidth={1.75} />
                 <div>
-                  <p className="text-sm font-semibold">{label}</p>
-                  <address className="mt-0.5 text-sm leading-relaxed not-italic text-ink-soft">{lines.join(", ")}</address>
+                  <p className="text-[0.9375rem] font-semibold lg:text-sm">{label}</p>
+                  <address className="mt-0.5 text-[0.9375rem] leading-relaxed not-italic text-ink-soft lg:text-sm">{lines.join(", ")}</address>
                 </div>
               </li>
             ))}
           </ul>
-        </div>
-
-        <div>
-          <h3 id="reach-list-label" className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">
-            Cities on the regional map
-          </h3>
-          <ul aria-labelledby="reach-list-label" className="mt-2.5 flex flex-wrap gap-1.5 lg:mt-3 lg:gap-2">
-            {networkCities.map((location) => (
-              <li key={location.id}>
-                <button
-                  type="button"
-                  aria-pressed={location.id === selected}
-                  aria-controls="reach-detail"
-                  onClick={() => setSelected(location.id)}
-                  className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-[3px] border px-2.5 text-[0.8125rem] font-semibold transition-colors duration-200 lg:px-3 lg:text-sm ${
-                    location.id === selected ? "border-ink bg-ink text-white" : "border-line-strong bg-white text-ink hover:border-ink/60"
-                  }`}
-                >
-                  {location.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-          <p id="reach-detail" aria-live="polite" className="mt-3 text-sm leading-relaxed text-ink-soft">
-            <span className="font-semibold text-ink">{city.name}</span>
-            {isHq
-              ? " is home to the head office and assembly plant, at the addresses above."
-              : " is marked on the regional map. No separate office address is published; contact the sales team for local enquiries."}
-          </p>
-          <div className="mt-3">
-            <TextLink href={enquiryHref("dealer")} className="min-h-11 text-sm">Dealer &amp; retail enquiries</TextLink>
-          </div>
         </div>
       </div>
     </div>
