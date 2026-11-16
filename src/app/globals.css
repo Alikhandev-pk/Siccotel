@@ -523,6 +523,22 @@
   width: 19rem;
   flex: none;
 }
+/* Desktop without motion: seven narrow columns, so a milestone's logos are smaller and
+   may take a second row, which grows upward from the same baseline above the dot. */
+@media (min-width: 1024px) {
+  [data-journey-root]:not([data-journey-horizontal]) .journey-logos {
+    top: auto;
+    bottom: calc(100% - 28px);
+    height: auto;
+    flex-wrap: wrap;
+    align-content: flex-end;
+    gap: 6px 10px;
+  }
+  [data-journey-root]:not([data-journey-horizontal]) .journey-logos > * {
+    height: 20px;
+    max-width: 64px;
+  }
+}
 
 /* Homepage client grid on phones: the first 12 logos until "Show all" (ClientsReveal). */
 @media (max-width: 639.98px) {

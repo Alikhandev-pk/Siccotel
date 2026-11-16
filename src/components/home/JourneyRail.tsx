@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import type { Milestone } from "@/content/milestones";
+import Image from "next/image";
+import type { Milestone, MilestoneBrand } from "@/lib/cms/types";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { DESKTOP_MOTION, onceInView } from "../animations/motion";
 
@@ -13,6 +14,9 @@ import { DESKTOP_MOTION, onceInView } from "../animations/motion";
  * applied while that runs (data-journey-horizontal, globals.css).
  * Desktop without motion: the original seven-column grid.
  * Below lg: the swipeable row, whose cards rise in turn when it scrolls into view.
+ *
+ * Each milestone's brand logos sit above its dot. The rail runs through the dots, so its
+ * offset (top-[40px] / lg:top-[46px]) follows the logo row's height plus the gap below it.
  */
 export function JourneyRail({ items }: { items: Milestone[] }) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -64,11 +68,11 @@ export function JourneyRail({ items }: { items: Milestone[] }) {
   );
 
   return (
-    <div ref={rootRef} className="relative">
+    <div ref={rootRef} data-journey-root="" className="relative">
       <div data-journey-track="" className="relative">
         {/* Desktop track: one line through the markers, filled with scroll. */}
-        <span aria-hidden className="absolute top-[4px] right-0 left-0 hidden h-[2px] bg-line lg:block" />
-        <span aria-hidden data-rail-fill="" className="absolute top-[4px] right-0 left-0 hidden h-[2px] bg-accent lg:block" />
+        <span aria-hidden className="absolute top-[46px] right-0 left-0 hidden h-[2px] bg-line lg:block" />
+        <span aria-hidden data-rail-fill="" className="absolute top-[46px] right-0 left-0 hidden h-[2px] bg-accent lg:block" />
         {/*
           Below lg the milestones are a row to swipe through, so the section stays short
           on phones; the next card peeks in at the edge. Each card carries its own piece
@@ -82,9 +86,15 @@ export function JourneyRail({ items }: { items: Milestone[] }) {
             <li
               key={milestone.period + milestone.title}
               data-m=""
-              className="relative w-[72%] max-w-[17rem] min-w-0 shrink-0 snap-start pt-7 before:absolute before:top-[4px] before:-right-5 before:left-0 before:h-[2px] before:bg-line last:before:right-0 sm:w-[40%] lg:w-auto lg:max-w-none lg:pt-9 lg:before:hidden"
+              className="relative w-[72%] max-w-[17rem] min-w-0 shrink-0 snap-start pt-16 before:absolute before:top-[40px] before:-right-5 before:left-0 before:h-[2px] before:bg-line last:before:right-0 sm:w-[40%] lg:w-auto lg:max-w-none lg:pt-[78px] lg:before:hidden"
             >
-              <span aria-hidden className="absolute top-0 left-0 block size-[10px] rounded-full bg-accent ring-4 ring-white" />
+              {/* Logos 24px high (28px on desktop), then 12px (14px) to the dot. */}
+              <div className="journey-logos absolute top-0 right-0 left-0 flex h-6 items-end gap-3 lg:h-7 lg:gap-3.5">
+                {(milestone.brands ?? []).map((brand, i) => (
+                  <BrandMark key={brand.name + i} brand={brand} />
+                ))}
+              </div>
+              <span aria-hidden className="absolute top-9 left-0 block size-[10px] rounded-full bg-accent ring-4 ring-white lg:top-[42px]" />
               <div className="group">
                 <p className="font-display text-lg leading-none font-semibold tracking-[-0.025em] text-ink tabular-nums transition-colors duration-200 group-hover:text-accent lg:text-[1.35rem] xl:text-[1.5rem]">
                   {milestone.period}
@@ -98,4 +108,21 @@ export function JourneyRail({ items }: { items: Milestone[] }) {
       </div>
     </div>
   );
+}
+
+/** A brand's logo at the row's height, kept within a width cap so wide wordmarks match compact marks; its name when there is no logo. */
+function BrandMark({ brand }: { brand: MilestoneBrand }) {
+  if (brand.logo?.src) {
+    return (
+      <Image
+        src={brand.logo.src}
+        width={brand.logo.width}
+        height={brand.logo.height}
+        alt={brand.name}
+        sizes="112px"
+        className="h-full w-auto max-w-24 min-w-0 shrink object-contain [object-position:left_bottom] lg:max-w-28"
+      />
+    );
+  }
+  return <span className="font-display text-sm leading-none font-semibold tracking-[-0.01em] whitespace-nowrap text-ink lg:text-[0.9375rem]">{brand.name}</span>;
 }

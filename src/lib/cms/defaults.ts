@@ -265,7 +265,11 @@ export const defaultDocs: DocMap = {
       eyebrow: "Our journey",
       title: "Documented Milestones",
       intro: "Milestones as published in Siccotel’s journey timeline.",
-      milestones: milestones.map((m) => ({ ...m, highlight: Boolean(m.highlight) })),
+      milestones: milestones.map((m) => ({
+        ...m,
+        highlight: Boolean(m.highlight),
+        brands: m.brands.map((b) => ({ name: b.name, logo: b.logo ? img(b.logo, b.name) : null })),
+      })),
     },
   },
 

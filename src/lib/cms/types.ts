@@ -123,7 +123,9 @@ export type HomeDoc = {
   enquiry: { title: string; intro: string };
 };
 
-export type Milestone = { period: string; title: string; description: string; highlight: boolean };
+/** A brand above a milestone's dot: its logo, or its name as text when there is no logo. */
+export type MilestoneBrand = { name: string; logo: CmsImage | null };
+export type Milestone = { period: string; title: string; description: string; highlight: boolean; brands?: MilestoneBrand[] };
 
 export type AboutDoc = {
   hero: Hero;
