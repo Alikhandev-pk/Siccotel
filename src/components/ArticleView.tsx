@@ -13,6 +13,21 @@ export function formatArticleDate(date: string) {
   return new Date(`${date}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 }
 
+/**
+ * Gallery photos in rows of two (from sm up). Each photo's share of its row follows its
+ * aspect ratio, so a landscape and a portrait photo side by side end at the same height,
+ * uncropped; two photos of the same shape split the row evenly. A lone last photo keeps half.
+ * The width shares the row less the gap and both cards' 1px borders, which each card adds back.
+ */
+function galleryShares<T extends { width: number; height: number }>(images: T[]) {
+  return images.map((img, i) => {
+    const partner = images[i % 2 === 0 ? i + 1 : i - 1];
+    if (!partner) return { img, share: 0.5 };
+    const ratio = (x: T) => (x.width > 0 && x.height > 0 ? x.width / x.height : 1);
+    return { img, share: ratio(img) / (ratio(img) + ratio(partner)) };
+  });
+}
+
 /** One article's page body, shared by the public route and the admin-only draft preview. */
 export function ArticleView({ article, more }: { article: Published<Article>; more: Published<Article>[] }) {
   const hero = article.cover;
@@ -74,10 +89,19 @@ export function ArticleView({ article, more }: { article: Published<Article>; mo
           </div>
 
           {gallery.length > 0 && (
-            <ul className="mx-auto mt-7 grid max-w-4xl items-start gap-3 sm:mt-14 sm:grid-cols-2 sm:gap-4" aria-label="Photo gallery">
-              {gallery.map((img) => (
-                <li key={img.src} className="overflow-hidden rounded-[4px] border border-line">
-                  <Image {...imageProps(img)} alt={img.alt} sizes="(min-width: 1024px) 440px, (min-width: 640px) 50vw, 100vw" className="h-auto w-full" />
+            <ul className="mx-auto mt-7 flex max-w-4xl flex-wrap items-start gap-3 sm:mt-14 sm:gap-4" aria-label="Photo gallery">
+              {galleryShares(gallery).map(({ img, share }) => (
+                <li
+                  key={img.src}
+                  style={{ "--share": share } as React.CSSProperties}
+                  className="w-full overflow-hidden rounded-[4px] border border-line sm:w-[calc((100%-1rem-4px)*var(--share)+2px-0.25px)]"
+                >
+                  <Image
+                    {...imageProps(img)}
+                    alt={img.alt}
+                    sizes={`(min-width: 1024px) ${Math.round(880 * share)}px, (min-width: 640px) ${Math.round(100 * share)}vw, 100vw`}
+                    className="h-auto w-full"
+                  />
                 </li>
               ))}
             </ul>
