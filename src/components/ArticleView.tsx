@@ -93,7 +93,7 @@ export function ArticleView({ article, more }: { article: Published<Article>; mo
       </article>
 
       {more.length > 0 && (
-        <section aria-labelledby="more-title" className="border-t border-line bg-stone py-11 sm:py-16 lg:py-24">
+        <section aria-labelledby="more-title" className="bg-stone py-11 sm:py-16 lg:py-24">
           <div className="container-site">
             <h2 id="more-title" className="text-[1.75rem] font-semibold sm:text-3xl">
               More news

@@ -16,7 +16,7 @@ export async function SiteFooter() {
     { label: "PTA device check", href: settings.links.ptaDirbs },
   ];
   return (
-    <footer className="site-footer on-dark border-t border-night-line bg-night text-white">
+    <footer className="site-footer on-dark bg-night text-white">
       <div className="container-site grid grid-cols-2 gap-x-4 gap-y-6 py-8 sm:gap-9 sm:py-10 lg:grid-cols-12 lg:gap-8 lg:py-12">
         <div className="col-span-2 lg:col-span-4">
           <SiccotelLogo tone="light" className="h-8 w-auto" />

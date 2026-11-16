@@ -157,7 +157,7 @@ export default async function HomePage() {
       {/* Nationwide network */}
       <section
         aria-labelledby="reach-title"
-        className="section-space border-y border-line bg-stone"
+        className="section-space bg-stone"
       >
         <div className="container-site">
           <Reveal>
@@ -333,7 +333,7 @@ export default async function HomePage() {
       {news.length > 0 && (
         <section
           aria-labelledby="news-title"
-          className="section-space border-t border-line bg-stone"
+          className="section-space bg-stone"
         >
           <div className="container-site">
             <div className="flex flex-row items-end justify-between gap-4">

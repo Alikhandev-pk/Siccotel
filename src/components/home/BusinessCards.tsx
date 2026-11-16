@@ -12,7 +12,7 @@ const detailHref: Record<string, string> = { distribution: "/services#distributi
 /** Phones get a thumbnail beside the title and the summary below, so three cards stay a short scroll. */
 export function BusinessCards({ copy, activities }: { copy: HomeDoc["business"]; activities: ServiceActivity[] }) {
   return (
-    <section id="our-business" aria-labelledby="business-title" className="section-space border-y border-line bg-stone">
+    <section id="our-business" aria-labelledby="business-title" className="section-space bg-stone">
       <div className="container-site">
         <Reveal className="grid gap-5 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-7">

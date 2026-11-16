@@ -45,7 +45,7 @@ export default async function PartnersPage() {
         </div>
       </section>
 
-      <section aria-labelledby="other-title" className="section-space border-y border-line bg-stone">
+      <section aria-labelledby="other-title" className="section-space bg-stone">
         <div className="container-site grid gap-8 sm:gap-12 lg:grid-cols-3 lg:gap-8">
           <div>
             <h2 id="other-title" className="text-2xl font-semibold">{doc.apple.name}</h2>

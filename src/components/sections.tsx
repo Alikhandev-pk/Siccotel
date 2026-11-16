@@ -118,7 +118,7 @@ export function PartnerLogo({ partner, height = 36, className = "", eager = fals
 /** A static logo row. */
 export function PartnerStrip({ partners, title = "Trusted by global device brands" }: { partners: LogoPartner[]; title?: string }) {
   return (
-    <section aria-labelledby="partners-title" className="border-b border-line bg-white">
+    <section aria-labelledby="partners-title" className="bg-white">
       <div className="container-site py-3 sm:py-6 lg:py-7">
         <div className="flex items-center justify-between gap-4 sm:gap-6">
           <h2 id="partners-title" className="text-xs font-semibold tracking-[0.1em] text-muted uppercase sm:tracking-[0.14em]">

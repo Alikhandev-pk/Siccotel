@@ -41,7 +41,7 @@ export default async function ProductsPage() {
         </nav>
       </PageHero>
 
-      <section id="assembled" aria-labelledby="assembled-title" className="section-space border-b border-line">
+      <section id="assembled" aria-labelledby="assembled-title" className="section-space">
         <div className="container-site">
           <div className="flex flex-col justify-between gap-2 sm:gap-5 lg:flex-row lg:items-end">
             <SectionHeader eyebrow={doc.assembled.eyebrow} title={<span id="assembled-title">{doc.assembled.title}</span>} intro={doc.assembled.intro} />
@@ -54,7 +54,7 @@ export default async function ProductsPage() {
       </section>
 
       {catalogue.length > 0 && (
-        <section id="catalogue" aria-labelledby="catalogue-title" className="section-space border-b border-line">
+        <section id="catalogue" aria-labelledby="catalogue-title" className="section-space">
           <div className="container-site">
             <SectionHeader eyebrow={doc.catalogue.eyebrow} title={<span id="catalogue-title">{doc.catalogue.title}</span>} intro={doc.catalogue.intro} />
             <ProductGrid products={catalogue} empty="" />
@@ -94,7 +94,7 @@ export default async function ProductsPage() {
         </div>
       </section>
 
-      <section id="buy" aria-labelledby="buy-title" className="section-space border-t border-line">
+      <section id="buy" aria-labelledby="buy-title" className="section-space">
         <div className="container-site grid gap-8 sm:gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-5">
             <h2 className="text-2xl font-semibold">{doc.buy.accessoriesTitle}</h2>
