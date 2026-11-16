@@ -13,7 +13,6 @@ import assemblyFloor from "@/assets/company/siccotel-telecom-assembly-floor.jpg"
 import factoryExterior from "@/assets/company/siccotel-telecom-factory-exterior.jpg";
 import heroAssemblyFloor from "@/assets/company/siccotel-hero-assembly-floor.jpg";
 import outlinedMap from "@/assets/company/pakistan-regional-map-outlined.png";
-import networkMap from "@/assets/company/pakistan-regional-network-map.png";
 import ecommerceClientsArt from "@/assets/company/ecommerce-clients.png";
 import partnerBanner from "@/assets/retail/official-partner-banner.jpg";
 import mwcHmd from "@/assets/news/mwc-barcelona-2025-hmd-booth.jpg";
@@ -257,7 +256,10 @@ export const defaultDocs: DocMap = {
       eyebrow: "Our presence",
       title: "Affordable Technology for Every Household",
       text: presenceText,
-      map: img(networkMap, "Map of Pakistan showing Siccotel’s north, central and south sales regions"),
+      map: img(
+        outlinedMap,
+        "Map of Pakistan divided into Siccotel's south, central and north regions, outlined in red, blue and green, with a legend. Marked cities: Peshawar, Rawalpindi, Sialkot, Gujranwala, Lahore, Faisalabad, Multan, Quetta, Sukkur and Karachi, with Kashmir labelled.",
+      ),
     },
     journey: {
       eyebrow: "Our journey",
