@@ -53,7 +53,7 @@ export default async function AssemblyPage() {
         </div>
       </section>
 
-      <section aria-label="Inside Siccotel Telecom" className="pb-10 lg:pb-16">
+      <section aria-label="Inside Siccotel Telecom" className="section-space-end">
         <div className="container-site grid items-start gap-4 sm:grid-cols-[1.35fr_1fr] sm:gap-6">
           {photoA?.image?.src && (
             <figure>
@@ -70,7 +70,7 @@ export default async function AssemblyPage() {
         </div>
       </section>
 
-      <section aria-labelledby="chain-title" className="section-space bg-stone">
+      <section aria-labelledby="chain-title" className="section-space">
         <div className="container-site">
           <SectionHeader eyebrow={doc.chain.eyebrow} title={<span id="chain-title">{doc.chain.title}</span>} intro={doc.chain.intro} />
           <ol className="mt-6 grid border-t border-l border-line sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -111,7 +111,7 @@ export default async function AssemblyPage() {
       </section>
 
       {/* id="products" keeps old /manufacturing#products links landing here after the redirect. */}
-      <section id="products" aria-labelledby="products-title" className="section-space bg-stone">
+      <section id="products" aria-labelledby="products-title" className="section-space">
         <div className="container-site">
           <div className="flex flex-col justify-between gap-2 sm:gap-5 lg:flex-row lg:items-end">
             <SectionHeader eyebrow={doc.products.eyebrow} title={<span id="products-title">{doc.products.title}</span>} intro={doc.products.intro} />

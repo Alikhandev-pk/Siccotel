@@ -84,7 +84,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <section aria-labelledby="presence-title" className="bg-stone section-space">
+      <section aria-labelledby="presence-title" className="section-space">
         <div className="container-site grid items-center gap-6 sm:gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-5">
             <SectionHeader eyebrow={doc.presence.eyebrow} title={<span id="presence-title">{doc.presence.title}</span>} />

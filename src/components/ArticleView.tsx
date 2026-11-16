@@ -53,7 +53,7 @@ export function ArticleView({ article, more }: { article: Published<Article>; mo
           </div>
         )}
 
-        <div className="container-site py-9 sm:py-14 lg:py-20">
+        <div className="section-space container-site">
           <div className="mx-auto max-w-2xl space-y-4 text-base leading-[1.7] text-ink-soft sm:space-y-6 sm:text-lg sm:leading-[1.75]">
             {parseBody(article.body ?? "").map((block, i) => {
               if ("text" in block) return <p key={i}>{block.text}</p>;
@@ -93,7 +93,7 @@ export function ArticleView({ article, more }: { article: Published<Article>; mo
       </article>
 
       {more.length > 0 && (
-        <section aria-labelledby="more-title" className="bg-stone py-11 sm:py-16 lg:py-24">
+        <section aria-labelledby="more-title" className="section-space">
           <div className="container-site">
             <h2 id="more-title" className="text-[1.75rem] font-semibold sm:text-3xl">
               More news

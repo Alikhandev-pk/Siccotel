@@ -60,7 +60,7 @@ export function RetailEcommerceSection({ copy, clients, afterSales, links }: { c
   const supportLinks = supportLinksFor(links);
 
   return (
-    <section id="retail-ecommerce" aria-labelledby="retail-ecommerce-title" className="section-space bg-white">
+    <section id="retail-ecommerce" aria-labelledby="retail-ecommerce-title" className="section-space">
       <div className="container-site">
         <Reveal>
           <SectionHeader

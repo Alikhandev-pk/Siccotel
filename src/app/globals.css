@@ -309,8 +309,14 @@
   to { opacity: 1; }
 }
 
-/* Shared section rhythm for the homepage and inner pages: 36px on phones and tablets, up to 64px on desktop. */
-.section-space { padding-block: clamp(2.25rem, 4.5vw, 4rem); }
+/* Shared section rhythm for the homepage and inner pages: 36px on phones and tablets, up to 64px on desktop.
+   Content sections share the white page background, so two adjacent sections are
+   separated by this space twice (72px on phones, 128px on desktop) rather than by a
+   colour change or a rule. .section-space-end is for a section that continues the one
+   above it and only needs the closing space. */
+:root { --section-space: clamp(2.25rem, 4.5vw, 4rem); }
+.section-space { padding-block: var(--section-space); }
+.section-space-end { padding-bottom: var(--section-space); }
 
 /* Phones: page headings sit at 30–34px, so a long title stays on few lines. */
 @media (max-width: 639px) {

@@ -27,7 +27,7 @@ function ActivitySection({ activity, index, links }: { activity: ServiceActivity
     <section
       id={activity.id}
       aria-labelledby={`${activity.id}-title`}
-      className={`section-space ${index % 2 === 1 ? "bg-stone" : ""}`}
+      className="section-space"
     >
       <div className="container-site grid items-start gap-7 sm:gap-12 lg:grid-cols-12 lg:gap-8">
         <div className={`lg:col-span-6 ${reversed ? "lg:order-2 lg:col-start-7" : ""}`}>

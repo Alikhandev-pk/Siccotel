@@ -62,7 +62,7 @@ export default async function ProductsPage() {
         </section>
       )}
 
-      <section id="brands" aria-labelledby="brands-title" className="section-space bg-stone">
+      <section id="brands" aria-labelledby="brands-title" className="section-space">
         <div className="container-site">
           <div className="flex flex-col justify-between gap-2 sm:gap-5 lg:flex-row lg:items-end">
             <SectionHeader eyebrow={doc.brands.eyebrow} title={<span id="brands-title">{doc.brands.title}</span>} intro={doc.brands.intro} />
