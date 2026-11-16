@@ -14,41 +14,41 @@ export type Milestone = {
 export const milestones: Milestone[] = [
   {
     period: "2001–2006",
-    title: "Founded and retail expansion",
+    title: "Founded and Retail Expansion",
     description: "Siccotel is established in Karachi in 2001 and expands its retail business.",
     highlight: true,
   },
   {
     period: "2007–2010",
-    title: "Nationwide distribution",
+    title: "Nationwide Distribution",
     description: "The business grows from retail into distribution across Pakistan.",
     highlight: true,
   },
   {
     period: "2011",
-    title: "Own brand: HIQO",
+    title: "Own Brand: HIQO",
     description: "Siccotel launches its own mobile phone brand, HIQO, in Pakistan.",
     highlight: true,
   },
   {
     period: "2014",
-    title: "Alcatel distribution",
+    title: "Alcatel Distribution",
     description: "Distribution of Alcatel devices.",
   },
   {
     period: "2016",
-    title: "Infinix distribution",
+    title: "Infinix Distribution",
     description: "Start of Infinix distribution, which continues today.",
     highlight: true,
   },
   {
     period: "2018",
-    title: "TCL distribution",
+    title: "TCL Distribution",
     description: "Distribution of TCL devices.",
   },
   {
     period: "2021",
-    title: "itel, Nokia and Infinix accessories",
+    title: "itel, Nokia and Infinix Accessories",
     description: "Distribution of itel and Nokia devices and Infinix accessories begins.",
     highlight: true,
   },

@@ -85,7 +85,7 @@ export default async function ContactPage() {
                 <li className="flex gap-4">
                   <Mail aria-hidden className="mt-0.5 size-5 shrink-0 text-accent" strokeWidth={1.75} />
                   <div>
-                    <h3 className="font-semibold">Sales email</h3>
+                    <h3 className="font-semibold">Sales Email</h3>
                     <a href={`mailto:${contact.email}`} className={`${tapBlockCls} text-[0.9375rem] ${linkCls}`}>
                       {contact.email}
                     </a>

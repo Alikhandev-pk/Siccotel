@@ -46,9 +46,9 @@ type HeroBanner = Published<Banner>;
 function BannerImage({ banner, first }: { banner: HeroBanner; first: boolean }) {
   const loading = first ? { preload: true } : { loading: "eager" as const };
   if (!banner.mobile?.src) {
-    return <Image src={banner.desktop.src} alt={banner.desktop.alt} fill sizes="100vw" quality={90} {...loading} className="object-contain" />;
+    return <Image src={banner.desktop.src} alt={banner.desktop.alt} fill sizes="100vw" quality={100} {...loading} className="object-contain" />;
   }
-  const common = { alt: banner.desktop.alt, sizes: "100vw", quality: 90 };
+  const common = { alt: banner.desktop.alt, sizes: "100vw", quality: 100 };
   const { props: { srcSet: desktopSet } } = getImageProps({ ...common, src: banner.desktop.src, width: banner.desktop.width, height: banner.desktop.height });
   const { props: { srcSet: mobileSet, ...rest } } = getImageProps({ ...common, src: banner.mobile.src, width: banner.mobile.width, height: banner.mobile.height, ...(first ? { preload: true } : { loading: "eager" as const }) });
   return (

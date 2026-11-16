@@ -18,8 +18,9 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
-    // 90 keeps text in the campaign banners crisp and suits the limited-resolution assembly photograph.
-    qualities: [75, 90],
+    // 100 is for the homepage campaign banners, which are served at full quality;
+    // 90 suits the limited-resolution assembly photograph.
+    qualities: [75, 90, 100],
   },
   turbopack: {
     rules: {

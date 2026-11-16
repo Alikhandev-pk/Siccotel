@@ -99,7 +99,7 @@ export default async function AssemblyPage() {
           <div className="lg:col-span-6 lg:col-start-7">
             <p className="eyebrow mb-4">Chairman’s message</p>
             <h2 id="message-title" className="sr-only">
-              Chairman’s message
+              Chairman’s Message
             </h2>
             <blockquote className="space-y-5">
               <p className="font-display text-xl leading-snug font-medium tracking-[-0.015em] sm:text-[1.75rem]">“{doc.chairman.quote}”</p>
@@ -172,7 +172,7 @@ export default async function AssemblyPage() {
             <div className="flex gap-4">
               <MapPin aria-hidden className="mt-1 size-5 shrink-0 text-accent" strokeWidth={1.75} />
               <div>
-                <h3 className="font-semibold">Factory location</h3>
+                <h3 className="font-semibold">Factory Location</h3>
                 <address className="mt-1 text-[0.9375rem] leading-relaxed not-italic text-muted">
                   {contact.factory.lines.map((l) => (
                     <span key={l} className="block">
@@ -185,7 +185,7 @@ export default async function AssemblyPage() {
             <div className="flex gap-4">
               <Mail aria-hidden className="mt-1 size-5 shrink-0 text-accent" strokeWidth={1.75} />
               <div>
-                <h3 className="font-semibold">Siccotel Telecom email</h3>
+                <h3 className="font-semibold">Siccotel Telecom Email</h3>
                 <ul className="mt-1 text-[0.9375rem] sm:space-y-1">
                   {contact.factory.emails.map((e) => (
                     <li key={e.value} className="[overflow-wrap:anywhere]">

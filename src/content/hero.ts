@@ -3,7 +3,7 @@ export type HeroBanner = {
   src: string;
   /** The artwork's text is part of the image, so the alt text repeats it. */
   alt: string;
-  /** Matches the artwork's edges, for the space beside it on very wide screens. */
+  /** Matches the artwork's left edge; shown behind the banner while the image loads. */
   background: string;
   brand: string;
   title: string;
@@ -20,27 +20,27 @@ export type HeroBanner = {
 export const heroBanners: HeroBanner[] = [
   {
     id: "samsung",
-    src: "/assets/banners/samsung-galaxy-a57-a37-campaign.jpg",
-    alt: "Samsung campaign: “Awesome Is For Everyone!” Galaxy A57 5G and A37 5G, “A Bigger View For Everything”, with two navy phones shown front and back.",
-    background: "#fafafa",
+    src: "/assets/banners/samsung-galaxy-s26-series-campaign.png",
+    alt: "Samsung campaign: Galaxy S26 Series, “Galaxy AI is here”, “Get Yours Now!”, with the S26 FE, S26, S26+ and S26 Ultra fanned out in mint, white, blue and violet.",
+    background: "#e6f0f0",
     brand: "Samsung",
-    title: "Galaxy A57 5G & A37 5G",
-    link: { label: "View on Sicco Store", href: "https://siccostore.pk/product/samsung-galaxy-a57-5g/" },
+    title: "Galaxy S26 Series",
+    link: { label: "View on Sicco Store", href: "https://siccostore.pk/product-category/smartphones/?e-filter-a31e8d7-product_brand=samsung" },
   },
   {
     id: "infinix",
-    src: "/assets/banners/infinix-note-hot-smart-campaign.jpg",
-    alt: "Infinix campaign: “Defining the Future”, Note, Hot and Smart series, with five phones in orange, black, grey, blue and silver.",
-    background: "#e9e9e9",
+    src: "/assets/banners/infinix-hot-70-pro-campaign.png",
+    alt: "Infinix campaign: HOT 70 Pro, “Be HOT. Be Different.”, 8GB RAM and 128GB storage, 50MP HOT camera, MediaTek Dimensity 7100 processor and 6.76-inch 144Hz LCD display, with three phones in white, teal and peach.",
+    background: "#fdf8f0",
     brand: "Infinix",
-    title: "Note, Hot & Smart series",
-    link: { label: "View on Sicco Store", href: "https://siccostore.pk/product-category/smartphones/?e-filter-a31e8d7-product_brand=infinix" },
+    title: "HOT 70 Pro",
+    link: { label: "View on Sicco Store", href: "https://siccostore.pk/product/infinix-hot-70-2/" },
   },
   {
     id: "redmagic",
-    src: "/assets/banners/redmagic-11-pro-campaign.jpg",
+    src: "/assets/banners/redmagic-11-pro-campaign.png",
     alt: "REDMAGIC and nubia campaign: REDMAGIC 11 Pro, “Ignite the Next-Gen”, “Exclusively available at www.siccostore.pk”, with a silver phone beside a model.",
-    background: "#efefef",
+    background: "#ebe8e8",
     brand: "REDMAGIC by nubia",
     title: "REDMAGIC 11 Pro",
     link: { label: "View on Sicco Store", href: "https://siccostore.pk/product/zte-nubia-redmagic-11-pro/" },

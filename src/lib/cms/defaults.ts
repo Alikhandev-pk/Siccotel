@@ -50,8 +50,8 @@ export const defaultBanners: SeedEntry<Banner>[] = heroBanners.map((b) => ({
   data: {
     brand: b.brand,
     title: b.title,
-    // The campaign originals are 4000 × 1435 (docs/CONTENT_AUDIT.md).
-    desktop: { src: b.src, width: 4000, height: 1435, alt: b.alt },
+    // The campaign originals are 4267 × 1531 PNGs, stored unmodified.
+    desktop: { src: b.src, width: 4267, height: 1531, alt: b.alt },
     mobile: null,
     background: b.background,
     ctaLabel: b.link.label,
@@ -176,7 +176,7 @@ export const defaultDocs: DocMap = {
       actionLabel: heroIntro.action.label,
       actionHref: heroIntro.action.href,
     },
-    partnerStripTitle: "Trusted by global device brands",
+    partnerStripTitle: "Trusted by Global Device Brands",
     glance: {
       eyebrow: "Company at a glance",
       title: "One of Pakistan’s Largest Smartphone Distributors",
@@ -191,13 +191,13 @@ export const defaultDocs: DocMap = {
     },
     business: {
       eyebrow: "Our business",
-      title: "From global brands to everyday connections.",
+      title: "From Global Brands to Everyday Connections",
       intro: "Three connected businesses: distribution for global brands, local assembly through Siccotel Telecom, and retail & e-commerce.",
       cardImages: [businessCardImages.distribution, businessCardImages.manufacturing, businessCardImages.retail],
     },
     retail: {
       eyebrow: "Retail & e-commerce",
-      title: "Shop, get support or become a partner.",
+      title: "Shop, Get Support or Become a Partner",
       intro: retail.intro,
       introShort: retail.introShort,
       clientsTitle: "Corporate & E-commerce Clients",
@@ -205,7 +205,7 @@ export const defaultDocs: DocMap = {
     clients: homepageClients.map((c) => ({ name: c.name, logo: img(c.logo, c.name), url: c.url ?? "", serveAsIs: Boolean(c.serveAsIs) })),
     reach: {
       eyebrow: "Nationwide reach",
-      title: "A network that reaches every region.",
+      title: "A Network That Reaches Every Region",
       intro: "Siccotel’s sales and support network spans Pakistan’s north, central and south regions from its base in Karachi.",
       map: img(
         outlinedMap,
@@ -218,22 +218,22 @@ export const defaultDocs: DocMap = {
     },
     manufacturing: {
       eyebrow: "Manufacturing",
-      title: "Made in Pakistan, at Korangi Creek.",
+      title: "Made in Pakistan, at Korangi Creek",
       intro: "Siccotel Telecom (Pvt) Ltd is the group’s mobile phone assembly plant in Korangi Creek Industrial Park, Karachi — built to assemble devices for different brands under the Government’s “Made in Pakistan” initiative.",
       figure: "120,000",
       figureLabel: "sq. ft. of operational space at KCIP, Karachi",
       photo: { image: img(heroAssemblyFloor, "Workers assembling mobile phones at Siccotel Telecom’s Karachi facility"), caption: "Inside Siccotel Telecom’s mobile phone assembly facility." },
-      chain: ["Component sourcing", "Assembly", "Nationwide distribution", "Service centres"],
+      chain: ["Component Sourcing", "Assembly", "Nationwide Distribution", "Service Centres"],
       productsTitle: "Featured by Siccotel Telecom",
     },
     journey: {
       eyebrow: "Company journey",
-      title: "Two decades of steady progress.",
+      title: "Two Decades of Steady Progress",
       intro: "From a Karachi retail business to a nationwide distributor and manufacturer.",
     },
-    newsTitle: { eyebrow: "News & media", title: "Latest from Siccotel.", intro: "" },
+    newsTitle: { eyebrow: "News & media", title: "Latest from Siccotel", intro: "" },
     enquiry: {
-      title: "Partner with Siccotel.",
+      title: "Partner with Siccotel",
       intro: "Brands, dealers and manufacturing partners — tell us what you need and your enquiry will reach the right team.",
     },
   },
@@ -241,7 +241,7 @@ export const defaultDocs: DocMap = {
   about: {
     hero: {
       eyebrow: "About Siccotel",
-      title: "Building Pakistan’s access to technology since 2001.",
+      title: "Building Pakistan’s Access to Technology Since 2001",
       intro: "A Karachi company with deep roots in retail, grown into a nationwide distributor and local manufacturer of mobile devices.",
     },
     intro: [...aboutIntro],
@@ -251,17 +251,17 @@ export const defaultDocs: DocMap = {
       { image: img(dealersTour, "Siccotel and Inovi Telecom dealers on a rooftop overlooking Frankfurt"), caption: "The dealers’ Europe tour in Frankfurt." },
     ],
     stats: networkStats.map((s) => ({ ...s })),
-    mission: { eyebrow: "Our mission", title: "Technology, summed up in one word.", text: mission },
-    values: { eyebrow: "Core values", title: "What we stand for.", intro: coreValuesIntro, items: [...coreValues] },
+    mission: { eyebrow: "Our mission", title: "Technology, Summed Up in One Word", text: mission },
+    values: { eyebrow: "Core values", title: "What We Stand For", intro: coreValuesIntro, items: [...coreValues] },
     presence: {
       eyebrow: "Our presence",
-      title: "Affordable technology for every household.",
+      title: "Affordable Technology for Every Household",
       text: presenceText,
       map: img(networkMap, "Map of Pakistan showing Siccotel’s north, central and south sales regions"),
     },
     journey: {
       eyebrow: "Our journey",
-      title: "Documented milestones.",
+      title: "Documented Milestones",
       intro: "Milestones as published in Siccotel’s journey timeline.",
       milestones: milestones.map((m) => ({ ...m, highlight: Boolean(m.highlight) })),
     },
@@ -270,7 +270,7 @@ export const defaultDocs: DocMap = {
   services: {
     hero: {
       eyebrow: "Services",
-      title: "One partner, from import to the final sale.",
+      title: "One Partner, from Import to the Final Sale",
       intro: "Siccotel combines distribution, local manufacturing and retail. Each part of the business serves a different audience — here is what we do and how to work with us.",
     },
     activities: businessActivities.map((a) => ({
@@ -289,12 +289,12 @@ export const defaultDocs: DocMap = {
   assembly: {
     hero: {
       eyebrow: "Assembly",
-      title: "Assembling devices in Pakistan, for Pakistan.",
+      title: "Assembling Devices in Pakistan, for Pakistan",
       intro: "Siccotel moved into local manufacturing by setting up Siccotel Telecom (Pvt) Ltd — an assembly plant in Korangi Creek Industrial Park, Karachi, supporting the Government of Pakistan’s “Made in Pakistan” initiative.",
     },
     overview: {
       eyebrow: "Facility overview",
-      title: "Siccotel Telecom.",
+      title: "Siccotel Telecom",
       paragraphs: [
         "Siccotel Telecom is the group’s assembly plant in Korangi Creek Industrial Park, Karachi, with a 120,000 sq. ft. operational space and room for multiple production and packing lines.",
         "It extends an end-to-end service delivery infrastructure — from component sourcing and assembly to nationwide distribution and service centres — that underpins Siccotel’s commitment to excellence.",
@@ -313,13 +313,13 @@ export const defaultDocs: DocMap = {
     ],
     chain: {
       eyebrow: "How it fits together",
-      title: "An end-to-end chain.",
+      title: "An End-to-End Chain",
       intro: "Manufacturing connects directly to Siccotel’s distribution and after-sales network.",
       steps: [
-        { title: "Component sourcing", text: "Sourcing components for assembly." },
+        { title: "Component Sourcing", text: "Sourcing components for assembly." },
         { title: "Assembly", text: "Assembling mobile phones for partner brands in Karachi." },
-        { title: "Nationwide distribution", text: "Moving devices through regional hubs to wholesalers and retailers." },
-        { title: "Service centres", text: "After-sales support for customers once devices are sold." },
+        { title: "Nationwide Distribution", text: "Moving devices through regional hubs to wholesalers and retailers." },
+        { title: "Service Centres", text: "After-sales support for customers once devices are sold." },
       ],
     },
     chairman: {
@@ -328,16 +328,16 @@ export const defaultDocs: DocMap = {
       body: "We envision Pakistan not merely as a consumer of technology but as a meaningful participant in global innovation — and Siccotel Telecom will do its part with pride, while boosting the local economy through employment and localisation under the Made in Pakistan initiative.",
       attribution: "From the Chairman’s message, Siccotel Telecom.",
     },
-    products: { eyebrow: "Products", title: "Featured by Siccotel Telecom.", intro: "Devices listed under “Our Products” on the Siccotel Telecom website." },
+    products: { eyebrow: "Products", title: "Featured by Siccotel Telecom", intro: "Devices listed under “Our Products” on the Siccotel Telecom website." },
     partners: {
       eyebrow: "Strategic partners",
-      title: "Partners of Siccotel Telecom.",
+      title: "Partners of Siccotel Telecom",
       logos: manufacturingPartners.map((p) => ({ name: p.name, logo: img(p.logo!, p.name), logoScale: p.logoScale ?? 1 })),
       plans: futurePlans,
     },
     contact: {
       eyebrow: "Work with us",
-      title: "Talk to us about local assembly.",
+      title: "Talk to Us About Local Assembly",
       intro: "Brands and manufacturing partners can send an enquiry, or contact Siccotel Telecom directly.",
     },
   },
@@ -345,12 +345,12 @@ export const defaultDocs: DocMap = {
   partners: {
     hero: {
       eyebrow: "Partners",
-      title: "Partnerships with global device brands.",
+      title: "Partnerships with Global Device Brands",
       intro: "Siccotel’s relationships differ from brand to brand. Each one is described here as published by Siccotel — whether distribution, exclusive distribution, authorized reselling or a manufacturing partnership.",
     },
     brandsSection: {
       eyebrow: "Device brands",
-      title: "Distribution partnerships.",
+      title: "Distribution Partnerships",
       note: "Start years are taken from Siccotel’s published journey timeline. ZTE nubia’s exclusive distribution was announced on Siccotel’s News & Media page.",
     },
     brands: brandPartners.map((p) => ({ name: p.name, logo: img(p.logo!, p.name), relationship: p.relationship, details: [...p.details], logoScale: p.logoScale ?? 1 })),
@@ -360,45 +360,45 @@ export const defaultDocs: DocMap = {
     earlier: earlierPartners.map((p) => ({ ...p })),
     manufacturingSection: {
       eyebrow: "Manufacturing",
-      title: "Strategic partners of Siccotel Telecom.",
+      title: "Strategic Partners of Siccotel Telecom",
       intro: "Listed as strategic partners by Siccotel Telecom, the group’s assembly plant in Karachi.",
     },
-    cta: { eyebrow: "For brands", title: "Bring your brand to Pakistan with Siccotel.", intro: "Talk to us about distribution, retail reach and local assembly." },
+    cta: { eyebrow: "For brands", title: "Bring Your Brand to Pakistan with Siccotel", intro: "Talk to us about distribution, retail reach and local assembly." },
   },
 
   newsPage: {
-    hero: { eyebrow: "News & media", title: "Unlocking IT and telecom opportunities.", intro: "Partnerships, industry events and milestones from Siccotel — most recent first." },
+    hero: { eyebrow: "News & media", title: "Unlocking IT and Telecom Opportunities", intro: "Partnerships, industry events and milestones from Siccotel — most recent first." },
     footnote: "Articles are republished from Siccotel’s News & Media page, which does not list publication dates. Event dates are shown only where an article states them.",
   },
 
   contact: {
     hero: {
       eyebrow: "Contact",
-      title: "Partner with Siccotel.",
+      title: "Partner with Siccotel",
       intro: "Dealers, brands, manufacturing partners and customers — tell us what you need and we’ll route your enquiry to the right team.",
     },
-    formTitle: "Send an enquiry",
-    detailsTitle: "Contact details",
-    supportTitle: "Customer support",
+    formTitle: "Send an Enquiry",
+    detailsTitle: "Contact Details",
+    supportTitle: "Customer Support",
   },
 
   productsPage: {
     hero: {
       eyebrow: "Products",
-      title: "Devices for Pakistan, from global brands and local assembly.",
+      title: "Devices for Pakistan, from Global Brands and Local Assembly",
       intro: "Siccotel distributes smartphones, accessories and TVs for global brands across Pakistan, and assembles mobile phones in Karachi through Siccotel Telecom.",
     },
     assembled: {
       eyebrow: "Assembled in Karachi",
-      title: "Featured by Siccotel Telecom.",
+      title: "Featured by Siccotel Telecom",
       intro: "Devices listed under “Our Products” on the Siccotel Telecom website, from the group’s assembly plant in Korangi Creek Industrial Park.",
     },
     catalogue: {
       eyebrow: "Catalogue",
-      title: "More products.",
+      title: "More Products",
       intro: "Other devices and products available through Siccotel.",
     },
-    brands: { eyebrow: "Distribution", title: "Brands Siccotel distributes.", intro: "Product lines and start years for each brand, as published by Siccotel.", note: "Start years are taken from Siccotel’s published journey timeline." },
+    brands: { eyebrow: "Distribution", title: "Brands Siccotel Distributes", intro: "Product lines and start years for each brand, as published by Siccotel.", note: "Start years are taken from Siccotel’s published journey timeline." },
     buy: { eyebrow: "Where to buy", tagline: retail.online.tagline, points: [...retail.online.points], accessoriesTitle: "Accessories" },
   },
 };

@@ -165,7 +165,7 @@ export function EnquiryForm({ deliveryConfigured, email }: { deliveryConfigured:
     return (
       <div ref={statusRef} tabIndex={-1} role="status" className="rounded-[4px] border border-line bg-stone p-8 focus:outline-none">
         <CircleCheck aria-hidden className="size-8 text-[#1f7a4d]" />
-        <h3 className="mt-4 text-2xl font-semibold">Thank you — your enquiry has been sent.</h3>
+        <h3 className="mt-4 text-2xl font-semibold">Thank You — Your Enquiry Has Been Sent</h3>
         <p className="mt-3 leading-relaxed text-ink-soft">
           The Siccotel team will be in touch. For anything urgent, email{" "}
           <a href={`mailto:${contact.email}`} className="font-semibold text-ink underline underline-offset-4">
@@ -193,7 +193,7 @@ export function EnquiryForm({ deliveryConfigured, email }: { deliveryConfigured:
         <div className="rounded-[4px] border border-line-strong bg-stone p-4 text-[0.9375rem] leading-relaxed sm:p-5">
           <h3 className="flex items-start gap-2 font-semibold text-ink">
             <CircleAlert aria-hidden className="mt-0.5 size-5 shrink-0 text-accent" />
-            Online enquiry delivery is currently unavailable.
+            Online Enquiry Delivery Is Currently Unavailable
           </h3>
           <p className="mt-2 text-ink-soft">
             This form cannot send your message yet. Please email{" "}
@@ -213,7 +213,7 @@ export function EnquiryForm({ deliveryConfigured, email }: { deliveryConfigured:
         >
           <h3 className="flex items-center gap-2 font-semibold text-accent">
             <CircleAlert aria-hidden className="size-5" />
-            Please fix {errorList.length === 1 ? "this field" : `these ${errorList.length} fields`}:
+            Please Fix {errorList.length === 1 ? "This Field" : `These ${errorList.length} Fields`}
           </h3>
           <ul className="mt-2 space-y-1 pl-7 text-sm">
             {errorList.map((k) => (

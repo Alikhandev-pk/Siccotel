@@ -65,7 +65,7 @@ export default async function PartnersPage() {
             {doc.accessoriesNote && <p className="mt-4 text-sm text-muted">{doc.accessoriesNote}</p>}
           </div>
           <div>
-            <h2 className="text-2xl font-semibold">Earlier milestones</h2>
+            <h2 className="text-2xl font-semibold">Earlier Milestones</h2>
             <ul className="mt-4 divide-y divide-line border-y border-line">
               {doc.earlier.map((p) => (
                 <li key={p.name} className="py-4">

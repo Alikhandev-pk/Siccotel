@@ -27,7 +27,7 @@ export default function ArticlePage({ params }: PageProps<"/news/[slug]">) {
 
 function ArticleLoading() {
   return (
-    <div className="bg-stone">
+    <div>
       <div className="container-site py-16 lg:py-20">
         <Link href="/news" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-ink-soft hover:text-accent">
           <ArrowLeft aria-hidden className="size-4" /> All news

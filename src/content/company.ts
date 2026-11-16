@@ -28,7 +28,7 @@ export const topBarPhone = { display: "+92 326 8400903", href: "tel:+92326840090
 export const contact = {
   email: "sales@siccotel.com",
   headOffice: {
-    label: "Head office",
+    label: "Head Office",
     lines: [
       "Alpha Trade Tower, Plot 6-C/1, Lane 12",
       "DHA Phase 2, Khayaban-e-Ittehad",
@@ -38,7 +38,7 @@ export const contact = {
     locality: "Karachi",
   },
   factory: {
-    label: "Siccotel Telecom assembly plant",
+    label: "Siccotel Telecom Assembly Plant",
     lines: [
       "GA-29-A6 & GA-30-A6",
       "Korangi Creek Industrial Park (KCIP)",

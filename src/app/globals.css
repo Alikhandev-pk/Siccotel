@@ -246,8 +246,9 @@
 .hero-banner {
   position: relative;
   width: 100%;
-  aspect-ratio: 4000 / 1435;
-  max-height: 760px;
+  /* Always the full artwork at full width: a height cap would leave bands beside it on
+     wide screens, and the Infinix artwork's orange edge cannot be matched by one colour. */
+  aspect-ratio: 4267 / 1531;
   overflow: hidden;
   background: #fafafa;
   touch-action: pan-y;
@@ -318,7 +319,7 @@
 .section-space { padding-block: var(--section-space); }
 .section-space-end { padding-bottom: var(--section-space); }
 
-/* Phones: page headings sit at 30–34px, so a long title stays on few lines. */
+/* Phones: page headings sit at 30–34px (26px under 360px), so a long title stays on few lines. */
 @media (max-width: 639px) {
   .t-h1,
   .hero-title {
@@ -329,6 +330,12 @@
   /* The map is scaled down, so its marker scales up to stay visible. */
   .reach-marker {
     r: 14px;
+  }
+}
+@media (max-width: 359px) {
+  .t-h1,
+  .hero-title {
+    font-size: 1.625rem;
   }
 }
 

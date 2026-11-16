@@ -28,7 +28,7 @@ export function PageHero({
 }) {
   const dark = tone === "dark";
   return (
-    <section className={`${dark ? "on-dark bg-night text-white" : "bg-stone"} relative overflow-hidden`}>
+    <section className={`${dark ? "on-dark bg-night text-white" : "bg-white"} relative overflow-hidden`}>
       {dark && <div aria-hidden className="grid-texture absolute inset-0" />}
       <div
         aria-hidden
@@ -57,7 +57,6 @@ export function PageHero({
           </div>
         )}
       </div>
-      <div aria-hidden className={`h-px ${dark ? "bg-night-line" : "bg-line"}`} />
     </section>
   );
 }
@@ -116,13 +115,13 @@ export function PartnerLogo({ partner, height = 36, className = "", eager = fals
 }
 
 /** A static logo row. */
-export function PartnerStrip({ partners, title = "Trusted by global device brands" }: { partners: LogoPartner[]; title?: string }) {
+export function PartnerStrip({ partners, title = "Trusted by Global Device Brands" }: { partners: LogoPartner[]; title?: string }) {
   return (
     <section aria-labelledby="partners-title" className="bg-white">
       <div className="container-site py-3 sm:py-6 lg:py-7">
         <div className="flex items-center justify-between gap-4 sm:gap-6">
           <h2 id="partners-title" className="text-xs font-semibold tracking-[0.1em] text-muted uppercase sm:tracking-[0.14em]">
-            <span className="sm:hidden">Brand partners</span>
+            <span className="sm:hidden">Brand Partners</span>
             <span className="hidden sm:inline">{title}</span>
           </h2>
           <TextLink href="/partners" className="min-h-11 shrink-0 text-sm">
@@ -251,7 +250,7 @@ export function NewsCard({
 /* ------------------------------------------------------------------ */
 /* Enquiry routing CTA                                                 */
 /* ------------------------------------------------------------------ */
-export function EnquiryPaths({ title = "How can we work together?", intro, email }: { title?: string; intro?: string; email: string }) {
+export function EnquiryPaths({ title = "How Can We Work Together?", intro, email }: { title?: string; intro?: string; email: string }) {
   return (
     <section className="on-dark relative overflow-hidden bg-night text-white" aria-labelledby="enquiry-paths-title">
       <div aria-hidden className="grid-texture absolute inset-0" />

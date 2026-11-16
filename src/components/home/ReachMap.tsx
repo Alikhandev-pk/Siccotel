@@ -235,7 +235,7 @@ export function ReachMap({ reach, artwork, settings }: { reach: HomeDoc["reach"]
             </h3>
           )}
           <h4 id="reach-list-label" className={`text-xs font-semibold tracking-[0.12em] text-muted uppercase ${region ? "mt-4" : ""}`}>
-            Cities on the regional map
+            Cities on the Regional Map
           </h4>
           {listed.length > 0 ? (
             <ul aria-labelledby="reach-list-label" className="mt-3 grid gap-2">
@@ -282,7 +282,7 @@ export function ReachMap({ reach, artwork, settings }: { reach: HomeDoc["reach"]
         </div>
 
         <div className="mt-4 border-t border-line pt-5">
-          <h3 className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">Published addresses, Karachi</h3>
+          <h3 className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">Published Addresses, Karachi</h3>
           <ul className="mt-2.5 divide-y divide-line lg:mt-3">
             {offices.map(({ icon: Icon, label, lines }) => (
               <li key={label} className="flex gap-3 py-2.5 lg:py-3">

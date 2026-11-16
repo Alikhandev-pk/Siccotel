@@ -251,7 +251,7 @@ export default async function HomePage() {
           <div className="mt-6 grid gap-6 border-t border-night-line pt-5 sm:mt-10 sm:gap-9 sm:pt-8 lg:mt-12 lg:grid-cols-12 lg:gap-10">
             <div className="lg:col-span-7">
               <h3 className="text-xs font-semibold tracking-[0.14em] text-night-muted uppercase">
-                End-to-end service delivery chain
+                End-to-End Service Delivery Chain
               </h3>
               <ChainProgress className="mt-3 grid grid-cols-2 gap-x-4 sm:mt-4 sm:gap-x-6">
                 {manufacturing.chain.map((step, i) => (

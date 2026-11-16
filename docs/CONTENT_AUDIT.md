@@ -80,11 +80,11 @@ Taken from the Elementor slider on the `https://siccotel.com/` homepage, inspect
 
 | Local file | Original URL |
 | :--- | :--- |
-| `samsung-galaxy-a57-a37-campaign.jpg` | https://siccotel.com/wp-content/uploads/2026/07/Siccotel-Web-New-Banner2-Recovered2S.jpg |
-| `infinix-note-hot-smart-campaign.jpg` | https://siccotel.com/wp-content/uploads/2026/07/Siccotel-Web-New-Banner2.jpg |
-| `redmagic-11-pro-campaign.jpg` | https://siccotel.com/wp-content/uploads/2026/07/Siccotel-Web-New-Banner2-Recovered2.jpg |
+| `samsung-galaxy-s26-series-campaign.png` | Supplied by the client, November 2026 (4267 × 1531 PNG, unmodified) |
+| `infinix-hot-70-pro-campaign.png` | Supplied by the client, November 2026 (4267 × 1531 PNG, unmodified) |
+| `redmagic-11-pro-campaign.png` | Supplied by the client, November 2026 (4267 × 1531 PNG, unmodified) |
 
-Captions name only what each banner shows. Each links to a Sicco Store page that returned HTTP 200 with the matching product title on the same date: `/product/samsung-galaxy-a57-5g/`, the Infinix smartphone listing, and `/product/zte-nubia-redmagic-11-pro/`. The "Exclusively available" wording appears only inside the REDMAGIC artwork and is not repeated in site copy.
+Captions name only what each banner shows. Each links to a Sicco Store page that returned HTTP 200 with the matching product title on the same date: the Samsung smartphone listing (the S26 series has no single page), `/product/infinix-hot-70-2/` (titled “Infinix Hot 70 Pro”), and `/product/zte-nubia-redmagic-11-pro/`, checked 16 November 2026. The "Exclusively available" wording appears only inside the REDMAGIC artwork and is not repeated in site copy.
 
 ---
 

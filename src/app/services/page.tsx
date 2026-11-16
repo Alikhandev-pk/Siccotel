@@ -7,6 +7,7 @@ import { getDoc, getSettings } from "@/lib/cms/public";
 import type { ServiceActivity, SettingsDoc } from "@/lib/cms/types";
 import { EnquiryPaths, PageHero } from "@/components/sections";
 import { ButtonLink, Reveal, TextLink } from "@/components/ui";
+import { HeadingWords } from "@/components/HeadingWords";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
@@ -34,7 +35,7 @@ function ActivitySection({ activity, index, links }: { activity: ServiceActivity
           <p className="font-display text-sm font-semibold text-muted tabular-nums">0{index + 1}</p>
           <p className="eyebrow mt-2 mb-3 sm:mt-4 sm:mb-4">{activity.kicker}</p>
           <h2 id={`${activity.id}-title`} className="text-[1.75rem] leading-[1.12] font-semibold sm:text-[2.75rem] sm:leading-[1.08]">
-            {activity.title}
+            <HeadingWords>{activity.title}</HeadingWords>
           </h2>
           <p className="mt-3 text-base leading-relaxed text-ink-soft sm:mt-5 sm:text-lg">{activity.summary}</p>
           <p className="mt-4 rounded-[6px] border border-line bg-white px-3 py-2 text-[0.9375rem] sm:mt-6 sm:inline-flex sm:rounded-full sm:px-4 sm:py-1.5 sm:text-sm">
@@ -158,7 +159,7 @@ export default async function ServicesPage() {
           <div className="lg:col-span-6">
             <p className="eyebrow mb-4">{afterSales.eyebrow}</p>
             <h2 id="after-sales-title" className="text-[1.75rem] leading-[1.12] font-semibold sm:text-[2.75rem] sm:leading-[1.08]">
-              {afterSales.title}
+              <HeadingWords>{afterSales.title}</HeadingWords>
             </h2>
             <p className="mt-3 text-base leading-relaxed text-ink-soft sm:mt-5 sm:text-lg">{afterSales.text}</p>
             <div className="mt-4 sm:mt-8">

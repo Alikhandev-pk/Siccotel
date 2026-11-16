@@ -32,7 +32,7 @@ export function BusinessCards({ copy, activities }: { copy: HomeDoc["business"];
             const points = (pointPicks[activity.id] ?? [0, 1, 2]).map((n) => activity.points[n]).filter(Boolean);
             return (
               <li key={activity.id}>
-                <article data-tilt="" className="group grid h-full grid-cols-[7.5rem_minmax(0,1fr)] items-center gap-x-3.5 overflow-hidden rounded-[8px] border border-line bg-white p-3.5 transition-[border-color,box-shadow] duration-200 hover:border-ink/25 hover:shadow-[0_18px_40px_-28px_rgba(22,24,27,0.45)] sm:grid-cols-[10rem_minmax(0,1fr)] md:flex md:flex-col md:items-stretch md:gap-x-0 md:p-0">
+                <article data-tilt="" className="group grid h-full grid-cols-[7.5rem_minmax(0,1fr)] max-[359px]:grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-x-3.5 overflow-hidden rounded-[8px] border border-line bg-white p-3.5 transition-[border-color,box-shadow] duration-200 hover:border-ink/25 hover:shadow-[0_18px_40px_-28px_rgba(22,24,27,0.45)] sm:grid-cols-[10rem_minmax(0,1fr)] md:flex md:flex-col md:items-stretch md:gap-x-0 md:p-0">
                   <div className="relative aspect-[16/10] overflow-hidden rounded-[4px] bg-stone-2 md:rounded-none">
                     {card?.image?.src && (
                       <Image

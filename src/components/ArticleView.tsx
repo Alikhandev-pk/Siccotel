@@ -22,7 +22,7 @@ export function ArticleView({ article, more }: { article: Published<Article>; mo
   return (
     <>
       <article>
-        <header className="bg-stone">
+        <header>
           <div className="container-site pt-3 pb-10 sm:pt-14 sm:pb-12 lg:pb-16">
             <Link href="/news" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-ink-soft hover:text-accent">
               <ArrowLeft aria-hidden className="size-4" /> All news
@@ -42,7 +42,7 @@ export function ArticleView({ article, more }: { article: Published<Article>; mo
         </header>
 
         {hero?.src && (
-          <div className="bg-[linear-gradient(to_bottom,var(--color-stone)_50%,transparent_50%)]">
+          <div>
             <div className="container-site">
               <figure className="mx-auto max-w-4xl">
                 <div className="overflow-hidden rounded-[4px] border border-line bg-white">
@@ -96,7 +96,7 @@ export function ArticleView({ article, more }: { article: Published<Article>; mo
         <section aria-labelledby="more-title" className="section-space">
           <div className="container-site">
             <h2 id="more-title" className="text-[1.75rem] font-semibold sm:text-3xl">
-              More news
+              More News
             </h2>
             <ul className="mt-5 grid gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3 lg:gap-8">
               {more.map((a, i) => (

@@ -22,7 +22,7 @@ export default async function AboutPage() {
         <div className="container-site grid gap-7 sm:gap-14 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-6">
             <h2 id="intro-title" className="sr-only">
-              Company introduction
+              Company Introduction
             </h2>
             <div className="prose-site space-y-4 text-base leading-relaxed text-ink-soft sm:space-y-5 sm:text-lg">
               {doc.intro.filter(Boolean).map((p) => (
@@ -112,7 +112,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <EnquiryPaths title="Partner with Siccotel." email={settings.email} />
+      <EnquiryPaths title="Partner with Siccotel" email={settings.email} />
     </>
   );
 }

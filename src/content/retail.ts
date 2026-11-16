@@ -47,7 +47,7 @@ export const retail = {
   intro:
     "Siccotel began as a retail business in Karachi and still reaches customers directly. Its products are sold through a nationwide network of wholesalers and retailers, through Sicco Store — its own online store — and through e-commerce clients across Pakistan.",
   physical: {
-    title: "A nationwide retail network",
+    title: "A Nationwide Retail Network",
     summary:
       "Retail is where Siccotel started: the company expanded its retail business from 2001 to 2006 before moving into nationwide distribution.",
     points: [
