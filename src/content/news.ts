@@ -1,6 +1,7 @@
 import type { StaticImageData } from "next/image";
-import transsionDelegation from "@/assets/news/transsion-distributor-delegation.jpg";
-import transsionWelcome from "@/assets/news/transsion-delegation-welcome.jpg";
+import transsionDelegation from "@/assets/news/transsion-hq-delegation.jpg";
+import transsionWelcome from "@/assets/news/transsion-welcome-screen-delegation.jpg";
+import transsionWelcomeGroup from "@/assets/news/transsion-welcome-screen-group.jpg";
 import pta5g from "@/assets/news/pta-5g-device-meeting.jpg";
 import milestoneSigning from "@/assets/news/zte-nubia-milestone-signing.jpg";
 import milestoneTeam from "@/assets/news/zte-nubia-milestone-team.jpg";
@@ -54,6 +55,7 @@ export const news: NewsArticle[] = [
     images: [
       { src: transsionDelegation, alt: "The Pakistan distributor delegation outside Transsion’s headquarters in China" },
       { src: transsionWelcome, alt: "The delegation in front of a welcome screen inside Transsion’s offices" },
+      { src: transsionWelcomeGroup, alt: "Four members of the visit beneath Transsion’s welcome screen for the Pakistan delegation" },
     ],
   },
   {

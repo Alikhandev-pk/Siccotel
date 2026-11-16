@@ -74,7 +74,7 @@ export function ArticleView({ article, more }: { article: Published<Article>; mo
           </div>
 
           {gallery.length > 0 && (
-            <ul className="mx-auto mt-7 grid max-w-4xl gap-3 sm:mt-14 sm:grid-cols-2 sm:gap-4" aria-label="Photo gallery">
+            <ul className="mx-auto mt-7 grid max-w-4xl items-start gap-3 sm:mt-14 sm:grid-cols-2 sm:gap-4" aria-label="Photo gallery">
               {gallery.map((img) => (
                 <li key={img.src} className="overflow-hidden rounded-[4px] border border-line">
                   <Image {...imageProps(img)} alt={img.alt} sizes="(min-width: 1024px) 440px, (min-width: 640px) 50vw, 100vw" className="h-auto w-full" />
