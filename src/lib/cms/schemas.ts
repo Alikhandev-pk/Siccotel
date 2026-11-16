@@ -131,8 +131,7 @@ export const docSchemas: Record<DocKey, { title: string; description: string; pa
               fields: [
                 t("name", "Brand name", "Also the logo's alt text. Shown as text when there is no logo."),
                 { type: "image", key: "logo", label: "Logo (optional)", optional: true },
-                t("title", "Step title", "For a milestone with several brands, the homepage timeline shows each brand in turn with this title (the brand name when empty)."),
-                ta("description", "Step description", "Shown under the step title. Optional."),
+                t("title", "Title beside its dot", "For a milestone with several brands, each brand is a dot of its own under the year, with its logo and this title (the brand name when empty)."),
               ],
             },
           ],

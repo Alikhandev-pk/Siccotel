@@ -268,7 +268,7 @@ export const defaultDocs: DocMap = {
       milestones: milestones.map((m) => ({
         ...m,
         highlight: Boolean(m.highlight),
-        brands: m.brands.map((b) => ({ name: b.name, title: b.title ?? "", description: b.description ?? "", logo: b.logo ? img(b.logo, b.name) : null })),
+        brands: m.brands.map((b) => ({ name: b.name, title: b.title ?? "", logo: b.logo ? img(b.logo, b.name) : null })),
       })),
     },
   },

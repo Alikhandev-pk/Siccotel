@@ -511,40 +511,98 @@
   box-shadow: 0 12px 30px -18px rgb(22 24 27 / 0.35);
 }
 
-/* Company journey, desktop with motion: a horizontal track scrolled by the pinned section. */
+/* Company journey with motion (JourneyRail): a horizontal track scrolled by the pinned section,
+   at every width. Phones drop the swipeable row's scrolling and per-card line pieces for the
+   track's own line. */
 [data-journey-horizontal] [data-journey-track] {
   width: max-content;
 }
 [data-journey-horizontal] ol {
   display: flex;
-  gap: 3rem;
+  gap: 1.25rem;
+  margin-inline: 0;
+  padding: 0;
+  overflow: visible;
+  scroll-snap-type: none;
 }
 [data-journey-horizontal] ol > li {
-  width: 19rem;
+  width: min(17rem, 74vw);
+  max-width: none;
   flex: none;
 }
-/* A milestone with several brands steps through them (JourneyRail): its logos and its
-   per-brand texts each stack in one cell, shown one at a time, in place of the summary. */
-[data-journey-steps] {
+[data-journey-horizontal] ol > li::before {
   display: none;
 }
-[data-journey-horizontal] [data-journey-steps] {
-  display: grid;
+[data-journey-horizontal] [data-rail],
+[data-journey-horizontal] [data-rail-fill] {
+  display: block;
 }
-[data-journey-horizontal] [data-journey-summary] {
-  display: none;
+@media (min-width: 640px) {
+  [data-journey-horizontal] ol {
+    gap: 2rem;
+  }
+  [data-journey-horizontal] ol > li {
+    width: 18rem;
+  }
 }
-[data-journey-horizontal] .journey-logos[data-split] {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr);
+@media (min-width: 1024px) {
+  [data-journey-horizontal] ol {
+    gap: 3rem;
+  }
+  [data-journey-horizontal] ol > li {
+    width: 19rem;
+  }
 }
-[data-journey-steps] > *,
-[data-journey-horizontal] .journey-logos[data-split] > * {
-  grid-area: 1 / 1;
+
+/* A year's brand dots (JourneyRail), joined by a short line. Shown all active by default;
+   while the rail is pinned, each turns on in its scroll step and its logo and title fade and
+   slide in beside it (200ms), reversing when scrolled back. */
+.journey-brand-dot {
+  background: var(--color-accent);
+  box-shadow: 0 0 0 3px #fff;
 }
-[data-journey-horizontal] .journey-logos[data-split] > * {
-  align-self: end;
-  justify-self: start;
+.journey-brands > li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: calc(-0.75rem - 10px);
+  left: 4px;
+  width: 2px;
+  background: var(--color-accent);
+}
+[data-journey-horizontal] .journey-brand-dot {
+  transition:
+    background-color 200ms var(--ease-out-quart),
+    box-shadow 200ms var(--ease-out-quart);
+}
+[data-journey-horizontal] .journey-brand-label {
+  transition:
+    opacity 200ms var(--ease-out-quart),
+    transform 200ms var(--ease-out-quart);
+}
+[data-journey-horizontal] .journey-brands > li::after {
+  transition: background-color 200ms var(--ease-out-quart);
+}
+[data-journey-horizontal] [data-brand-dot]:not([data-on]) .journey-brand-dot {
+  background: #fff;
+  box-shadow:
+    inset 0 0 0 2px var(--color-line-strong),
+    0 0 0 3px #fff;
+}
+[data-journey-horizontal] [data-brand-dot][data-current] .journey-brand-dot {
+  box-shadow:
+    0 0 0 3px #fff,
+    0 0 0 5px rgb(200 0 11 / 0.22);
+}
+[data-journey-horizontal] [data-brand-dot]:not([data-on]) .journey-brand-label {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+[data-journey-horizontal] .journey-brands > li:not(:last-child)::after {
+  background: var(--color-line);
+}
+[data-journey-horizontal] .journey-brands > li:has(+ li[data-on])::after {
+  background: var(--color-accent);
 }
 /* Desktop without motion: seven narrow columns, so a milestone's logos are smaller and
    may take a second row, which grows upward from the same baseline above the dot. */

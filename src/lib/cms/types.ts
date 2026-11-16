@@ -125,9 +125,9 @@ export type HomeDoc = {
 
 /**
  * A brand above a milestone's dot: its logo, or its name as text when there is no logo.
- * Title and description are shown when the homepage timeline steps through a multi-brand milestone.
+ * In a milestone with several brands, each brand is a dot of its own under the year, with its logo and title.
  */
-export type MilestoneBrand = { name: string; logo: CmsImage | null; title?: string; description?: string };
+export type MilestoneBrand = { name: string; logo: CmsImage | null; title?: string };
 export type Milestone = { period: string; title: string; description: string; highlight: boolean; brands?: MilestoneBrand[] };
 
 export type AboutDoc = {

@@ -30,10 +30,11 @@ export type Milestone = {
    * Energizer and oraimo are cut, unaltered, from Siccotel's own journey graphic
    * (src/assets/company/distribution-journey-graphic.png); the rest are the partner logos.
    *
-   * When a milestone has several brands, the pinned desktop timeline steps through them one
-   * scroll step at a time, in this order, showing each brand's own title and description.
+   * A milestone with several brands lists them under its year as dots of their own, each with
+   * its logo and title; the pinned timeline activates them one short scroll step at a time,
+   * in this order.
    */
-  brands: { name: string; logo?: StaticImageData; title?: string; description?: string }[];
+  brands: { name: string; logo?: StaticImageData; title?: string }[];
 };
 
 export const milestones: Milestone[] = [
@@ -83,9 +84,9 @@ export const milestones: Milestone[] = [
     description: "Distribution of itel devices, Infinix accessories and Nokia devices begins.",
     highlight: true,
     brands: [
-      { name: "itel", logo: itel, title: "itel Distribution", description: "Distribution of itel devices begins." },
-      { name: "Infinix", logo: infinix, title: "Infinix Accessories", description: "Distribution of Infinix accessories begins." },
-      { name: "Nokia", logo: nokia, title: "Nokia Distribution", description: "Distribution of Nokia devices begins." },
+      { name: "itel", logo: itel, title: "itel Distribution" },
+      { name: "Infinix", logo: infinix, title: "Infinix Accessories" },
+      { name: "Nokia", logo: nokia, title: "Nokia Distribution" },
     ],
   },
   {
@@ -94,9 +95,9 @@ export const milestones: Milestone[] = [
     description: "Three more global brands join the distribution portfolio.",
     highlight: true,
     brands: [
-      { name: "Tecno", logo: tecno, title: "Tecno Distribution", description: "Tecno joins the distribution portfolio." },
-      { name: "Samsung", logo: samsung, title: "Samsung Distribution", description: "Samsung joins the distribution portfolio." },
-      { name: "realme", logo: realme, title: "realme Distribution", description: "realme joins the distribution portfolio." },
+      { name: "Tecno", logo: tecno, title: "Tecno Distribution" },
+      { name: "Samsung", logo: samsung, title: "Samsung Distribution" },
+      { name: "realme", logo: realme, title: "realme Distribution" },
     ],
   },
   {
@@ -104,9 +105,9 @@ export const milestones: Milestone[] = [
     title: "Accessories and TVs",
     description: "Distribution of Infinix TVs, Energizer, and oraimo, itel and Tecno accessories.",
     brands: [
-      { name: "Infinix", logo: infinix, title: "Infinix TVs", description: "Distribution of Infinix TVs." },
-      { name: "Energizer", logo: energizer, title: "Energizer Distribution", description: "Distribution of Energizer." },
-      { name: "oraimo", logo: oraimo, title: "oraimo, itel and Tecno Accessories", description: "Distribution of oraimo, itel and Tecno accessories." },
+      { name: "Infinix", logo: infinix, title: "Infinix TVs" },
+      { name: "Energizer", logo: energizer, title: "Energizer Distribution" },
+      { name: "oraimo", logo: oraimo, title: "oraimo, itel and Tecno Accessories" },
     ],
   },
   {
@@ -115,8 +116,8 @@ export const milestones: Milestone[] = [
     description: "HMD distribution begins, and Siccotel becomes ZTE nubia’s exclusive distributor and strategic partner.",
     highlight: true,
     brands: [
-      { name: "HMD", logo: hmd, title: "HMD Distribution", description: "HMD distribution begins." },
-      { name: "ZTE nubia", logo: zteNubia, title: "ZTE nubia Partnership", description: "Siccotel becomes ZTE nubia’s exclusive distributor and strategic partner." },
+      { name: "HMD", logo: hmd, title: "HMD Distribution" },
+      { name: "ZTE nubia", logo: zteNubia, title: "ZTE nubia Partnership" },
     ],
   },
 ];
