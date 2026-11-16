@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
-import { defaultDocs } from "@/lib/cms/defaults";
-import { mergeContent } from "@/lib/cms/merge";
+import { mergeDoc } from "@/lib/cms/doc";
 import { requireAdmin } from "@/lib/cms/auth";
 import { parseJson, select } from "@/lib/cms/db";
 import type { CmsImage, CollectionName, DocKey } from "@/lib/cms/types";
@@ -18,7 +17,7 @@ export async function adminDoc(key: DocKey) {
   const rows = await select<{ draft: string; published: string | null; published_at: string | null }>("SELECT draft, published, published_at FROM documents WHERE `key` = ?", [key]);
   const row = rows[0];
   return {
-    value: mergeContent(defaultDocs[key], parseJson(row?.draft)) as unknown as Record<string, unknown>,
+    value: mergeDoc(key, parseJson(row?.draft)) as unknown as Record<string, unknown>,
     hasDraftChanges: Boolean(row && row.draft !== row.published),
     publishedAt: row?.published_at ?? null,
     exists: Boolean(row),

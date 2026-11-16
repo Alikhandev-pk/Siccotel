@@ -523,6 +523,29 @@
   width: 19rem;
   flex: none;
 }
+/* A milestone with several brands steps through them (JourneyRail): its logos and its
+   per-brand texts each stack in one cell, shown one at a time, in place of the summary. */
+[data-journey-steps] {
+  display: none;
+}
+[data-journey-horizontal] [data-journey-steps] {
+  display: grid;
+}
+[data-journey-horizontal] [data-journey-summary] {
+  display: none;
+}
+[data-journey-horizontal] .journey-logos[data-split] {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+}
+[data-journey-steps] > *,
+[data-journey-horizontal] .journey-logos[data-split] > * {
+  grid-area: 1 / 1;
+}
+[data-journey-horizontal] .journey-logos[data-split] > * {
+  align-self: end;
+  justify-self: start;
+}
 /* Desktop without motion: seven narrow columns, so a milestone's logos are smaller and
    may take a second row, which grows upward from the same baseline above the dot. */
 @media (min-width: 1024px) {

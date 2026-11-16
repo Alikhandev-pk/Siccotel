@@ -12,7 +12,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import { CMS_TAG, cmsConfigured, SEED_MARKER_KEY } from "./config";
 import { parseJson, select } from "./db";
 import { defaultBanners, defaultDocs, defaultNews, defaultProducts, type SeedEntry } from "./defaults";
-import { mergeContent } from "./merge";
+import { mergeDoc } from "./doc";
 import type { CollectionMap, CollectionName, DocKey, DocMap, Published } from "./types";
 
 const defaultCollections = { banners: defaultBanners, products: defaultProducts, news: defaultNews } as const;
@@ -40,7 +40,7 @@ async function loadDocuments(): Promise<{ seeded: boolean; docs: Record<string, 
 export async function getDoc<K extends DocKey>(key: K): Promise<DocMap[K]> {
   const { seeded, docs } = await loadDocuments();
   if (!seeded) return defaultDocs[key];
-  return mergeContent(defaultDocs[key], docs[key]);
+  return mergeDoc(key, docs[key]);
 }
 
 export async function getSettings() {
