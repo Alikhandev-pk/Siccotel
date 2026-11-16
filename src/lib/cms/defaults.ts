@@ -383,23 +383,7 @@ export const defaultDocs: DocMap = {
   },
 
   productsPage: {
-    hero: {
-      eyebrow: "Products",
-      title: "Devices for Pakistan, from Global Brands and Local Assembly",
-      intro: "Siccotel distributes smartphones, accessories and TVs for global brands across Pakistan, and assembles mobile phones in Karachi through Siccotel Telecom.",
-    },
-    assembled: {
-      eyebrow: "Assembled in Karachi",
-      title: "Featured by Siccotel Telecom",
-      intro: "Devices listed under “Our Products” on the Siccotel Telecom website, from the group’s assembly plant in Korangi Creek Industrial Park.",
-    },
-    catalogue: {
-      eyebrow: "Catalogue",
-      title: "More Products",
-      intro: "Other devices and products available through Siccotel.",
-    },
-    brands: { eyebrow: "Distribution", title: "Brands Siccotel Distributes", intro: "Product lines and start years for each brand, as published by Siccotel.", note: "Start years are taken from Siccotel’s published journey timeline." },
-    buy: { eyebrow: "Where to buy", tagline: retail.online.tagline, points: [...retail.online.points], accessoriesTitle: "Accessories" },
+    title: "Products",
   },
 };
 

@@ -157,15 +157,9 @@ export const docSchemas: Record<DocKey, { title: string; description: string; pa
   },
   productsPage: {
     title: "Products page",
-    description: "Page copy only. The devices are managed in Products; distributed brands come from Partners.",
+    description: "The page heading. The product cards under it are managed in Products.",
     path: "/products",
-    fields: [
-      hero,
-      section("assembled", "Assembled devices section (#assembled)"),
-      section("catalogue", "Catalogue section (#catalogue): published products not assembled locally"),
-      section("brands", "Distributed brands section (#brands)", [t("note", "Footnote")]),
-      group("buy", "Where to buy (#buy)", [t("eyebrow", "Eyebrow"), t("tagline", "Sicco Store tagline"), { type: "strings", key: "points", label: "Points", item: "Point" }, t("accessoriesTitle", "Accessories heading")]),
-    ],
+    fields: [t("title", "Heading")],
   },
   partners: {
     title: "Partners",

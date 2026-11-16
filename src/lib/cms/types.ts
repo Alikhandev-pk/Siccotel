@@ -179,12 +179,9 @@ export type PartnersDoc = {
 
 export type NewsPageDoc = { hero: Hero; footnote: string };
 export type ContactDoc = { hero: Hero; formTitle: string; detailsTitle: string; supportTitle: string };
+/** The Products page is a heading over the published products. */
 export type ProductsPageDoc = {
-  hero: Hero;
-  assembled: SectionCopy;
-  catalogue: SectionCopy;
-  brands: SectionCopy & { note: string };
-  buy: { eyebrow: string; tagline: string; points: string[]; accessoriesTitle: string };
+  title: string;
 };
 
 export type DocMap = {
