@@ -179,7 +179,7 @@ export const defaultDocs: DocMap = {
     partnerStripTitle: "Trusted by global device brands",
     glance: {
       eyebrow: "Company at a glance",
-      title: "One of Pakistan’s largest smartphone distributors.",
+      title: "One of Pakistan’s Largest Smartphone Distributors",
       lead: "Founded in Karachi in 2001, Siccotel is a smartphone distributor, manufacturer and retailer with after-sales support in major cities across Pakistan. It is the official partner of leading global brands including Infinix, Samsung, itel, Nokia, realme, Tecno and ZTE nubia.",
       body: growthText,
       assurances: ["Authorized distribution", "Official warranty", "Genuine stock"],
