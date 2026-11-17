@@ -19,7 +19,8 @@ const nextConfig: NextConfig = {
   },
   images: {
     // 100 is for the homepage campaign banners, which are served at full quality;
-    // 90 suits the limited-resolution assembly photograph.
+    // 90 suits the limited-resolution assembly photograph and the homepage's
+    // "Company at a glance" group photos, so faces keep their detail.
     qualities: [75, 90, 100],
   },
   turbopack: {

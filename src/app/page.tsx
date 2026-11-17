@@ -107,6 +107,7 @@ export default async function HomePage() {
                       {...imageProps(photoA.image)}
                       alt={photoA.image.alt}
                       sizes="(min-width: 1280px) 340px, (min-width: 1024px) 28vw, 56vw"
+                      quality={90}
                       className="h-auto w-full"
                     />
                   </div>
@@ -128,6 +129,7 @@ export default async function HomePage() {
                       {...imageProps(photoB.image)}
                       alt={photoB.image.alt}
                       sizes="(min-width: 1280px) 260px, (min-width: 1024px) 22vw, 42vw"
+                      quality={90}
                       className="h-auto w-full"
                     />
                   </div>
