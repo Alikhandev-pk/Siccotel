@@ -58,6 +58,8 @@ export default async function HomePage() {
     .filter((p) => p.showOnAssembly && p.images[0])
     .slice(0, 3);
   const [photoA, photoB] = glance.photos;
+  // An empty slot drops the photo column (and its caption) so the text spans the band.
+  const manufacturingPhoto = manufacturing.photo.image?.src ? manufacturing.photo.image : null;
 
   return (
     <>
@@ -182,7 +184,7 @@ export default async function HomePage() {
       >
         <div className="section-space container-site">
           <div className="grid gap-6 sm:gap-10 lg:grid-cols-12 lg:items-center lg:gap-10">
-            <div className="lg:col-span-6">
+            <div className={manufacturingPhoto ? "lg:col-span-6" : "lg:col-span-12"}>
               <Image
                 src={telecomLogo}
                 alt="Siccotel Telecom"
@@ -226,7 +228,7 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
-            {manufacturing.photo.image?.src && (
+            {manufacturingPhoto && (
               <figure className="lg:col-span-6">
                 <div
                   data-anim="image"
@@ -234,9 +236,10 @@ export default async function HomePage() {
                   className="relative aspect-[3/2] overflow-hidden rounded-[8px] border border-white/10 bg-night-2"
                 >
                   <Image
-                    {...fillProps(manufacturing.photo.image)}
-                    alt={manufacturing.photo.image.alt}
-                    quality={90}
+                    {...fillProps(manufacturingPhoto)}
+                    alt={manufacturingPhoto.alt}
+                    // Full quality: resized to the column, but never recompressed below the original.
+                    quality={100}
                     sizes="(min-width: 1280px) 590px, (min-width: 1024px) 48vw, 100vw"
                     className="object-cover"
                   />

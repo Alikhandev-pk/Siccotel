@@ -56,7 +56,7 @@ export const docSchemas: Record<DocKey, { title: string; description: string; pa
         t("eyebrow", "Eyebrow"),
         t("title", "Heading"),
         ta("intro", "Introduction"),
-        { type: "list", key: "cardImages", label: "Card photos (Distribution, Manufacturing, Retail)", item: "Card photo", fixed: true, fields: [image("image", "Photo"), t("position", "Crop focus", "CSS object-position, e.g. 50% 30%.")] },
+        { type: "list", key: "cardImages", label: "Card photos (Distribution, Manufacturing, Retail)", item: "Card photo", fixed: true, fields: [{ type: "image", key: "image", label: "Photo (optional)", optional: true, help: "Without a photo the card shows its text only." }, t("position", "Crop focus", "CSS object-position, e.g. 50% 30%.")] },
       ], "Card titles and text come from the Services page."),
       section("retail", "Retail & e-commerce", [ta("introShort", "Short introduction (phones)"), t("clientsTitle", "Client logos heading")]),
       {
@@ -88,7 +88,7 @@ export const docSchemas: Record<DocKey, { title: string; description: string; pa
       section("manufacturing", "Manufacturing band", [
         t("figure", "Figure"),
         t("figureLabel", "Figure label"),
-        group("photo", "Photo", [image("image", "Photo"), t("caption", "Caption")]),
+        group("photo", "Photo", [{ type: "image", key: "image", label: "Photo (optional)", optional: true, help: "Without a photo the band shows its text across the full width, and the caption is hidden." }, t("caption", "Caption")]),
         { type: "strings", key: "chain", label: "Service delivery chain", item: "Step" },
         t("productsTitle", "Featured products heading", "Products come from Products (marked for Assembly)."),
       ]),

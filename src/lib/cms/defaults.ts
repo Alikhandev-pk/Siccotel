@@ -11,12 +11,9 @@ import telecomLogoLight from "@/assets/brand/siccotel-telecom-logo-light.png";
 import chairman from "@/assets/company/siccotel-telecom-chairmans-message.jpg";
 import assemblyFloor from "@/assets/company/siccotel-telecom-assembly-floor.jpg";
 import factoryExterior from "@/assets/company/siccotel-telecom-factory-exterior.jpg";
-import heroAssemblyFloor from "@/assets/company/siccotel-hero-assembly-floor.jpg";
 import outlinedMap from "@/assets/company/pakistan-regional-map-outlined.png";
 import ecommerceClientsArt from "@/assets/company/ecommerce-clients.png";
-import partnerBanner from "@/assets/retail/official-partner-banner.jpg";
 import mwcHmd from "@/assets/news/mwc-barcelona-2025-hmd-booth.jpg";
-import mwcTecno from "@/assets/news/mwc-barcelona-2025-tecno-booth.jpg";
 import hmdMeeting from "@/assets/news/hmd-global-meeting-china.jpg";
 import partnershipCeremony from "@/assets/news/zte-nubia-partnership-ceremony.jpg";
 import partnershipSigning from "@/assets/news/zte-nubia-partnership-signing.jpg";
@@ -131,16 +128,14 @@ export const defaultNews: SeedEntry<Article>[] = news.map((a) => {
 
 /* Documents ------------------------------------------------------------------------------ */
 
+/** Distribution and Retail await new photos; an empty slot shows its card without a picture. */
 const businessCardImages = {
-  distribution: { image: img(mwcTecno, "Siccotel representatives at the Tecno stand, MWC Barcelona 2025"), position: "50% 50%" },
+  distribution: { image: null, position: "50% 50%" },
   manufacturing: {
     image: img(factoryExterior, "The Siccotel Telecom assembly plant building at Korangi Creek Industrial Park, Karachi"),
     position: "50% 30%",
   },
-  retail: {
-    image: img(partnerBanner, "Nokia, Tecno, itel and Samsung phones with a laptop, from a Siccotel official partner banner"),
-    position: "2% 50%",
-  },
+  retail: { image: null, position: "50% 50%" },
 };
 
 const servicePhotos = {
@@ -221,7 +216,8 @@ export const defaultDocs: DocMap = {
       intro: "Siccotel Telecom (Pvt) Ltd is the group’s mobile phone assembly plant in Korangi Creek Industrial Park, Karachi — built to assemble devices for different brands under the Government’s “Made in Pakistan” initiative.",
       figure: "120,000",
       figureLabel: "sq. ft. of operational space at KCIP, Karachi",
-      photo: { image: img(heroAssemblyFloor, "Workers assembling mobile phones at Siccotel Telecom’s Karachi facility"), caption: "Inside Siccotel Telecom’s mobile phone assembly facility." },
+      // Awaiting a replacement photo; the band shows its text across the full width until one is chosen.
+      photo: { image: null, caption: "" },
       chain: ["Component Sourcing", "Assembly", "Nationwide Distribution", "Service Centres"],
       productsTitle: "Featured by Siccotel Telecom",
     },

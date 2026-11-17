@@ -9,7 +9,12 @@ import { Reveal } from "../animations/Reveal";
 const pointPicks: Record<string, number[]> = { distribution: [0, 1, 3], manufacturing: [0, 1, 2], retail: [1, 2, 3] };
 const detailHref: Record<string, string> = { distribution: "/services#distribution", manufacturing: "/assembly", retail: "/services#retail" };
 
-/** Phones get a thumbnail beside the title and the summary below, so three cards stay a short scroll. */
+/**
+ * Phones get a thumbnail beside the title and the summary below, so three cards stay a short scroll.
+ * A card whose photo slot is empty drops the picture area entirely: its text takes the full width
+ * on phones, and in the three-column row it keeps its own height rather than stretching to a
+ * pictured neighbour, so no blank space stands in for the missing photo.
+ */
 export function BusinessCards({ copy, activities }: { copy: HomeDoc["business"]; activities: ServiceActivity[] }) {
   return (
     <section id="our-business" aria-labelledby="business-title" className="section-space">
@@ -29,25 +34,28 @@ export function BusinessCards({ copy, activities }: { copy: HomeDoc["business"];
         <Reveal as="ul" mode="children" tilt stagger={0.12} className="mt-6 grid gap-3 sm:mt-9 md:grid-cols-3 md:gap-5 lg:mt-11 lg:gap-6">
           {activities.map((activity, i) => {
             const card = copy.cardImages[i];
+            const image = card?.image?.src ? card.image : null;
             const points = (pointPicks[activity.id] ?? [0, 1, 2]).map((n) => activity.points[n]).filter(Boolean);
             return (
               <li key={activity.id}>
-                <article data-tilt="" className="group grid h-full grid-cols-[7.5rem_minmax(0,1fr)] max-[359px]:grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-x-3.5 overflow-hidden rounded-[8px] border border-line bg-white p-3.5 transition-[border-color,box-shadow] duration-200 hover:border-ink/25 hover:shadow-[0_18px_40px_-28px_rgba(22,24,27,0.45)] sm:grid-cols-[10rem_minmax(0,1fr)] md:flex md:flex-col md:items-stretch md:gap-x-0 md:p-0">
-                  <div className="relative aspect-[16/10] overflow-hidden rounded-[4px] bg-stone-2 md:rounded-none">
-                    {card?.image?.src && (
+                <article data-tilt="" className={`group grid h-full ${image ? "grid-cols-[7.5rem_minmax(0,1fr)] max-[359px]:grid-cols-[5.5rem_minmax(0,1fr)] sm:grid-cols-[10rem_minmax(0,1fr)]" : "grid-cols-1 md:h-auto"} items-center gap-x-3.5 overflow-hidden rounded-[8px] border border-line bg-white p-3.5 transition-[border-color,box-shadow] duration-200 hover:border-ink/25 hover:shadow-[0_18px_40px_-28px_rgba(22,24,27,0.45)] md:flex md:flex-col md:items-stretch md:gap-x-0 md:p-0`}>
+                  {image && (
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-[4px] bg-stone-2 md:rounded-none">
                       <Image
-                        {...fillProps(card.image)} alt={card.image.alt}
+                        {...fillProps(image)} alt={image.alt}
+                        // Full quality: resized to the card, but never recompressed below the original.
+                        quality={100}
                         sizes="(min-width: 1280px) 384px, (min-width: 768px) 32vw, 160px"
                         className="object-cover transition-transform duration-[250ms] ease-out group-hover:scale-[1.02]"
                         style={{ objectPosition: card.position || undefined }}
                       />
-                    )}
-                  </div>
+                    </div>
+                  )}
                   <div className="min-w-0 md:px-5 md:pt-5 lg:px-6 lg:pt-6">
                     <p className="hidden text-xs leading-snug font-semibold tracking-[0.12em] text-accent uppercase md:block">{activity.kicker}</p>
                     <h3 className="t-h3 text-ink md:mt-2">{activity.title}</h3>
                   </div>
-                  <div className="col-span-2 mt-3 flex flex-1 flex-col md:mt-0 md:px-5 md:pb-5 lg:px-6 lg:pb-6">
+                  <div className={`${image ? "col-span-2 mt-3" : "mt-2"} flex flex-1 flex-col md:mt-0 md:px-5 md:pb-5 lg:px-6 lg:pb-6`}>
                     <p className="text-base leading-relaxed text-ink-soft md:mt-2.5 md:text-[0.9375rem]">{activity.summary}</p>
                     <ul className="mt-4 hidden space-y-2 border-t border-line pt-4 md:block">
                       {points.map((point) => (

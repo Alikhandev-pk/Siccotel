@@ -102,7 +102,13 @@ export type HomeDoc = {
     photos: Figure[];
     stats: Stat[];
   };
-  business: { eyebrow: string; title: string; intro: string; cardImages: { image: CmsImage; position: string }[] };
+  business: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+    /** One per card; an empty slot shows the card without a picture. */
+    cardImages: { image: CmsImage | null; position: string }[];
+  };
   retail: SectionCopy & { introShort: string; clientsTitle: string };
   clients: Logo[];
   reach: SectionCopy & {
@@ -117,7 +123,14 @@ export type HomeDoc = {
     markersArtwork: string;
     cities: MapCity[];
   };
-  manufacturing: SectionCopy & { figure: string; figureLabel: string; photo: Figure; chain: string[]; productsTitle: string };
+  manufacturing: SectionCopy & {
+    figure: string;
+    figureLabel: string;
+    /** Without an image the band drops its photo column and the text takes the full width. */
+    photo: { image: CmsImage | null; caption: string };
+    chain: string[];
+    productsTitle: string;
+  };
   journey: SectionCopy;
   newsTitle: SectionCopy;
   enquiry: { title: string; intro: string };
