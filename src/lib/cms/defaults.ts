@@ -183,8 +183,8 @@ export const defaultDocs: DocMap = {
       body: growthText,
       assurances: ["Authorized distribution", "Official warranty", "Genuine stock"],
       photos: [
-        { image: img(mwcHmd, "Siccotel representatives with device-industry executives at the HMD stand, MWC Barcelona 2025"), caption: "MWC Barcelona, 2025" },
-        { image: img(hmdMeeting, "Siccotel and HMD Global representatives at HMD’s offices"), caption: "Meeting with HMD Global" },
+        { image: img(mwcHmd, "Siccotel representatives with device-industry executives at the HMD stand, MWC Barcelona 2025"), caption: "" },
+        { image: img(hmdMeeting, "Siccotel and HMD Global representatives at HMD’s offices"), caption: "" },
       ],
       stats: homeStats.map((s) => ({ ...s })),
     },
