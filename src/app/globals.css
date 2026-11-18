@@ -534,7 +534,8 @@
   display: none;
 }
 [data-journey-horizontal] [data-rail],
-[data-journey-horizontal] [data-rail-fill] {
+[data-journey-horizontal] [data-rail-fill],
+[data-journey-horizontal] [data-rail-head] {
   display: block;
 }
 @media (min-width: 640px) {
@@ -551,73 +552,6 @@
   }
   [data-journey-horizontal] ol > li {
     width: 19rem;
-  }
-}
-
-/* A year's brand dots (JourneyRail), joined by a short line. Shown all active by default;
-   while the rail is pinned, each turns on in its scroll step and its logo and title fade and
-   slide in beside it (200ms), reversing when scrolled back. */
-.journey-brand-dot {
-  background: var(--color-accent);
-  box-shadow: 0 0 0 3px #fff;
-}
-.journey-brands > li:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: 10px;
-  bottom: calc(-0.75rem - 10px);
-  left: 4px;
-  width: 2px;
-  background: var(--color-accent);
-}
-[data-journey-horizontal] .journey-brand-dot {
-  transition:
-    background-color 200ms var(--ease-out-quart),
-    box-shadow 200ms var(--ease-out-quart);
-}
-[data-journey-horizontal] .journey-brand-label {
-  transition:
-    opacity 200ms var(--ease-out-quart),
-    transform 200ms var(--ease-out-quart);
-}
-[data-journey-horizontal] .journey-brands > li::after {
-  transition: background-color 200ms var(--ease-out-quart);
-}
-[data-journey-horizontal] [data-brand-dot]:not([data-on]) .journey-brand-dot {
-  background: #fff;
-  box-shadow:
-    inset 0 0 0 2px var(--color-line-strong),
-    0 0 0 3px #fff;
-}
-[data-journey-horizontal] [data-brand-dot][data-current] .journey-brand-dot {
-  box-shadow:
-    0 0 0 3px #fff,
-    0 0 0 5px rgb(200 0 11 / 0.22);
-}
-[data-journey-horizontal] [data-brand-dot]:not([data-on]) .journey-brand-label {
-  opacity: 0;
-  transform: translateX(-8px);
-}
-[data-journey-horizontal] .journey-brands > li:not(:last-child)::after {
-  background: var(--color-line);
-}
-[data-journey-horizontal] .journey-brands > li:has(+ li[data-on])::after {
-  background: var(--color-accent);
-}
-/* Desktop without motion: seven narrow columns, so a milestone's logos are smaller and
-   may take a second row, which grows upward from the same baseline above the dot. */
-@media (min-width: 1024px) {
-  [data-journey-root]:not([data-journey-horizontal]) .journey-logos {
-    top: auto;
-    bottom: calc(100% - 28px);
-    height: auto;
-    flex-wrap: wrap;
-    align-content: flex-end;
-    gap: 6px 10px;
-  }
-  [data-journey-root]:not([data-journey-horizontal]) .journey-logos > * {
-    height: 20px;
-    max-width: 64px;
   }
 }
 
