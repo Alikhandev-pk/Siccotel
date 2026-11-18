@@ -24,6 +24,9 @@ const telecomLogoLight = asset("logos/siccotel-telecom-logo-light.png");
 const chairman = asset("website/siccotel-telecom-chairmans-message.jpg");
 const assemblyFloor = asset("website/siccotel-telecom-assembly-floor.jpg");
 const factoryExterior = asset("website/siccotel-telecom-factory-exterior.jpg");
+const distributionThumbsUp = asset("website/distribution-trade-show-thumbs-up-enhanced.jpg");
+const retailSmartphones = asset("website/retail-ecommerce-smartphones.png");
+const assemblyLine = asset("website/assembly-line-workers.jpg");
 const outlinedMap = asset("website/pakistan-regional-map-outlined.png");
 const ecommerceClientsArt = asset("website/ecommerce-clients.png");
 const mwcHmd = asset("articles/mwc-barcelona-2025-hmd-booth.jpg");
@@ -130,14 +133,15 @@ export const defaultNews: SeedEntry<Article>[] = news.map((a) => {
 
 /* Documents ------------------------------------------------------------------------------ */
 
-/** Distribution and Retail await new photos; an empty slot shows its card without a picture. */
+/** The same photos the CMS publishes; an empty slot would show its card without a picture. */
 const businessCardImages = {
-  distribution: { image: null, position: "50% 50%" },
+  distribution: { image: img(distributionThumbsUp, "Three executives giving a thumbs-up at a trade show stand"), position: "50% 50%" },
   manufacturing: {
     image: img(factoryExterior, "The Siccotel Telecom assembly plant building at Korangi Creek Industrial Park, Karachi"),
     position: "50% 30%",
   },
-  retail: { image: null, position: "50% 50%" },
+  // Left-aligned crop keeps the shopping-bag logo at the artwork's left edge whole.
+  retail: { image: img(retailSmartphones, "Three smartphones, including an HMD phone, on a red background with a shopping-bag logo"), position: "0% 50%" },
 };
 
 const servicePhotos = {
@@ -218,8 +222,8 @@ export const defaultDocs: DocMap = {
       intro: "Siccotel Telecom (Pvt) Ltd is the group’s mobile phone assembly plant in Korangi Creek Industrial Park, Karachi — built to assemble devices for different brands under the Government’s “Made in Pakistan” initiative.",
       figure: "120,000",
       figureLabel: "sq. ft. of operational space at KCIP, Karachi",
-      // Awaiting a replacement photo; the band shows its text across the full width until one is chosen.
-      photo: { image: null, caption: "" },
+      // Without an image the band would show its text across the full width.
+      photo: { image: img(assemblyLine, "Workers in white caps and coats at the benches of a mobile phone assembly line, under a Pakistan flag"), caption: "" },
       chain: ["Component Sourcing", "Assembly", "Nationwide Distribution", "Service Centres"],
       productsTitle: "Featured by Siccotel Telecom",
     },
