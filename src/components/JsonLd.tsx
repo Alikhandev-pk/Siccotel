@@ -1,7 +1,9 @@
-import logo from "@/assets/brand/siccotel-logo.png";
+import { asset } from "@/content/asset-manifest";
 import { company } from "@/content/company";
 import type { SettingsDoc } from "@/lib/cms/types";
 import { absoluteUrl, siteUrl } from "@/lib/site";
+
+const logo = asset("logos/siccotel-logo.png");
 
 /** Organization structured data built only from verified facts. */
 export function OrganizationJsonLd({ settings }: { settings: SettingsDoc }) {

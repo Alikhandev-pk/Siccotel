@@ -12,15 +12,20 @@ import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { cacheLife, cacheTag } from "next/cache";
-import outlinedMap from "@/assets/company/pakistan-regional-map-outlined.png";
+import { asset } from "@/content/asset-manifest";
 import { findArtwork, REGIONAL_MAP_FINGERPRINT, type MapRegion, type RegionId } from "@/content/reach-artwork";
 import { CMS_TAG, MEDIA_URL_PREFIX } from "./config";
 import { resolveUpload } from "./media-store";
 import type { HomeDoc, MapCity } from "./types";
 
-/** Files that may hold a site-relative image URL: uploads, or a bundled image built by Next. */
+const outlinedMap = asset("website/pakistan-regional-map-outlined.png");
+
+/** Files that may hold a site-relative image URL: uploads, public/assets, or a bundled image built by Next. */
 function candidateFiles(src: string): string[] {
   const clean = src.split(/[?#]/)[0];
+  if (/^\/assets\/[\w./-]+$/.test(clean) && !clean.includes("..")) {
+    return [path.join(/* turbopackIgnore: true */ process.cwd(), "public", decodeURIComponent(clean))];
+  }
   if (clean.startsWith(`${MEDIA_URL_PREFIX}/`)) {
     try {
       return [resolveUpload(decodeURIComponent(clean.slice(MEDIA_URL_PREFIX.length + 1)))];
@@ -41,8 +46,9 @@ export async function imageFingerprint(src: string): Promise<string | null> {
   "use cache";
   cacheLife("minutes");
   cacheTag(CMS_TAG);
-  // The bundled regional map is fixed at build time, so its fingerprint is known without
-  // reading .next/static from disk (serverless hosts such as Vercel do not ship those files).
+  // The regional map in public/assets is fixed at build time, so its fingerprint is known
+  // without reading it from disk (serverless hosts such as Vercel do not ship public files
+  // with the server code).
   if (src.split(/[?#]/)[0] === outlinedMap.src) return REGIONAL_MAP_FINGERPRINT;
   for (const file of candidateFiles(src)) {
     try {

@@ -7,18 +7,7 @@
  * this file no longer changes the live site.
  */
 import type { StaticImageData } from "next/image";
-import telecomLogoLight from "@/assets/brand/siccotel-telecom-logo-light.png";
-import chairman from "@/assets/company/siccotel-telecom-chairmans-message.jpg";
-import assemblyFloor from "@/assets/company/siccotel-telecom-assembly-floor.jpg";
-import factoryExterior from "@/assets/company/siccotel-telecom-factory-exterior.jpg";
-import outlinedMap from "@/assets/company/pakistan-regional-map-outlined.png";
-import ecommerceClientsArt from "@/assets/company/ecommerce-clients.png";
-import mwcHmd from "@/assets/news/mwc-barcelona-2025-hmd-booth.jpg";
-import hmdMeeting from "@/assets/news/hmd-global-meeting-china.jpg";
-import partnershipCeremony from "@/assets/news/zte-nubia-partnership-ceremony.jpg";
-import partnershipSigning from "@/assets/news/zte-nubia-partnership-signing.jpg";
-import dealersTour from "@/assets/news/dealers-tour-frankfurt-group.jpg";
-import aura2 from "@/assets/products/hmd-aura-2.jpg";
+import { asset } from "@/content/asset-manifest";
 import { aboutIntro, contact, coreValues, coreValuesIntro, externalLinks, futurePlans, growthText, homeStats, mission, networkStats, presenceText, social, topBarPhone } from "@/content/company";
 import { heroBanners, heroIntro } from "@/content/hero";
 import { milestones } from "@/content/milestones";
@@ -30,6 +19,19 @@ import { networkCities } from "@/content/locations";
 import { REGIONAL_MAP_FINGERPRINT } from "@/content/reach-artwork";
 import { afterSales, businessActivities } from "@/content/business";
 import type { Article, Banner, CmsImage, DocMap, Product } from "./types";
+
+const telecomLogoLight = asset("logos/siccotel-telecom-logo-light.png");
+const chairman = asset("website/siccotel-telecom-chairmans-message.jpg");
+const assemblyFloor = asset("website/siccotel-telecom-assembly-floor.jpg");
+const factoryExterior = asset("website/siccotel-telecom-factory-exterior.jpg");
+const outlinedMap = asset("website/pakistan-regional-map-outlined.png");
+const ecommerceClientsArt = asset("website/ecommerce-clients.png");
+const mwcHmd = asset("articles/mwc-barcelona-2025-hmd-booth.jpg");
+const hmdMeeting = asset("articles/hmd-global-meeting-china.jpg");
+const partnershipCeremony = asset("articles/zte-nubia-partnership-ceremony.jpg");
+const partnershipSigning = asset("articles/zte-nubia-partnership-signing.jpg");
+const dealersTour = asset("articles/dealers-tour-frankfurt-group.jpg");
+const aura2 = asset("products/hmd-aura-2.jpg");
 
 /** A static import as a CMS image. */
 export function img(file: StaticImageData, alt: string): CmsImage {

@@ -1,18 +1,20 @@
 import type { StaticImageData } from "next/image";
-import siccotel from "@/assets/brand/siccotel-logo.png";
-import alcatel from "@/assets/partners/alcatel.png";
-import energizer from "@/assets/partners/energizer.png";
-import hiqo from "@/assets/partners/hiqo.png";
-import hmd from "@/assets/partners/hmd.png";
-import infinix from "@/assets/partners/infinix.png";
-import itel from "@/assets/partners/itel.png";
-import nokia from "@/assets/partners/nokia.png";
-import oraimo from "@/assets/partners/oraimo.png";
-import realme from "@/assets/partners/realme.png";
-import samsung from "@/assets/partners/samsung.png";
-import tcl from "@/assets/partners/tcl.png";
-import tecno from "@/assets/partners/tecno.png";
-import zteNubia from "@/assets/partners/zte-nubia.png";
+import { asset } from "@/content/asset-manifest";
+
+const siccotel = asset("logos/siccotel-logo.png");
+const alcatel = asset("logos/alcatel.png");
+const energizer = asset("logos/energizer.png");
+const hiqo = asset("logos/hiqo.png");
+const hmd = asset("logos/hmd.png");
+const infinix = asset("logos/infinix.png");
+const itel = asset("logos/itel.png");
+const nokia = asset("logos/nokia.png");
+const oraimo = asset("logos/oraimo.png");
+const realme = asset("logos/realme.png");
+const samsung = asset("logos/samsung.png");
+const tcl = asset("logos/tcl.png");
+const tecno = asset("logos/tecno.png");
+const zteNubia = asset("logos/zte-nubia.png");
 
 /**
  * Milestones from the "Siccotel Journey Timeline" graphic on siccotel.com
@@ -28,7 +30,7 @@ export type Milestone = {
   /**
    * Logos above the milestone's dot on the homepage timeline. HIQO, Alcatel, TCL,
    * Energizer and oraimo are cut, unaltered, from Siccotel's own journey graphic
-   * (src/assets/company/distribution-journey-graphic.png); the rest are the partner logos.
+   * (public/assets/website/distribution-journey-graphic.png); the rest are the partner logos.
    *
    * A milestone with several brands lists them under its year as dots of their own, each with
    * its logo and title; the pinned timeline activates them one short scroll step at a time,

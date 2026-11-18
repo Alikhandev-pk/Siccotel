@@ -30,10 +30,10 @@ export type MapArtwork = {
 
 /**
  * The client's regional map with red (south), blue (central) and green (north)
- * outlines, supplied on 14 November 2026: src/assets/company/pakistan-regional-map-outlined.png,
+ * outlines, supplied on 14 November 2026: public/assets/website/pakistan-regional-map-outlined.png,
  * imported to the CMS as /media/imported/pakistan-regional-map-outlined.png (same file).
  * Traced with:
- *   node scripts/trace-map-regions.mjs src/assets/company/pakistan-regional-map-outlined.png 478x412 north:300,45+395,110 central:280,195 south:120,280
+ *   node scripts/trace-map-regions.mjs public/assets/website/pakistan-regional-map-outlined.png 478x412 north:300,45+395,110 central:280,195 south:120,280
  */
 export const REGIONAL_MAP_FINGERPRINT = "sha256:2ccabe2086c069d578c59b682ccf473ed3c84b98b8c49c1eb3e3d276a6cb65e2";
 

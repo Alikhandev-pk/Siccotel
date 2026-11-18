@@ -11,7 +11,7 @@
  * ever appear on the exact file they were traced from.
  *
  * Example (the client's map supplied on 14 November 2026):
- *   node scripts/trace-map-regions.mjs src/assets/company/pakistan-regional-map-outlined.png 478x412 \
+ *   node scripts/trace-map-regions.mjs public/assets/website/pakistan-regional-map-outlined.png 478x412 \
  *     north:300,45+395,110 central:280,195 south:120,280
  *
  * Check the result visually before committing it: pass --preview <file.png> to

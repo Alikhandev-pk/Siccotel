@@ -1,9 +1,11 @@
 import type { StaticImageData } from "next/image";
-import aura2 from "@/assets/products/hmd-aura-2.jpg";
-import b105 from "@/assets/products/zentality-b105.jpg";
-import b106 from "@/assets/products/zentality-b106.jpg";
-import b220 from "@/assets/products/zentality-b220.jpg";
-import b3310 from "@/assets/products/zentality-b3310.jpg";
+import { asset } from "@/content/asset-manifest";
+
+const aura2 = asset("products/hmd-aura-2.jpg");
+const b105 = asset("products/zentality-b105.jpg");
+const b106 = asset("products/zentality-b106.jpg");
+const b220 = asset("products/zentality-b220.jpg");
+const b3310 = asset("products/zentality-b3310.jpg");
 
 export type AssembledDevice = { name: string; img: StaticImageData };
 

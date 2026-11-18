@@ -1,16 +1,18 @@
 import type { StaticImageData } from "next/image";
-import infinix from "@/assets/partners/infinix.png";
-import itel from "@/assets/partners/itel.png";
-import tecno from "@/assets/partners/tecno.png";
-import samsung from "@/assets/partners/samsung.png";
-import nokia from "@/assets/partners/nokia.png";
-import realme from "@/assets/partners/realme.png";
-import hmd from "@/assets/partners/hmd.png";
-import zteNubia from "@/assets/partners/zte-nubia.png";
-import hmdLight from "@/assets/partners/hmd-light.png";
-import nokiaLight from "@/assets/partners/nokia-light.png";
-import zentalityLight from "@/assets/partners/zentality-light.png";
-import deployLight from "@/assets/partners/deploy-light.png";
+import { asset } from "@/content/asset-manifest";
+
+const infinix = asset("logos/infinix.png");
+const itel = asset("logos/itel.png");
+const tecno = asset("logos/tecno.png");
+const samsung = asset("logos/samsung.png");
+const nokia = asset("logos/nokia.png");
+const realme = asset("logos/realme.png");
+const hmd = asset("logos/hmd.png");
+const zteNubia = asset("logos/zte-nubia.png");
+const hmdLight = asset("logos/hmd-light.png");
+const nokiaLight = asset("logos/nokia-light.png");
+const zentalityLight = asset("logos/zentality-light.png");
+const deployLight = asset("logos/deploy-light.png");
 
 export type Partner = {
   name: string;

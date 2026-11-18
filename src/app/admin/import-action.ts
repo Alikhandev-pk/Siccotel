@@ -14,6 +14,10 @@ import type { ActionResult } from "./actions";
 /**
  * Copies the website's current content and images into the CMS.
  *
+ * Images from public/assets keep their /assets URL in the content, so pages are
+ * served the public file; a managed copy is also stored so the media library
+ * lists it and it can be picked elsewhere (the reference carries its assetId).
+ *
  * Idempotent: images are keyed by file name, pages and entries are inserted
  * only when missing (never overwritten), and entries keep their import key even
  * when deleted, so running it again never undoes an admin's edits, re-publishes
@@ -26,7 +30,7 @@ export async function runImport(): Promise<ActionResult> {
     const origin = `${h.get("x-forwarded-proto") ?? "http"}://${h.get("x-forwarded-host") ?? h.get("host")}`;
     const uploaded = new Map<string, CmsImage>();
     const isImage = (v: unknown): v is CmsImage => typeof v === "object" && v !== null && typeof (v as CmsImage).src === "string" && typeof (v as CmsImage).width === "number";
-    // Bundled images live at hashed URLs; their original file name is the stable key.
+    // Public files are keyed by file name (bundled images, from older builds, by their name minus the hash).
     const seedKeyFor = (src: string) => {
       const file = src.split("/").pop() ?? src;
       return src.startsWith("/_next/") ? file.replace(/\.[a-z0-9_-]{6,}(\.[a-z0-9]+)$/i, "$1") : file;
@@ -35,8 +39,9 @@ export async function runImport(): Promise<ActionResult> {
     async function migrateImage(image: CmsImage): Promise<CmsImage> {
       if (!image.src.startsWith("/") || image.src.startsWith("/media/")) return image;
       const key = seedKeyFor(image.src);
+      const keepUrl = image.src.startsWith("/assets/") ? { src: image.src } : {};
       const cached = uploaded.get(key);
-      if (cached) return { ...cached, alt: image.alt, blurDataURL: image.blurDataURL };
+      if (cached) return { ...cached, ...keepUrl, alt: image.alt, blurDataURL: image.blurDataURL };
       const existing = await select<{ id: string; url: string; width: number; height: number }>("SELECT id, url, width, height FROM media_assets WHERE seed_key = ?", [key]);
       let stored: CmsImage;
       if (existing[0]) {
@@ -47,7 +52,7 @@ export async function runImport(): Promise<ActionResult> {
         stored = await storeImage(Buffer.from(await res.arrayBuffer()), key, { alt: image.alt, seedKey: key, userId });
       }
       uploaded.set(key, stored);
-      return { ...stored, alt: image.alt, blurDataURL: image.blurDataURL };
+      return { ...stored, ...keepUrl, alt: image.alt, blurDataURL: image.blurDataURL };
     }
 
     async function migrate<T>(value: T): Promise<T> {

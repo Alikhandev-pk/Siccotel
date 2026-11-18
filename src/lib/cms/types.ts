@@ -5,7 +5,10 @@
  */
 
 export type CmsImage = {
-  /** A site-relative path: bundled (/_next/static/…, /assets/…) or uploaded (/media/…). */
+  /**
+   * A site-relative path: a public file (/assets/…), copied there from the CMS by
+   * `npm run cms:organize-images` once published, or an upload in managed storage (/media/…).
+   */
   src: string;
   width: number;
   height: number;

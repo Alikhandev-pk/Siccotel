@@ -43,7 +43,7 @@ Once confirmed, add the numbers to `contact` in `src/content/company.ts` and res
 
 ## Retail & E-Commerce Asset & Link Verification
 
-Source: `https://siccotel.com/our-ecommerce-clients/`, heading "Our Ecommerce Client", artwork `wp-content/uploads/2024/02/Mask-group-1.png` (same image as `src/assets/company/ecommerce-clients.png`). The page gives **no relationship detail beyond "e-commerce client"**, so the site claims nothing more. Individual logos in `src/assets/retail/clients/` are crops of that official artwork.
+Source: `https://siccotel.com/our-ecommerce-clients/`, heading "Our Ecommerce Client", artwork `wp-content/uploads/2024/02/Mask-group-1.png` (same image as `public/assets/website/ecommerce-clients.png`). The page gives **no relationship detail beyond "e-commerce client"**, so the site claims nothing more. Individual logos in `public/assets/logos/` are crops of that official artwork.
 
 Earlier drafts of this document listed "Qistpay (qistpay.com)" and relationship labels such as "Shariah-compliant device financing" or "flagship channel". Those were not supported by the source and have been removed. The twelfth logo reads **Kistpay**; qistpay.com does not resolve and kistpay.com redirects to kistpay.pk.
 
@@ -90,7 +90,7 @@ Captions name only what each banner shows. Each links to a Sicco Store page that
 
 ## Corporate Client Logos
 
-The client asked on 14 November 2026 for 20 corporate client logos to be added to the homepage "Corporate & E-commerce Clients" grid. They supplied a screenshot, and later logo files for Ismail Industries, National Foods and GSK (and for Standard Chartered, among the original twelve). Every other logo below comes from the company's own website, an archived copy of that website, or its annual report, and was checked against the screenshot. Files are in `src/assets/retail/clients/`. Each was trimmed and resized to a transparent PNG no taller than 120px, with no other change to the artwork except where a note below says so. The tiles are not links.
+The client asked on 14 November 2026 for 20 corporate client logos to be added to the homepage "Corporate & E-commerce Clients" grid. They supplied a screenshot, and later logo files for Ismail Industries, National Foods and GSK (and for Standard Chartered, among the original twelve). Every other logo below comes from the company's own website, an archived copy of that website, or its annual report, and was checked against the screenshot. Files are in `public/assets/logos/`. Each was trimmed and resized to a transparent PNG no taller than 120px, with no other change to the artwork except where a note below says so. The tiles are not links.
 
 | Brand | Local file | Official source | Notes |
 | :--- | :--- | :--- | :--- |

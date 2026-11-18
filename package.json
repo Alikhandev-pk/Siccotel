@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "db:migrate": "node scripts/db-migrate.mjs",
-    "admin:create": "node scripts/create-admin.mjs"
+    "admin:create": "node scripts/create-admin.mjs",
+    "assets:manifest": "node scripts/asset-manifest.mjs",
+    "cms:organize-images": "node scripts/organize-cms-images.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

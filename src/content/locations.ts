@@ -1,6 +1,6 @@
 /**
  * Cities marked on Siccotel’s regional map with coloured region outlines
- * (src/assets/company/pakistan-regional-map-outlined.png, supplied by the client
+ * (public/assets/website/pakistan-regional-map-outlined.png, supplied by the client
  * on 14 November 2026). `x`/`y` are the centres of the city dots, in percent,
  * measured on the supplied 478 × 412 file. The stored file is an exact 8×
  * super-resolution (EDSR) of it at 3824 × 3296, so the percentages still match.

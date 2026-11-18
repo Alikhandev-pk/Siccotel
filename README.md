@@ -35,3 +35,5 @@ Regional map city names are not proof of offices. Only published Karachi address
 ## Admin panel (CMS)
 
 Content is editable at `/admin`: banners, products, news, the media library, the homepage, every page's copy and images, and the contact settings. It uses MySQL (or MariaDB) and a persistent uploads folder, and stays inactive until configured: the site shows its built-in content until then. Setup, first-admin provisioning, the website import and the security model are in [docs/ADMIN_SETUP.md](docs/ADMIN_SETUP.md).
+
+Site images are in `public/assets/` (`products/`, `articles/`, `banners/`, `logos/`, `website/`) and are served at `/assets/...`. After publishing new images in the admin, run `npm run cms:organize-images` and rebuild so they move there too; see the Media notes in the admin guide.
