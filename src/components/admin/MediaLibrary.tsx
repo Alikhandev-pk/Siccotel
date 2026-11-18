@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import { Copy, Trash2, Upload } from "lucide-react";
 import { deleteMedia, updateMediaAlt, type ActionResult } from "@/app/admin/actions";
 import { runImport } from "@/app/admin/import-action";
+import { formatBytes, MAX_UPLOAD_BYTES } from "@/lib/cms/limits";
 import { uploadImage, type MediaAsset } from "./MediaPicker";
+import { describeUpload, prepareImageForUpload } from "./prepare-upload";
 
 export function MediaLibrary({ media }: { media: MediaAsset[] }) {
   const [items, setItems] = useState(media);
@@ -30,14 +32,19 @@ export function MediaLibrary({ media }: { media: MediaAsset[] }) {
     if (!files?.length) return;
     setBusy(true);
     setResult(null);
+    const notes: string[] = [];
     try {
       for (const file of Array.from(files)) {
-        const img = await uploadImage(file);
-        setItems((m) => [{ id: img.assetId!, url: img.src, width: img.width, height: img.height, alt: "", file_name: file.name, size: file.size, created_at: new Date().toISOString() }, ...m]);
+        // Photos over the limit are resized and compressed here first; the server still checks the result.
+        const prepared = await prepareImageForUpload(file);
+        const img = await uploadImage(prepared.file);
+        setItems((m) => [{ id: img.assetId!, url: img.src, width: img.width, height: img.height, alt: "", file_name: prepared.file.name, size: prepared.file.size, created_at: new Date().toISOString() }, ...m]);
+        if (prepared.optimized) notes.push(describeUpload(prepared));
       }
-      setResult({ ok: true, message: "Uploaded." });
+      setResult({ ok: true, message: ["Uploaded.", ...notes].join(" ") });
     } catch (e) {
-      setResult({ ok: false, error: e instanceof Error ? e.message : "Upload failed." });
+      const done = notes.length ? ` (${notes.join(" ")})` : "";
+      setResult({ ok: false, error: (e instanceof Error ? e.message : "Upload failed.") + done });
     } finally {
       setBusy(false);
       if (input.current) input.current.value = "";
@@ -57,7 +64,7 @@ export function MediaLibrary({ media }: { media: MediaAsset[] }) {
           <Upload className="size-4" /> {busy ? "Uploading…" : "Upload images"}
         </button>
         <input ref={input} type="file" multiple accept="image/jpeg,image/png,image/webp,image/avif,image/gif" className="hidden" onChange={(e) => onFiles(e.target.files)} />
-        <p className="text-sm text-muted">JPEG, PNG, WebP, AVIF or GIF, up to 8 MB. Files in use cannot be deleted.</p>
+        <p className="text-sm text-muted">JPEG, PNG, WebP, AVIF or GIF. Photos over {formatBytes(MAX_UPLOAD_BYTES)} are resized and compressed to fit before upload. Files in use cannot be deleted.</p>
       </div>
       {result && <p role="status" className={`rounded px-3 py-2 text-sm ${result.ok ? "bg-[#eef8f1] text-[#1f6b43]" : "bg-[#fff5f5] text-accent"}`}>{result.ok ? result.message : result.error}</p>}
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

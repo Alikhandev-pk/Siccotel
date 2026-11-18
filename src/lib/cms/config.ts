@@ -15,15 +15,8 @@ export const cmsConfigured = Boolean(databaseUrl);
 export const uploadDir = path.resolve(process.env.UPLOAD_DIR?.trim() || "storage/uploads");
 export const MEDIA_URL_PREFIX = "/media";
 
-/** Upload limits, checked on the server before anything is stored. */
-export const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
-export const ALLOWED_IMAGE_TYPES: Record<string, string> = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-  "image/avif": "avif",
-  "image/gif": "gif",
-};
+/** Upload limits, checked on the server before anything is stored (shared with the admin's browser code). */
+export { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES } from "./limits";
 
 /** Marks a completed website import; after it, the database is authoritative. */
 export const SEED_MARKER_KEY = "_meta";
