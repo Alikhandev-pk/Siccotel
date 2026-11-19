@@ -1,6 +1,6 @@
 "use client";
 
-import type { RefObject } from "react";
+import { useCallback, useRef, type RefObject } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { MOTION } from "./motion";
 
@@ -10,8 +10,13 @@ import { MOTION } from "./motion";
  * shadow, globals.css) is set whenever the page is scrolled, motion or not.
  * The transform is cleared once the header is back, because a transformed
  * header would become the containing block of the fixed mobile menu.
+ *
+ * Returns `showNow`, which puts the header fully in place without animating.
+ * The mobile menu calls it on open: a toggle tapped while the header is still
+ * sliding in would otherwise open the menu inside a transformed header.
  */
 export function useHeaderAutoHide(ref: RefObject<HTMLElement | null>, lockedRef: RefObject<boolean>) {
+  const showNowRef = useRef<() => void>(() => {});
   useGSAP(
     () => {
       const header = ref.current;
@@ -46,9 +51,15 @@ export function useHeaderAutoHide(ref: RefObject<HTMLElement | null>, lockedRef:
         });
         const reveal = () => setShown(true);
         header.addEventListener("focusin", reveal);
+        showNowRef.current = () => {
+          hidden = false;
+          gsap.killTweensOf(header);
+          gsap.set(header, { clearProps: "transform" });
+        };
         return () => {
           trigger.kill();
           header.removeEventListener("focusin", reveal);
+          showNowRef.current = () => {};
         };
       });
 
@@ -60,4 +71,5 @@ export function useHeaderAutoHide(ref: RefObject<HTMLElement | null>, lockedRef:
     },
     { scope: ref },
   );
+  return useCallback(() => showNowRef.current(), []);
 }

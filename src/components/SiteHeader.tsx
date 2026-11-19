@@ -30,7 +30,7 @@ export function SiteHeader({ contact }: { contact: HeaderContact }) {
   const menuOpenRef = useRef(false);
   /** A menu link was tapped: its destination decides the scroll position, including same-page anchors. */
   const followingLink = useRef(false);
-  useHeaderAutoHide(headerRef, menuOpenRef);
+  const showHeaderNow = useHeaderAutoHide(headerRef, menuOpenRef);
   useMagnetic(partnerRef);
 
   const closeForLink = () => {
@@ -56,15 +56,17 @@ export function SiteHeader({ contact }: { contact: HeaderContact }) {
     menuOpenRef.current = open;
     if (!open) return;
     const panel = panelRef.current;
+    // The panel is fixed inside the header, so the header must be in place and untransformed.
+    showHeaderNow();
     // Smooth scrolling would otherwise still move the locked page behind the menu.
     const lenis = getLenis();
     lenis?.stop();
-    // Lock both: iOS Safari ignores body overflow for touch scrolling unless html is locked too.
+    // Lock html only (iOS Safari needs html, not body, for touch scrolling). Locking body as
+    // well makes it a scroll container: the sticky header, its toggle and the panel's top
+    // edge would then fall back to the top of the document, out of view.
     const root = document.documentElement;
-    const { overflow } = document.body.style;
     const rootOverflow = root.style.overflow;
     const openedAt = { y: window.scrollY, path: window.location.pathname };
-    document.body.style.overflow = "hidden";
     root.style.overflow = "hidden";
     panel?.querySelector<HTMLElement>("a")?.focus({ preventScroll: true });
 
@@ -106,7 +108,6 @@ export function SiteHeader({ contact }: { contact: HeaderContact }) {
     return () => {
       tween?.kill();
       if (panel) gsap.set([panel, ...panel.querySelectorAll("[data-menu-item]")], { clearProps: "all" });
-      document.body.style.overflow = overflow;
       root.style.overflow = rootOverflow;
       lenis?.start();
       // Focus moving onto the sticky toggle can scroll the locked page; put it back unless a link was followed.
@@ -117,7 +118,7 @@ export function SiteHeader({ contact }: { contact: HeaderContact }) {
       document.removeEventListener("keydown", onKey);
       window.removeEventListener("resize", onResize);
     };
-  }, [open, close]);
+  }, [open, close, showHeaderNow]);
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
