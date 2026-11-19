@@ -12,7 +12,6 @@ import {
   getSettings,
 } from "@/lib/cms/public";
 import {
-  EnquiryPaths,
   NewsCard,
   PartnerStrip,
   StatsGrid,
@@ -24,6 +23,7 @@ import { BusinessCards } from "@/components/home/BusinessCards";
 import { RetailEcommerceSection } from "@/components/home/RetailEcommerceSection";
 import { ReachMap } from "@/components/home/ReachMap";
 import { JourneyRail } from "@/components/home/JourneyRail";
+import { HomeEnquiry } from "@/components/home/HomeEnquiry";
 import { Reveal } from "@/components/animations/Reveal";
 import { ChainProgress } from "@/components/animations/ChainProgress";
 import { NewsReveal } from "@/components/animations/NewsReveal";
@@ -363,7 +363,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      <EnquiryPaths
+      <HomeEnquiry
         title={home.enquiry.title}
         intro={home.enquiry.intro}
         email={settings.email}

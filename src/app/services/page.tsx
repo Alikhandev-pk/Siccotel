@@ -5,7 +5,8 @@ import { enquiryHref, type EnquiryType } from "@/content/navigation";
 import { fillProps, imageProps } from "@/lib/cms/image";
 import { getDoc, getSettings } from "@/lib/cms/public";
 import type { ServiceActivity, SettingsDoc } from "@/lib/cms/types";
-import { EnquiryPaths, PageHero } from "@/components/sections";
+import { PageHero } from "@/components/sections";
+import { HomeEnquiry } from "@/components/home/HomeEnquiry";
 import { ButtonLink, Reveal, TextLink } from "@/components/ui";
 import { HeadingWords } from "@/components/HeadingWords";
 import { pageMetadata } from "@/lib/site";
@@ -207,7 +208,7 @@ export default async function ServicesPage() {
         </div>
       </section>
 
-      <EnquiryPaths email={settings.email} />
+      <HomeEnquiry title="How Can We Work Together?" email={settings.email} />
     </>
   );
 }

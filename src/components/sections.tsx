@@ -1,14 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Mail } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
-import { enquiryHref, enquiryTypes } from "@/content/navigation";
 import { fillProps } from "@/lib/cms/image";
 import type { Article, CmsImage, Milestone, Published, Stat } from "@/lib/cms/types";
 import { ArrowSwap, Reveal, TextLink } from "./ui";
 import { HeadingWords } from "./HeadingWords";
 import { LogoMarquee } from "./animations/LogoMarquee";
-import { Reveal as MotionReveal } from "./animations/Reveal";
 
 /* ------------------------------------------------------------------ */
 /* Page hero for inner pages                                           */
@@ -250,67 +247,4 @@ export function NewsCard({
 /* ------------------------------------------------------------------ */
 /* Enquiry routing CTA                                                 */
 /* ------------------------------------------------------------------ */
-export function EnquiryPaths({ title = "How Can We Work Together?", intro, email }: { title?: string; intro?: string; email: string }) {
-  return (
-    <section className="on-dark relative overflow-hidden bg-night text-white" aria-labelledby="enquiry-paths-title">
-      <div aria-hidden className="grid-texture absolute inset-0" />
-      <svg aria-hidden viewBox="0 0 800 800" className="absolute top-1/2 -right-64 w-[56rem] -translate-y-1/2 opacity-70" fill="none">
-        <circle cx="400" cy="400" r="390" stroke="white" strokeOpacity="0.06" />
-        <circle cx="400" cy="400" r="290" stroke="white" strokeOpacity="0.05" strokeDasharray="2 7" />
-        <circle cx="400" cy="400" r="190" stroke="#ff2a2a" strokeOpacity="0.18" />
-        <circle cx="400" cy="400" r="400" fill="url(#cta-glow)" />
-        <defs>
-          <radialGradient id="cta-glow">
-            <stop offset="0%" stopColor="#ff2a2a" stopOpacity="0.14" />
-            <stop offset="100%" stopColor="#ff2a2a" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-      </svg>
-      <div className="section-space container-site relative">
-        <div className="grid gap-5 sm:gap-14 lg:grid-cols-12 lg:gap-10">
-          <MotionReveal className="lg:col-span-5">
-            <p className="eyebrow mb-3 sm:mb-5">Business enquiries</p>
-            <h2 id="enquiry-paths-title" className="t-h2" data-anim="heading">
-              {title}
-            </h2>
-            <p className="t-lead mt-3 max-w-md text-night-muted sm:mt-6">
-              {intro ?? "Choose the option that fits you best and your enquiry will reach the right team."}
-            </p>
-            {/* Email follows in the footer directly below, so phones skip it here. */}
-            <ul className="mt-10 hidden text-[0.9375rem] sm:block">
-              <li>
-                <a href={`mailto:${email}`} className="group inline-flex items-center gap-3 text-white/90 hover:text-white">
-                  <Mail aria-hidden className="size-4 text-accent-on-dark" />
-                  <span className="link-line">{email}</span>
-                </a>
-              </li>
-            </ul>
-          </MotionReveal>
-          <MotionReveal as="ul" mode="children" y={30} className="border-t border-night-line lg:col-span-7">
-            {enquiryTypes.map((t, i) => (
-              <li key={t.value} className="border-b border-night-line">
-                <Link
-                  href={enquiryHref(t.value)}
-                  className="group grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-1 py-3 transition-colors duration-200 hover:bg-white/[0.03] sm:items-start sm:gap-x-8 sm:px-4 sm:py-7"
-                >
-                  <span className="font-display text-sm font-semibold text-accent-on-dark tabular-nums sm:pt-1.5">0{i + 1}</span>
-                  <span>
-                    <span className="hidden text-xs font-semibold tracking-[0.12em] text-night-muted uppercase sm:block">{t.audience}</span>
-                    <span className="block font-display text-[1.0625rem] leading-tight font-semibold tracking-[-0.02em] sm:mt-1.5 sm:text-[1.625rem]">
-                      {t.label}
-                    </span>
-                    <span className="mt-2 hidden max-w-lg text-[0.9375rem] leading-relaxed text-night-muted sm:block">{t.description}</span>
-                  </span>
-                  <span className="inline-flex size-11 items-center justify-center rounded-full border border-white/20 transition-colors duration-200 group-hover:border-accent-on-dark group-hover:bg-accent sm:mt-1">
-                    <ArrowRight aria-hidden className="size-4 transition-transform duration-200 group-hover:-rotate-45" />
-                    <span className="sr-only">Start enquiry</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </MotionReveal>
-        </div>
-      </div>
-    </section>
-  );
-}
+export { HomeEnquiry as EnquiryPaths } from "./home/HomeEnquiry";
