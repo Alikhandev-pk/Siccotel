@@ -29,10 +29,10 @@ const retailSmartphones = asset("website/retail-ecommerce-smartphones.png");
 const assemblyLine = asset("website/assembly-line-workers.jpg");
 const outlinedMap = asset("website/pakistan-regional-map-outlined.png");
 const ecommerceClientsArt = asset("website/ecommerce-clients.png");
-const mwcHmd = asset("articles/mwc-barcelona-2025-hmd-booth.jpg");
 const hmdMeeting = asset("articles/hmd-global-meeting-china.jpg");
 const partnershipCeremony = asset("articles/zte-nubia-partnership-ceremony.jpg");
 const partnershipSigning = asset("articles/zte-nubia-partnership-signing.jpg");
+const transsionVisitThumbsUp = asset("website/transsion-visit-thumbs-up.png");
 const aura2 = asset("products/hmd-aura-2.jpg");
 
 /** A static import as a CMS image. */
@@ -183,7 +183,7 @@ export const defaultDocs: DocMap = {
       body: growthText,
       assurances: ["Authorized distribution", "Official warranty", "Genuine stock"],
       photos: [
-        { image: img(mwcHmd, "Siccotel representatives with device-industry executives at the HMD stand, MWC Barcelona 2025"), caption: "" },
+        { image: img(transsionVisitThumbsUp, "Siccotel representatives and Transsion hosts giving a thumbs-up in front of the Transsion sign outside the company’s offices"), caption: "" },
         { image: img(hmdMeeting, "Siccotel and HMD Global representatives at HMD’s offices"), caption: "" },
       ],
       stats: homeStats.map((s) => ({ ...s })),

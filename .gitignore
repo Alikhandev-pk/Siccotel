@@ -50,3 +50,4 @@ next-env.d.ts
 
 # CMS uploads (persistent, not in git)
 /storage/
+/scratch/
