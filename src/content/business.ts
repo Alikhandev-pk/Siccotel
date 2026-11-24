@@ -52,10 +52,9 @@ export const businessActivities: BusinessActivity[] = [
       "Siccotel began in retail in 2001 and still reaches customers directly — through its retail partners, its own online store and leading e-commerce platforms.",
     audience: "Dealers, retailers and online marketplaces",
     points: [
-      "Retail heritage dating back to the company’s founding years (2001–2006)",
-      "Sicco Store, the company’s own online store",
-      "E-commerce clients include Daraz, PriceOye and foodpanda, among others",
-      "Own mobile phone brand, HIQO, launched in 2011",
+      "Pakistan's official online electronics and mobile store powered by Siccotel.",
+      "100% Genuine & PTA-Approved: Authentic, brand-new stock backed by official brand warranties.",
+      "Fast shipping across Pakistan with direct customer assistance via WhatsApp and email.",
     ],
     next: { label: "Become a dealer or retail partner", enquiry: "dealer" },
     detailHref: "/services#retail",

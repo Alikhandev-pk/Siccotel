@@ -54,7 +54,7 @@ export const retail = {
       "Retail is where Siccotel started: the company expanded its retail business from 2001 to 2006 before moving into nationwide distribution.",
     points: [
       "Official warranty and genuine stock from authorized distribution",
-      "Own mobile phone brand, HIQO, launched in 2011",
+      "Connected to 6+ regional hubs, 800+ wholesalers, and over 4,500 retail partners across Pakistan.",
     ],
   },
   online: {

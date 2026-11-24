@@ -8,7 +8,7 @@
  */
 import type { StaticImageData } from "next/image";
 import { asset } from "@/content/asset-manifest";
-import { aboutIntro, contact, coreValues, coreValuesIntro, externalLinks, futurePlans, growthText, homeStats, mission, networkStats, presenceText, social, topBarPhone } from "@/content/company";
+import { aboutIntro, contact, coreValues, coreValuesIntro, externalLinks, futurePlans, growthText, homeStats, mission, presenceText, social, topBarPhone } from "@/content/company";
 import { heroBanners, heroIntro } from "@/content/hero";
 import { milestones } from "@/content/milestones";
 import { news } from "@/content/news";
@@ -33,7 +33,6 @@ const mwcHmd = asset("articles/mwc-barcelona-2025-hmd-booth.jpg");
 const hmdMeeting = asset("articles/hmd-global-meeting-china.jpg");
 const partnershipCeremony = asset("articles/zte-nubia-partnership-ceremony.jpg");
 const partnershipSigning = asset("articles/zte-nubia-partnership-signing.jpg");
-const dealersTour = asset("articles/dealers-tour-frankfurt-group.jpg");
 const aura2 = asset("products/hmd-aura-2.jpg");
 
 /** A static import as a CMS image. */
@@ -178,8 +177,8 @@ export const defaultDocs: DocMap = {
     },
     partnerStripTitle: "Trusted by Global Device Brands",
     glance: {
-      eyebrow: "Company at a glance",
-      title: "One of Pakistan’s Largest Smartphone Distributors",
+      eyebrow: "Get To Know Us",
+      title: "Pakistan’s Largest Smartphone Distributors",
       lead: "Founded in Karachi in 2001, Siccotel is a smartphone distributor, manufacturer and retailer with after-sales support in major cities across Pakistan. It is the official partner of leading global brands including Infinix, Samsung, itel, Nokia, realme, Tecno and ZTE nubia.",
       body: growthText,
       assurances: ["Authorized distribution", "Official warranty", "Genuine stock"],
@@ -192,7 +191,7 @@ export const defaultDocs: DocMap = {
     business: {
       eyebrow: "Our business",
       title: "From Global Brands to Everyday Connections",
-      intro: "Three connected businesses: distribution for global brands, local assembly through Siccotel Telecom, and retail & e-commerce.",
+      intro: "",
       cardImages: [businessCardImages.distribution, businessCardImages.manufacturing, businessCardImages.retail],
     },
     retail: {
@@ -218,7 +217,7 @@ export const defaultDocs: DocMap = {
     },
     manufacturing: {
       eyebrow: "Manufacturing",
-      title: "Made in Pakistan, at Korangi Creek",
+      title: "Made In Pakistan!",
       intro: "Siccotel Telecom (Pvt) Ltd is the group’s mobile phone assembly plant in Korangi Creek Industrial Park, Karachi — built to assemble devices for different brands under the Government’s “Made in Pakistan” initiative.",
       figure: "120,000",
       figureLabel: "sq. ft. of operational space at KCIP, Karachi",
@@ -242,16 +241,15 @@ export const defaultDocs: DocMap = {
   about: {
     hero: {
       eyebrow: "About Siccotel",
-      title: "Building Pakistan’s Access to Technology Since 2001",
-      intro: "A Karachi company with deep roots in retail, grown into a nationwide distributor and local manufacturer of mobile devices.",
+      title: "Building Pakistan’s Access to Technology",
+      intro: "",
     },
     intro: [...aboutIntro],
-    lookingAhead: futurePlans,
+    lookingAhead: "",
     photos: [
       { image: img(partnershipSigning, "Siccotel and ZTE nubia teams at the partnership signing"), caption: "Signing the ZTE nubia partnership, 2025." },
-      { image: img(dealersTour, "Siccotel and Inovi Telecom dealers on a rooftop overlooking Frankfurt"), caption: "The dealers’ Europe tour in Frankfurt." },
     ],
-    stats: networkStats.map((s) => ({ ...s })),
+    stats: homeStats.map((s) => ({ ...s })),
     mission: { eyebrow: "Our mission", title: "Technology, Summed Up in One Word", text: mission },
     values: { eyebrow: "Core values", title: "What We Stand For", intro: coreValuesIntro, items: [...coreValues] },
     presence: {

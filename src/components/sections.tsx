@@ -14,7 +14,7 @@ export function PageHero({
   eyebrow,
   title,
   intro,
-  tone = "light",
+  tone = "dark",
   children,
 }: {
   eyebrow: string;
@@ -35,9 +35,9 @@ export function PageHero({
       />
       <div className="container-site relative pt-9 pb-9 sm:pt-14 sm:pb-12 lg:pt-20 lg:pb-16">
         <p className="eyebrow hero-in mb-3 sm:mb-6">{eyebrow}</p>
-        <h1 data-anim="heading" data-anim-on-load="" className="t-h1 max-w-4xl">
-          <span className="hero-line">
-            <span data-page-heading=""><HeadingWords>{title}</HeadingWords></span>
+        <h1 data-anim="heading" data-anim-on-load="" className="t-h1 max-w-4xl" suppressHydrationWarning>
+          <span className="hero-line" suppressHydrationWarning>
+            <span data-page-heading="" suppressHydrationWarning><HeadingWords>{title}</HeadingWords></span>
           </span>
         </h1>
         {intro && (

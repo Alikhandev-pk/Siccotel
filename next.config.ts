@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
   // /manufacturing#products still land on the same section of the new page.
   async redirects() {
     return [
+      { source: "/products", destination: "/", permanent: true },
       { source: "/business", destination: "/services", permanent: true },
       { source: "/manufacturing", destination: "/assembly", permanent: true },
     ];

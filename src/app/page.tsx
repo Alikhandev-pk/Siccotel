@@ -8,7 +8,6 @@ import {
   getBanners,
   getDoc,
   getNews,
-  getProducts,
   getSettings,
 } from "@/lib/cms/public";
 import {
@@ -41,7 +40,7 @@ export const metadata = {
 const assuranceIcons = [BadgeCheck, ShieldCheck, PackageCheck];
 
 export default async function HomePage() {
-  const [home, about, services, partners, settings, banners, products, news] =
+  const [home, about, services, partners, settings, banners, news] =
     await Promise.all([
       getDoc("home"),
       getDoc("about"),
@@ -49,14 +48,10 @@ export default async function HomePage() {
       getDoc("partners"),
       getSettings(),
       getBanners(),
-      getProducts(),
       getNews(),
     ]);
   const { glance, reach, manufacturing } = home;
   const reachArtwork = await resolveReachArtwork(reach);
-  const featured = products
-    .filter((p) => p.showOnAssembly && p.images[0])
-    .slice(0, 3);
   const [photoA, photoB] = glance.photos;
   // An empty slot drops the photo column (and its caption) so the text spans the band.
   const manufacturingPhoto = manufacturing.photo.image?.src ? manufacturing.photo.image : null;
@@ -253,12 +248,12 @@ export default async function HomePage() {
             )}
           </div>
 
-          <div className="mt-6 grid gap-6 border-t border-night-line pt-5 sm:mt-10 sm:gap-9 sm:pt-8 lg:mt-12 lg:grid-cols-12 lg:gap-10">
-            <div className="lg:col-span-7">
+          <div className="mt-6 border-t border-night-line pt-5 sm:mt-10 sm:pt-8 lg:mt-12">
+            <div>
               <h3 className="text-xs font-semibold tracking-[0.14em] text-night-muted uppercase">
                 End-to-End Service Delivery Chain
               </h3>
-              <ChainProgress className="mt-3 grid grid-cols-2 gap-x-4 sm:mt-4 sm:gap-x-6">
+              <ChainProgress className="mt-3 grid grid-cols-2 gap-x-4 sm:mt-4 sm:gap-x-6 lg:grid-cols-4">
                 {manufacturing.chain.map((step, i) => (
                   <li
                     key={step}
@@ -280,33 +275,6 @@ export default async function HomePage() {
                 ))}
               </ChainProgress>
             </div>
-            {featured.length > 0 && (
-              <div className="lg:col-span-5">
-                <h3 className="text-xs font-semibold tracking-[0.14em] text-night-muted uppercase">
-                  {manufacturing.productsTitle}
-                </h3>
-                <ul
-                  className="mt-3 grid grid-cols-3 gap-2.5 sm:mt-4 sm:gap-3"
-                  data-anim="stagger"
-                >
-                  {featured.map((product) => (
-                    <li key={product.id}>
-                      <div className="overflow-hidden rounded-[6px] bg-white">
-                        <Image
-                          {...imageProps(product.images[0])}
-                          alt={product.images[0].alt}
-                          sizes="(min-width: 1024px) 150px, 30vw"
-                          className="h-auto w-full"
-                        />
-                      </div>
-                      <p className="mt-1.5 text-sm leading-snug text-night-muted sm:mt-2">
-                        {product.name}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         </div>
       </section>

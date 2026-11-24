@@ -282,7 +282,7 @@ export function ReachMap({ reach, artwork, settings }: { reach: HomeDoc["reach"]
         </div>
 
         <div className="mt-4 border-t border-line pt-5">
-          <h3 className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">Published Addresses, Karachi</h3>
+          <h3 className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">Addresses, Karachi</h3>
           <ul className="mt-2.5 divide-y divide-line lg:mt-3">
             {offices.map(({ icon: Icon, label, lines }) => (
               <li key={label} className="flex gap-3 py-2.5 lg:py-3">

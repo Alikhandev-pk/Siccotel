@@ -6,7 +6,7 @@ import { ButtonLink, TextLink } from "../ui";
 import { Reveal } from "../animations/Reveal";
 
 /** `points` picks from each activity's list; network figures appear once, in the statistics row. */
-const pointPicks: Record<string, number[]> = { distribution: [0, 1, 3], manufacturing: [0, 1, 2], retail: [1, 2, 3] };
+const pointPicks: Record<string, number[]> = { distribution: [0, 1, 3], manufacturing: [0, 1, 2], retail: [0, 1, 2] };
 const detailHref: Record<string, string> = { distribution: "/services#distribution", manufacturing: "/assembly", retail: "/services#retail" };
 
 /**
@@ -20,15 +20,17 @@ export function BusinessCards({ copy, activities }: { copy: HomeDoc["business"];
     <section id="our-business" aria-labelledby="business-title" className="section-space">
       <div className="container-site">
         <Reveal className="grid gap-5 lg:grid-cols-12 lg:items-end lg:gap-10">
-          <div className="lg:col-span-7">
+          <div className={copy.intro ? "lg:col-span-7" : "lg:col-span-12"}>
             <p className="eyebrow mb-3 sm:mb-4">{copy.eyebrow}</p>
             <h2 id="business-title" className="t-h2">
               {copy.title}
             </h2>
           </div>
-          <p className="hidden max-w-md leading-relaxed text-muted sm:block lg:col-span-5">
-            {copy.intro}
-          </p>
+          {copy.intro && (
+            <p className="hidden max-w-md leading-relaxed text-muted sm:block lg:col-span-5">
+              {copy.intro}
+            </p>
+          )}
         </Reveal>
 
         <Reveal as="ul" mode="children" tilt stagger={0.12} className="mt-6 grid gap-3 sm:mt-9 md:grid-cols-3 md:gap-5 lg:mt-11 lg:gap-6">

@@ -3,9 +3,9 @@ import { Mail, MapPin } from "lucide-react";
 import { enquiryHref } from "@/content/navigation";
 import { telecomLogo } from "@/lib/cms/defaults";
 import { fillProps, imageProps } from "@/lib/cms/image";
-import { getDoc, getProducts, getSettings } from "@/lib/cms/public";
+import { getDoc, getSettings } from "@/lib/cms/public";
 import { PageHero, PartnerLogo } from "@/components/sections";
-import { ButtonLink, Reveal, SectionHeader, TextLink } from "@/components/ui";
+import { ButtonLink, Reveal, SectionHeader } from "@/components/ui";
 import { pageMetadata } from "@/lib/site";
 
 export const metadata = pageMetadata({
@@ -16,8 +16,7 @@ export const metadata = pageMetadata({
 });
 
 export default async function AssemblyPage() {
-  const [doc, settings, products] = await Promise.all([getDoc("assembly"), getSettings(), getProducts()]);
-  const devices = products.filter((p) => p.showOnAssembly && p.images[0]);
+  const [doc, settings] = await Promise.all([getDoc("assembly"), getSettings()]);
   const [photoA, photoB] = doc.photos;
   const contact = settings;
 
@@ -110,31 +109,6 @@ export default async function AssemblyPage() {
         </div>
       </section>
 
-      {/* id="products" keeps old /manufacturing#products links landing here after the redirect. */}
-      <section id="products" aria-labelledby="products-title" className="section-space">
-        <div className="container-site">
-          <div className="flex flex-col justify-between gap-2 sm:gap-5 lg:flex-row lg:items-end">
-            <SectionHeader eyebrow={doc.products.eyebrow} title={<span id="products-title">{doc.products.title}</span>} intro={doc.products.intro} />
-            <TextLink href="/products" className="min-h-11 shrink-0">
-              All products
-            </TextLink>
-          </div>
-          {devices.length > 0 ? (
-            <ul className="mt-6 grid grid-cols-2 gap-3 sm:mt-12 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
-              {devices.map((p, i) => (
-                <Reveal as="li" key={p.id} delay={i * 60}>
-                  <div className="overflow-hidden rounded-[4px] border border-line bg-white">
-                    <Image {...imageProps(p.images[0])} alt={p.images[0].alt || p.name} sizes="(min-width: 1024px) 230px, (min-width: 640px) 33vw, 50vw" className="h-auto w-full" />
-                  </div>
-                  <p className="mt-3 font-semibold">{p.name}</p>
-                </Reveal>
-              ))}
-            </ul>
-          ) : (
-            <p className="mt-6 text-muted">Products will be listed here soon.</p>
-          )}
-        </div>
-      </section>
 
       <section aria-labelledby="mfg-partners-title" className="on-dark bg-night text-white">
         <div className="section-space container-site">

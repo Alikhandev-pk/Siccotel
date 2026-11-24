@@ -8,7 +8,6 @@ export const headerNav = [
   { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Assembly", href: "/assembly" },
-  { label: "Products", href: "/products" },
   { label: "Partners", href: "/partners" },
   { label: "News & Media", href: "/news" },
   { label: "Contact Us", href: "/contact" },

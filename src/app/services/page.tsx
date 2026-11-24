@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Check, ShieldCheck, Smartphone } from "lucide-react";
-import { ecommerceClients } from "@/content/retail";
+import { homepageClients } from "@/content/retail";
 import { enquiryHref, type EnquiryType } from "@/content/navigation";
 import { fillProps, imageProps } from "@/lib/cms/image";
 import { getDoc, getSettings } from "@/lib/cms/public";
@@ -54,20 +54,29 @@ function ActivitySection({ activity, index, links }: { activity: ServiceActivity
           {activity.id === "retail" && (
             <div className="mt-6 border-t border-line/60 pt-5 sm:mt-8 sm:pt-6">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-3">
-                E-commerce clients, as listed by Siccotel
+                E-commerce &amp; corporate clients, as listed by Siccotel
               </p>
               <div className="flex flex-wrap gap-2">
-                {ecommerceClients.map((partner) => (
-                  <a
-                    key={partner.name}
-                    href={partner.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line bg-white px-3 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent sm:min-h-0 sm:py-1 sm:text-xs"
-                  >
-                    <span>{partner.name}</span>
-                    <span className="hidden text-[0.6875rem] text-muted sm:inline">{partner.sector}</span>
-                  </a>
+                {homepageClients.map((partner) => (
+                  partner.url ? (
+                    <a
+                      key={partner.name}
+                      href={partner.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line bg-white px-3 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent sm:min-h-0 sm:py-1 sm:text-xs"
+                    >
+                      <span>{partner.name}</span>
+                      {partner.sector && <span className="hidden text-[0.6875rem] text-muted sm:inline">{partner.sector}</span>}
+                    </a>
+                  ) : (
+                    <span
+                      key={partner.name}
+                      className="inline-flex min-h-11 items-center rounded-full border border-line bg-white px-3 text-sm font-medium text-ink sm:min-h-0 sm:py-1 sm:text-xs"
+                    >
+                      {partner.name}
+                    </span>
+                  )
                 ))}
               </div>
             </div>
@@ -88,30 +97,72 @@ function ActivitySection({ activity, index, links }: { activity: ServiceActivity
         </div>
         <Reveal className={`lg:col-span-5 ${reversed ? "lg:order-1" : "lg:col-start-8"}`}>
           <figure>
-            <div
-              className={`relative overflow-hidden rounded-[4px] border border-line ${
-                visual.contain ? "bg-white p-4 sm:p-10" : "aspect-[4/3]"
-              }`}
-            >
-              {!visual.image?.src ? null : visual.contain ? (
-                // Sized before it loads (same box as the loaded image), so lazy loading
-                // cannot shift the page, e.g. under a /services#after-sales anchor.
-                <Image
-                  {...imageProps(visual.image)}
-                  alt={visual.image.alt}
-                  placeholder="empty"
-                  sizes="(min-width: 1024px) 470px, 100vw"
-                  className="mx-auto h-auto [--max-h:260px] sm:[--max-h:420px]"
-                  style={{
-                    aspectRatio: `${visual.image.width} / ${visual.image.height}`,
-                    width: `min(100%, ${visual.image.width}px, calc(var(--max-h) * ${visual.image.width / visual.image.height}))`,
-                  }}
-                />
-              ) : (
-                <Image {...fillProps(visual.image)} alt={visual.image.alt} sizes="(min-width: 1024px) 470px, 100vw" className="object-cover" />
-              )}
-            </div>
-            <figcaption className="mt-2 text-sm text-muted">{visual.caption}</figcaption>
+            {activity.id === "retail" ? (
+              <div className="rounded-[4px] border border-line bg-white p-3.5 sm:p-5">
+                <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-2.5">
+                  {homepageClients.map((client) => {
+                    const tile =
+                      "flex h-12 items-center justify-center rounded-[6px] border border-line/80 bg-stone/20 p-2 transition-all duration-200 hover:border-ink/25 hover:bg-white hover:shadow-xs sm:h-13 sm:p-2.5";
+                    const logo = (
+                      <Image
+                        src={client.logo}
+                        alt={client.name}
+                        sizes="120px"
+                        unoptimized={client.serveAsIs}
+                        className="max-h-7 w-auto max-w-full object-contain sm:max-h-8"
+                      />
+                    );
+                    return (
+                      <li key={client.name}>
+                        {client.url ? (
+                          <a
+                            href={client.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title={client.name}
+                            className={tile}
+                          >
+                            {logo}
+                            <span className="sr-only">{client.name} (opens in a new tab)</span>
+                          </a>
+                        ) : (
+                          <div title={client.name} className={tile}>
+                            {logo}
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ) : (
+              <div
+                className={`relative overflow-hidden rounded-[4px] border border-line ${
+                  visual.contain ? "bg-white p-4 sm:p-10" : "aspect-[4/3]"
+                }`}
+              >
+                {!visual.image?.src ? null : visual.contain ? (
+                  // Sized before it loads (same box as the loaded image), so lazy loading
+                  // cannot shift the page, e.g. under a /services#after-sales anchor.
+                  <Image
+                    {...imageProps(visual.image)}
+                    alt={visual.image.alt}
+                    placeholder="empty"
+                    sizes="(min-width: 1024px) 470px, 100vw"
+                    className="mx-auto h-auto [--max-h:260px] sm:[--max-h:420px]"
+                    style={{
+                      aspectRatio: `${visual.image.width} / ${visual.image.height}`,
+                      width: `min(100%, ${visual.image.width}px, calc(var(--max-h) * ${visual.image.width / visual.image.height}))`,
+                    }}
+                  />
+                ) : (
+                  <Image {...fillProps(visual.image)} alt={visual.image.alt} sizes="(min-width: 1024px) 470px, 100vw" className="object-cover" />
+                )}
+              </div>
+            )}
+            <figcaption className="mt-2 text-sm text-muted">
+              {activity.id === "retail" ? "E-commerce & corporate clients, as listed by Siccotel." : visual.caption}
+            </figcaption>
           </figure>
         </Reveal>
       </div>
@@ -133,7 +184,7 @@ export default async function ServicesPage() {
               <li key={a.id}>
                 <a
                   href={`#${a.id}`}
-                  className="inline-flex min-h-11 items-center rounded-full border border-line-strong bg-white px-4 text-sm font-semibold transition-colors hover:border-ink"
+                  className="inline-flex min-h-11 items-center rounded-full border border-white/20 bg-white/10 px-4 text-sm font-semibold text-white transition-colors hover:border-white/40 hover:bg-white/20"
                 >
                   {a.title}
                 </a>
@@ -142,7 +193,7 @@ export default async function ServicesPage() {
             <li>
               <a
                 href="#after-sales"
-                className="inline-flex min-h-11 items-center rounded-full border border-line-strong bg-white px-4 text-sm font-semibold transition-colors hover:border-ink"
+                className="inline-flex min-h-11 items-center rounded-full border border-white/20 bg-white/10 px-4 text-sm font-semibold text-white transition-colors hover:border-white/40 hover:bg-white/20"
               >
                 After-sales support
               </a>

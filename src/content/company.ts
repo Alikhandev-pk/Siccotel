@@ -12,7 +12,7 @@ export const company = {
   city: "Karachi",
   country: "Pakistan",
   shortDescription:
-    "Siccotel is a Karachi-based smartphone distributor, manufacturer and retailer, serving Pakistan through a nationwide network of regional hubs, wholesalers and retailers since 2001.",
+    "Siccotel is Pakistan’s Largest Smartphones Distribution, Manufacturing & Retailers House ,Serving Pakistan through a nation wide network of",
 } as const;
 
 /**
@@ -78,7 +78,7 @@ export const networkStats = [
 
 /** Homepage "Company at a glance" row, as requested by the client (November 2026). */
 export const homeStats = [
-  { value: "10+", label: "Years of Experience" },
+  { value: "15+", label: "Years of Experience" },
   { value: "8,000+", label: "Happy Customers" },
   { value: "800+", label: "Wholesalers in the network" },
   { value: "4,500+", label: "Retailers nationwide" },

@@ -17,7 +17,7 @@ export function HeadingWords({ children }: { children: ReactNode }) {
         if (/^\s+$/.test(token)) return i === 0 ? token : null; // already attached to the previous word
         const spaced = /^\s+$/.test(tokens[i + 1] ?? "") ? `${token} ` : token;
         return (
-          <span key={i} data-motion-word="" className="inline-block whitespace-pre">
+          <span key={i} data-motion-word="" className="inline-block whitespace-pre" suppressHydrationWarning>
             {spaced}
           </span>
         );

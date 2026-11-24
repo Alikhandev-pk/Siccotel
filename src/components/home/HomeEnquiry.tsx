@@ -24,14 +24,21 @@ const enquiryIcons: Record<
 type HomeEnquiryProps = {
   title?: string;
   intro?: string;
-  email: string;
+  email?: string;
+  emails?: string[];
 };
 
 export function HomeEnquiry({
   title = "Partner with Siccotel",
   intro,
   email,
+  emails,
 }: HomeEnquiryProps) {
+  const displayEmails = emails ?? (
+    email && email !== "sales@siccotel.com"
+      ? [email]
+      : ["sales@siccotel.com", "info@siccotel.com"]
+  );
   return (
     <section
       aria-labelledby="enquiry-paths-title"
@@ -59,14 +66,17 @@ export function HomeEnquiry({
                     : "Tell us what you need and we'll connect you with the right team.")}
               </p>
             </div>
-            <div className="mt-6 sm:mt-8">
-              <a
-                href={`mailto:${email}`}
-                className="group inline-flex items-center gap-2.5 text-base font-bold text-brand transition-colors hover:text-accent-hover hover:underline underline-offset-4 sm:text-lg"
-              >
-                <Mail aria-hidden="true" className="size-5 shrink-0 text-brand" strokeWidth={2} />
-                <span>{email}</span>
-              </a>
+            <div className="mt-6 flex flex-col gap-2.5 sm:mt-8">
+              {displayEmails.map((addr) => (
+                <a
+                  key={addr}
+                  href={`mailto:${addr}`}
+                  className="group inline-flex items-center gap-2.5 text-base font-bold text-brand transition-colors hover:text-accent-hover hover:underline underline-offset-4 sm:text-lg"
+                >
+                  <Mail aria-hidden="true" className="size-5 shrink-0 text-brand" strokeWidth={2} />
+                  <span>{addr}</span>
+                </a>
+              ))}
             </div>
           </Reveal>
 
