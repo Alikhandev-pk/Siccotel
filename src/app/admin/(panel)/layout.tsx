@@ -22,7 +22,7 @@ async function Panel({ children }: { children: React.ReactNode }) {
     return (
       <div className="mx-auto max-w-xl p-8">
         <h1 className="text-2xl font-semibold">CMS not configured</h1>
-        <p className="mt-3 text-ink-soft">Set <code>DATABASE_URL</code>, run <code>npm run db:migrate</code> and create the first admin. Steps are in <code>docs/ADMIN_SETUP.md</code>.</p>
+        <p className="mt-3 text-ink-soft">Set <code>DATABASE_URL</code>, run <code>npm run db:migrate</code> and create the first admin. Steps are in <code>README.md</code>.</p>
       </div>
     );
   if (check.state !== "admin")

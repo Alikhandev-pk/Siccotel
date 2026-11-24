@@ -27,7 +27,7 @@ async function LoginState() {
   if (check.state === "unconfigured")
     return (
       <p className="mt-4 text-sm leading-relaxed text-ink-soft">
-        The database is not configured yet. Set <code>DATABASE_URL</code> in <code>.env.local</code> (see <code>docs/ADMIN_SETUP.md</code>).
+        The database is not configured yet. Set <code>DATABASE_URL</code> in <code>.env.local</code> (see <code>README.md</code>).
       </p>
     );
   if (check.state === "forbidden")

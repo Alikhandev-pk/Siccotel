@@ -3,7 +3,7 @@
 import { Suspense, useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { CircleAlert, CircleCheck, LoaderCircle, Send } from "lucide-react";
-import { enquiryTypes } from "@/content/navigation";
+import { enquiryTypes, resolveEnquiryType } from "@/content/navigation";
 import { emptyEnquiry, limits, validateEnquiry, type EnquiryErrors, type EnquiryInput } from "@/lib/enquiry";
 
 type Status =
@@ -13,28 +13,29 @@ type Status =
   | { kind: "error"; message: string };
 
 const errorMessages: Record<string, string> = {
-  not_configured:
-    "Online enquiries aren’t connected yet, so your message was not sent. Please call or email us using the details on this page.",
-  delivery_failed: "We couldn’t deliver your message just now, so it was not sent. Please try again, or call or email us.",
-  rate_limited: "You’ve sent several enquiries in a short time. Please wait a few minutes, or call or email us.",
-  network: "We couldn’t reach the server, so your message was not sent. Check your connection and try again.",
+  not_configured: "Online enquiries can’t be delivered at the moment. Please email us instead.",
+  delivery_failed: "We couldn’t deliver your message just now. Please try again in a moment, or email us.",
+  rate_limited: "You’ve sent several enquiries in a short time. Please wait a few minutes, or email us.",
+  too_large: "Your message is too long to send. Please shorten it and try again.",
+  network: "We couldn’t reach the server. Check your connection and try again.",
 };
 
 const fieldOrder: (keyof EnquiryInput)[] = ["fullName", "company", "email", "phone", "city", "enquiryType", "message"];
 
 // Isolate URL access so the form itself remains in the prerendered HTML.
+// Retired types in old links (e.g. ?type=manufacturing) map to their current option.
 function EnquiryTypeSync({ onChange }: { onChange: (type: EnquiryInput["enquiryType"]) => void }) {
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
 
   useEffect(() => {
-    onChange(type && enquiryTypes.some((option) => option.value === type) ? type as EnquiryInput["enquiryType"] : "");
+    onChange(resolveEnquiryType(type));
   }, [type, onChange]);
 
   return null;
 }
 
-export function EnquiryForm({ deliveryConfigured, email }: { deliveryConfigured: boolean; email: string }) {
+export function EnquiryForm({ email }: { email: string }) {
   const contact = { email };
   const id = useId();
   const [values, setValues] = useState<EnquiryInput>(emptyEnquiry);
@@ -86,12 +87,7 @@ export function EnquiryForm({ deliveryConfigured, email }: { deliveryConfigured:
     }
     setShowSummary(false);
 
-    if (!deliveryConfigured) {
-      setStatus({ kind: "error", message: errorMessages.not_configured });
-      requestAnimationFrame(() => statusRef.current?.focus());
-      return;
-    }
-
+    // Always ask the server: only its answer says whether the message was delivered.
     const honeypot = (formRef.current?.elements.namedItem("website") as HTMLInputElement | null)?.value ?? "";
 
     submitting.current = true;
@@ -189,21 +185,6 @@ export function EnquiryForm({ deliveryConfigured, email }: { deliveryConfigured:
       <Suspense fallback={null}>
         <EnquiryTypeSync onChange={syncEnquiryType} />
       </Suspense>
-      {!deliveryConfigured && (
-        <div className="rounded-[4px] border border-line-strong bg-stone p-4 text-[0.9375rem] leading-relaxed sm:p-5">
-          <h3 className="flex items-start gap-2 font-semibold text-ink">
-            <CircleAlert aria-hidden className="mt-0.5 size-5 shrink-0 text-accent" />
-            Online Enquiry Delivery Is Currently Unavailable
-          </h3>
-          <p className="mt-2 text-ink-soft">
-            This form cannot send your message yet. Please email{" "}
-            <a href={`mailto:${contact.email}`} className="font-semibold text-ink underline underline-offset-4">
-              {contact.email}
-            </a>
-            .
-          </p>
-        </div>
-      )}
       {showSummary && errorList.length > 0 && (
         <div
           ref={summaryRef}

@@ -94,7 +94,7 @@ export function JourneyRail({ items }: { items: Milestone[] }) {
       // Find the next card whose offsetLeft is ahead of current scroll
       const nextCard = cards.find((c) => c.offsetLeft > currentScroll + 10);
       if (nextCard) {
-        // Clamp to maxScroll so the final position cleanly shows 2025
+        // Clamp to maxScroll so the final position shows the last milestone whole
         const target = Math.min(nextCard.offsetLeft, maxScroll);
         track.scrollTo({ left: target, behavior: "smooth" });
       } else {

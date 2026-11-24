@@ -2,9 +2,8 @@
  * The Siccotel mark (red circle split by the S), vectorised from the original
  * public/assets/logos/siccotel-mark.png with potrace. Coordinates are in the
  * source image's 485 × 471 pixel space, so proportions match the original
- * exactly. Used for the crisp static hero fallback and the extruded 3D mark.
+ * exactly (485 wide). Drawn by SiccotelLogo.
  */
-export const MARK_WIDTH = 485;
 export const MARK_HEIGHT = 471;
 
 export const MARK_PATH =

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { resolveEnquiryType } from "@/content/navigation";
 import { enquiryTypeLabel, limits, validateEnquiry, type EnquiryInput } from "@/lib/enquiry";
 
 /**
@@ -9,7 +10,8 @@ import { enquiryTypeLabel, limits, validateEnquiry, type EnquiryInput } from "@/
  *     (+ optional ENQUIRY_WEBHOOK_SECRET, sent as a Bearer token)
  *
  * With neither configured the endpoint returns 503 and the form tells the
- * visitor to phone or email instead — it never reports a false success.
+ * visitor their message was not sent and to email instead — it never reports
+ * a false success.
  */
 
 type Result = { ok: true } | { ok: false; status: number; code: string };
@@ -139,7 +141,8 @@ export async function POST(request: Request) {
     email: str(body.email, limits.email).trim(),
     phone: str(body.phone, limits.phone).trim(),
     city: str(body.city, limits.city).trim(),
-    enquiryType: str(body.enquiryType, 20).trim() as EnquiryInput["enquiryType"],
+    // A page cached before an enquiry type was retired may still send it.
+    enquiryType: resolveEnquiryType(str(body.enquiryType, 20)),
     message: str(body.message, limits.message).trim(),
   };
 

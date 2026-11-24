@@ -99,7 +99,7 @@ export default async function PartnersPage() {
           <SectionHeader eyebrow={doc.cta.eyebrow} title={<span id="become-title">{doc.cta.title}</span>} intro={doc.cta.intro} />
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <ButtonLink href={enquiryHref("brand")}>Brand partnership enquiry</ButtonLink>
-            <ButtonLink href={enquiryHref("manufacturing")} variant="secondary">
+            <ButtonLink href={enquiryHref("brand")} variant="secondary">
               Manufacturing enquiry
             </ButtonLink>
           </div>

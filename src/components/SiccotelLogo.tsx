@@ -1,4 +1,4 @@
-import { MARK_HEIGHT, MARK_PATH } from "./home/siccotelMark";
+import { MARK_HEIGHT, MARK_PATH } from "./siccotelMark";
 
 // Wordmark vectorised from public/assets/logos/siccotel-logo.png (900 × 177) with potrace.
 const WORDMARK_PATH =

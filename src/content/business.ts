@@ -41,7 +41,7 @@ export const businessActivities: BusinessActivity[] = [
       "Supports the Government of Pakistan’s “Made in Pakistan” initiative",
       "Strategic partners include HMD, Nokia, Zentality and Deploy",
     ],
-    next: { label: "Make a manufacturing enquiry", enquiry: "manufacturing" },
+    next: { label: "Make a manufacturing enquiry", enquiry: "brand" },
     detailHref: "/assembly",
   },
   {

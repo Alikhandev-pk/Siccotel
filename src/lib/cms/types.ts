@@ -85,11 +85,15 @@ export type MapCity = { id: string; name: string; x: number; y: number };
 
 export type SettingsDoc = {
   email: string;
+  infoEmail: string;
+  whatsappDisplay: string;
+  whatsappHref: string;
   topBarPhoneDisplay: string;
   topBarPhoneHref: string;
   headOffice: { label: string; lines: string[]; street: string; locality: string };
   factory: { label: string; lines: string[]; emails: { label: string; value: string }[] };
-  social: { label: string; href: string; icon: "facebook" | "instagram" }[];
+  /** `icon` is "facebook", "instagram" or "linkedin"; anything else shows a plain link glyph. */
+  social: { label: string; href: string; icon: string }[];
   links: { siccoStore: string; siccotelTelecom: string; ptaDirbs: string; carlcareWarranty: string; appleCoverage: string };
 };
 

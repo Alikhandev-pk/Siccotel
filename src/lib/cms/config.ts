@@ -11,8 +11,11 @@ export const databaseSsl = process.env.DATABASE_SSL === "true";
 /** True once the deployment has a database to read from. */
 export const cmsConfigured = Boolean(databaseUrl);
 
-/** Uploaded images live here (gitignored) and are served by /media/[...path]. */
-export const uploadDir = path.resolve(process.env.UPLOAD_DIR?.trim() || "storage/uploads");
+/**
+ * Uploaded images live here (gitignored) and are served by /media/[...path]. Relative to
+ * the working directory; the comment stops Turbopack tracing the whole project into the build.
+ */
+export const uploadDir = path.resolve(/* turbopackIgnore: true */ process.cwd(), process.env.UPLOAD_DIR?.trim() || "storage/uploads");
 export const MEDIA_URL_PREFIX = "/media";
 
 /** Upload limits, checked on the server before anything is stored (shared with the admin's browser code). */

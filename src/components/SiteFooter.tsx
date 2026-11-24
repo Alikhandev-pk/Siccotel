@@ -3,13 +3,16 @@ import { Mail, MapPin } from "lucide-react";
 import { company } from "@/content/company";
 import { getSettings } from "@/lib/cms/public";
 import { mainNav, utilityNav } from "@/content/navigation";
-import { SocialIcon } from "./SocialIcon";
+import { contactEmails, whatsappContact } from "@/lib/contact-links";
+import { SocialIcon, WhatsAppIcon } from "./SocialIcon";
 import { SiccotelLogo } from "./SiccotelLogo";
 
 export async function SiteFooter() {
   const settings = await getSettings();
   const contact = settings;
   const social = settings.social;
+  const emails = contactEmails(settings);
+  const whatsapp = whatsappContact(settings);
   const related = [
     { label: "Sicco Store", href: settings.links.siccoStore },
     { label: "Siccotel Telecom", href: settings.links.siccotelTelecom },
@@ -29,14 +32,15 @@ export async function SiteFooter() {
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-night-muted sm:mt-4 sm:text-[0.875rem]">
             {company.shortDescription}
           </p>
-          <ul className="mt-4 flex gap-2">
+          <ul aria-label="Siccotel on social media" className="mt-4 flex gap-2">
             {social.map((s) => (
               <li key={s.href}>
                 <a
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex size-9 items-center justify-center rounded-lg border border-night-line text-white/90 transition-colors hover:border-white/50 hover:text-white"
+                  title={s.label}
+                  className="inline-flex size-11 items-center justify-center rounded-lg border border-night-line text-white/90 transition-colors hover:border-white/50 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:size-9"
                 >
                   <SocialIcon name={s.icon} className="size-4.5" />
                   <span className="sr-only">Siccotel on {s.label} (opens in a new tab)</span>
@@ -119,15 +123,32 @@ export async function SiteFooter() {
                 ))}
               </address>
             </li>
-            <li className="flex items-center gap-2.5">
-              <Mail aria-hidden="true" className="size-4 shrink-0 text-brand" strokeWidth={2} />
-              <a
-                href={`mailto:${contact.email}`}
-                className="text-white/80 transition-colors hover:text-white hover:underline underline-offset-4"
-              >
-                {contact.email}
-              </a>
-            </li>
+            {emails.map((e) => (
+              <li key={e} className="flex items-center gap-2.5">
+                <Mail aria-hidden="true" className="size-4 shrink-0 text-brand" strokeWidth={2} />
+                <a
+                  href={`mailto:${e}`}
+                  className="text-white/80 transition-colors [overflow-wrap:anywhere] hover:text-white hover:underline underline-offset-4"
+                >
+                  {e}
+                </a>
+              </li>
+            ))}
+            {whatsapp && (
+              <li className="flex items-center gap-2.5">
+                <WhatsAppIcon className="size-4 shrink-0 text-[#25d366]" />
+                <a
+                  href={whatsapp.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/80 transition-colors hover:text-white hover:underline underline-offset-4"
+                >
+                  <span className="sr-only">WhatsApp: </span>
+                  {whatsapp.display}
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </li>
+            )}
           </ul>
         </div>
       </div>

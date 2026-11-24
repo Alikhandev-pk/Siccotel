@@ -3,14 +3,10 @@ import { promisify } from "node:util";
 
 const scrypt = promisify(crypto.scrypt) as (pw: string, salt: Buffer, len: number, opts: crypto.ScryptOptions) => Promise<Buffer>;
 
-/** Format: scrypt$N$r$p$salt$hash (base64). Matches scripts/create-admin.mjs. */
-export async function hashPassword(password: string) {
-  const N = 16384, r = 8, p = 1;
-  const salt = crypto.randomBytes(16);
-  const hash = await scrypt(password, salt, 64, { N, r, p });
-  return `scrypt$${N}$${r}$${p}$${salt.toString("base64")}$${hash.toString("base64")}`;
-}
-
+/**
+ * Checks a password against a stored hash in the format scrypt$N$r$p$salt$hash
+ * (base64), as written by scripts/create-admin.mjs.
+ */
 export async function verifyPassword(password: string, stored: string) {
   const [scheme, n, r, p, salt, hash] = stored.split("$");
   if (scheme !== "scrypt" || !salt || !hash) return false;

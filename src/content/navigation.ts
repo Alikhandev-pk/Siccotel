@@ -36,12 +36,6 @@ export const enquiryTypes = [
     description: "Explore distribution, retail and launch support for your devices in Pakistan.",
   },
   {
-    value: "manufacturing",
-    label: "Manufacturing Enquiry",
-    audience: "Manufacturing partners",
-    description: "Discuss local assembly at the Siccotel Telecom plant in Korangi Creek Industrial Park, Karachi.",
-  },
-  {
     value: "general",
     label: "General Enquiry / Support",
     audience: "Customers and everyone else",
@@ -52,3 +46,17 @@ export const enquiryTypes = [
 export type EnquiryType = (typeof enquiryTypes)[number]["value"];
 
 export const enquiryHref = (type: EnquiryType) => `/contact?type=${type}#enquiry`;
+
+/**
+ * Retired enquiry types that old links, bookmarks or a cached form may still send.
+ * "Manufacturing Enquiry" was removed on 24 November 2026; its audience (device
+ * brands looking at local assembly) is now served by Brand Partnership.
+ */
+const legacyEnquiryTypes = new Map<string, EnquiryType>([["manufacturing", "brand"]]);
+
+/** A current enquiry type for a URL or submitted value, or "" when it matches none. */
+export function resolveEnquiryType(value: string | null | undefined): EnquiryType | "" {
+  const v = (value ?? "").trim().toLowerCase();
+  if (enquiryTypes.some((t) => t.value === v)) return v as EnquiryType;
+  return legacyEnquiryTypes.get(v) ?? "";
+}

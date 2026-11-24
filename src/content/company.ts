@@ -15,18 +15,17 @@ export const company = {
     "Siccotel is Pakistan’s Largest Smartphones Distribution, Manufacturing & Retailers House ,Serving Pakistan through a nation wide network of",
 } as const;
 
-/**
- * The header top bar's phone number, as the client requested on 14 November
- * 2026. It is deliberately not part of `contact`: the footer, Contact page,
- * enquiry form, structured data and WhatsApp still show no number until the
- * client confirms one for them. See "Client Confirmation Required" in
- * docs/CONTENT_AUDIT.md.
- */
+/** The header top bar's phone number, as the client requested on 14 November 2026. */
 export const topBarPhone = { display: "+92 326 8400903", href: "tel:+923268400903" } as const;
 
-/** No site-wide phone or WhatsApp number is published: Siccotel's own sites conflict. */
+/**
+ * Public contact details. The WhatsApp number was confirmed by the client on
+ * 24 November 2026 for the footer, the Contact page and the homepage button.
+ */
 export const contact = {
   email: "sales@siccotel.com",
+  infoEmail: "info@siccotel.com",
+  whatsapp: { display: "+92 326 8400903", href: "https://wa.me/923268400903" },
   headOffice: {
     label: "Head Office",
     lines: [
@@ -54,7 +53,8 @@ export const contact = {
 
 export const social = [
   { label: "Facebook", href: "https://www.facebook.com/siccotelpakistan/", icon: "facebook" },
-  { label: "Instagram", href: "https://www.instagram.com/siccotel_pakistan/", icon: "instagram" },
+  { label: "Instagram", href: "https://www.instagram.com/siccotel__pakistan/", icon: "instagram" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/siccotel/home/", icon: "linkedin" },
 ] as const;
 
 export const externalLinks = {
@@ -64,17 +64,6 @@ export const externalLinks = {
   carlcareWarranty: "https://www.carlcare.com/pk/warranty-check/",
   appleCoverage: "https://checkcoverage.apple.com/",
 } as const;
-
-/**
- * Network figures. These appear identically on siccotel.com (home) and
- * siccoteltelecom.com (About), so they are treated as verified.
- */
-export const networkStats = [
-  { value: "2001", label: "Established in Karachi" },
-  { value: "6+", label: "Regional hubs & offices" },
-  { value: "800+", label: "Wholesalers in the network" },
-  { value: "4,500+", label: "Retailers nationwide" },
-] as const;
 
 /** Homepage "Company at a glance" row, as requested by the client (November 2026). */
 export const homeStats = [

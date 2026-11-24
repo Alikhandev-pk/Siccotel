@@ -24,7 +24,7 @@ export default async function AssemblyPage() {
     <>
       <PageHero tone="dark" eyebrow={doc.hero.eyebrow} title={doc.hero.title} intro={doc.hero.intro}>
         <div className="mt-5 flex flex-col gap-3 sm:mt-10 sm:flex-row">
-          <ButtonLink href={enquiryHref("manufacturing")}>Make a manufacturing enquiry</ButtonLink>
+          <ButtonLink href={enquiryHref("brand")}>Make a manufacturing enquiry</ButtonLink>
           <ButtonLink href={settings.links.siccotelTelecom} variant="ghost-dark" external>
             Siccotel Telecom website
           </ButtonLink>
@@ -139,7 +139,7 @@ export default async function AssemblyPage() {
           <div className="lg:col-span-6">
             <SectionHeader eyebrow={doc.contact.eyebrow} title={<span id="mfg-contact-title">{doc.contact.title}</span>} intro={doc.contact.intro} />
             <div className="mt-5 sm:mt-8">
-              <ButtonLink href={enquiryHref("manufacturing")}>Make a manufacturing enquiry</ButtonLink>
+              <ButtonLink href={enquiryHref("brand")}>Make a manufacturing enquiry</ButtonLink>
             </div>
           </div>
           <div className="space-y-4 self-start rounded-[4px] border border-line p-4 sm:space-y-6 sm:p-8 lg:col-span-5 lg:col-start-8">

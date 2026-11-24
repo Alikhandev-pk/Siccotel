@@ -62,7 +62,6 @@ async function loadCollection<C extends CollectionName>(name: C): Promise<Publis
 }
 
 export const getBanners = () => loadCollection("banners");
-export const getProducts = () => loadCollection("products");
 export const getNews = () => loadCollection("news");
 
 export async function getArticle(slug: string) {

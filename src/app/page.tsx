@@ -22,7 +22,9 @@ import { BusinessCards } from "@/components/home/BusinessCards";
 import { RetailEcommerceSection } from "@/components/home/RetailEcommerceSection";
 import { ReachMap } from "@/components/home/ReachMap";
 import { JourneyRail } from "@/components/home/JourneyRail";
-import { HomeEnquiry } from "@/components/home/HomeEnquiry";
+import { EnquiryPaths } from "@/components/EnquiryPaths";
+import { WhatsAppFloat } from "@/components/home/WhatsAppFloat";
+import { contactEmails, whatsappContact } from "@/lib/contact-links";
 import { Reveal } from "@/components/animations/Reveal";
 import { ChainProgress } from "@/components/animations/ChainProgress";
 import { NewsReveal } from "@/components/animations/NewsReveal";
@@ -55,6 +57,7 @@ export default async function HomePage() {
   const [photoA, photoB] = glance.photos;
   // An empty slot drops the photo column (and its caption) so the text spans the band.
   const manufacturingPhoto = manufacturing.photo.image?.src ? manufacturing.photo.image : null;
+  const whatsapp = whatsappContact(settings);
 
   return (
     <>
@@ -215,7 +218,7 @@ export default async function HomePage() {
                 {/* On phones this route is in the enquiry list that closes the page. */}
                 <div className="hidden sm:block">
                   <ButtonLink
-                    href={enquiryHref("manufacturing")}
+                    href={enquiryHref("brand")}
                     variant="ghost-dark"
                   >
                     Manufacturing enquiry
@@ -331,11 +334,13 @@ export default async function HomePage() {
         </section>
       )}
 
-      <HomeEnquiry
+      <EnquiryPaths
         title={home.enquiry.title}
         intro={home.enquiry.intro}
-        email={settings.email}
+        emails={contactEmails(settings)}
       />
+
+      {whatsapp && <WhatsAppFloat href={whatsapp.href} display={whatsapp.display} />}
     </>
   );
 }

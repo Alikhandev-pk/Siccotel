@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  Factory,
   Handshake,
   Headset,
   Mail,
@@ -17,28 +16,24 @@ const enquiryIcons: Record<
 > = {
   dealer: Store,
   brand: Handshake,
-  manufacturing: Factory,
   general: Headset,
 };
 
-type HomeEnquiryProps = {
-  title?: string;
-  intro?: string;
-  email?: string;
-  emails?: string[];
-};
-
-export function HomeEnquiry({
-  title = "Partner with Siccotel",
+/**
+ * "Business enquiries" band shown at the foot of the Home, About and Services
+ * pages: contact emails on the left, one card per enquiry type on the right,
+ * each opening the Contact form with that type selected.
+ */
+export function EnquiryPaths({
+  title,
   intro,
-  email,
   emails,
-}: HomeEnquiryProps) {
-  const displayEmails = emails ?? (
-    email && email !== "sales@siccotel.com"
-      ? [email]
-      : ["sales@siccotel.com", "info@siccotel.com"]
-  );
+}: {
+  title: string;
+  intro: string;
+  /** From contactEmails(settings). */
+  emails: string[];
+}) {
   return (
     <section
       aria-labelledby="enquiry-paths-title"
@@ -46,7 +41,7 @@ export function HomeEnquiry({
     >
       <div className="container-site">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-14 items-start">
-          {/* Left column: eyebrow, heading, intro, sales email */}
+          {/* Left column: eyebrow, heading, intro, contact emails */}
           <Reveal className="flex flex-col justify-between lg:col-span-5">
             <div>
               <div className="flex items-center gap-2 text-xs font-bold tracking-[0.14em] text-brand uppercase sm:text-[0.8125rem]">
@@ -60,14 +55,11 @@ export function HomeEnquiry({
                 {title}
               </h2>
               <p className="mt-3 max-w-md text-base leading-relaxed text-muted sm:mt-4 sm:text-[1.0625rem]">
-                {intro ??
-                  (title === "How Can We Work Together?"
-                    ? "Choose the option that fits you best and your enquiry will reach the right team."
-                    : "Tell us what you need and we'll connect you with the right team.")}
+                {intro}
               </p>
             </div>
             <div className="mt-6 flex flex-col gap-2.5 sm:mt-8">
-              {displayEmails.map((addr) => (
+              {emails.map((addr) => (
                 <a
                   key={addr}
                   href={`mailto:${addr}`}
@@ -80,12 +72,12 @@ export function HomeEnquiry({
             </div>
           </Reveal>
 
-          {/* Right column: 4 enquiry cards in a compact 2x2 grid */}
+          {/* Right column: one card per enquiry type */}
           <Reveal
             as="div"
             mode="children"
             y={24}
-            className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:col-span-7"
+            className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 lg:col-span-7"
           >
             {enquiryTypes.map((t) => {
               const Icon = enquiryIcons[t.value];

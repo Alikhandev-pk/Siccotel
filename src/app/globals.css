@@ -620,3 +620,8 @@ body:has([data-admin-shell]) {
 [data-admin-shell] textarea::placeholder {
   color: #6b727c;
 }
+
+/* The homepage WhatsApp button steps aside while the mobile menu is open (SiteHeader sets the flag). */
+html[data-menu-open] .whatsapp-float {
+  display: none;
+}

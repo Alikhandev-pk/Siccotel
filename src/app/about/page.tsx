@@ -2,7 +2,8 @@ import Image from "next/image";
 import { fillProps, imageProps } from "@/lib/cms/image";
 import { getDoc, getSettings } from "@/lib/cms/public";
 import { PageHero, StatsGrid, Timeline } from "@/components/sections";
-import { HomeEnquiry } from "@/components/home/HomeEnquiry";
+import { EnquiryPaths } from "@/components/EnquiryPaths";
+import { contactEmails } from "@/lib/contact-links";
 import { ButtonLink, Reveal, SectionHeader } from "@/components/ui";
 import { pageMetadata } from "@/lib/site";
 
@@ -113,7 +114,11 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <HomeEnquiry title="Partner with Siccotel" email={settings.email} />
+      <EnquiryPaths
+        title="Partner with Siccotel"
+        intro="Tell us what you need and we'll connect you with the right team."
+        emails={contactEmails(settings)}
+      />
     </>
   );
 }

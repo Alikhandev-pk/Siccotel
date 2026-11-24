@@ -11,7 +11,7 @@ if (!email || !password) throw new Error('Usage: npm run admin:create -- <email>
 if (password.length < 12) throw new Error("Use a password of at least 12 characters.");
 if (!process.env.DATABASE_URL) throw new Error("Set DATABASE_URL in .env.local (see .env.example).");
 
-// Same format as src/lib/cms/password.ts: scrypt$N$r$p$salt$hash
+// Read by verifyPassword in src/lib/cms/password.ts: scrypt$N$r$p$salt$hash (base64)
 const N = 16384, r = 8, p = 1;
 const salt = crypto.randomBytes(16);
 const hash = crypto.scryptSync(password, salt, 64, { N, r, p });

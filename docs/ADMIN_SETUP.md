@@ -2,7 +2,7 @@
 
 The site has a protected admin panel at `/admin`, backed by MySQL (or MariaDB) and a persistent uploads folder. Until a database is configured and the website import has run, every public page shows the content built into the code, so the site works throughout setup.
 
-Everything that differs between machines is in environment variables (`.env.local` locally, the host's environment in production). Moving from the local demo to Hostinger means changing `DATABASE_URL` and, if needed, `UPLOAD_DIR`; no code changes.
+Everything that differs between machines is in environment variables (`.env.local` locally, the host's environment in production). Moving from a local setup to a server means changing `DATABASE_URL` and, if needed, `UPLOAD_DIR`; no code changes.
 
 | Variable | Purpose |
 | :--- | :--- |
@@ -10,43 +10,20 @@ Everything that differs between machines is in environment variables (`.env.loca
 | `DATABASE_SSL` | `true` when the database host requires TLS (remote connections). |
 | `UPLOAD_DIR` | Where uploaded images are stored. Defaults to `storage/uploads`, which is gitignored. It must persist across deploys. |
 
-## Local demo on Windows
+## Local setup
 
-1. **Database server.** Any MySQL 8 or MariaDB 10.6+ works. Since 15 November 2026 the demo laptop runs **MySQL Community Server 8.4.11 LTS** (the official no-install ZIP, Oracle-signed) on **127.0.0.1:3308**, from `%LOCALAPPDATA%\siccotel-mysql`. It needs no installer and no admin rights. Start it with:
-   ```powershell
-   & "$env:LOCALAPPDATA\siccotel-mysql\mysql-8.4.11-winx64\bin\mysqld.exe" --defaults-file="$env:LOCALAPPDATA\siccotel-mysql\my.ini"
-   ```
-   Stop it cleanly with `mysqladmin -h 127.0.0.1 -P 3308 -u root shutdown`. The root password is in `%LOCALAPPDATA%\siccotel-mysql\root-password.txt` (local only, never committed). The X Protocol is off, and the server listens on 127.0.0.1 only.
+The Windows steps are in the [README](../README.md#setup-on-windows): install MySQL, create the database and user, `npm run db:migrate`, `npm run admin:create`, then **Import the current website** on the admin Dashboard. The import button appears only until the first import has run.
 
-   The previous **MariaDB 11.4.5** instance (port 3306, `%LOCALAPPDATA%\siccotel-mariadb`) is kept unchanged for rollback. Start it with:
-   ```powershell
-   & "$env:LOCALAPPDATA\siccotel-mariadb\mariadb-11.4.5-winx64\bin\mysqld.exe" --defaults-file="$env:LOCALAPPDATA\siccotel-mariadb\data\my.ini"
-   ```
-   **Rollback to MariaDB:** start it, swap the two `DATABASE_URL` lines in `.env.local` (the MariaDB one is kept there as a comment), then rebuild and restart the app. A pre-migration backup is in `%LOCALAPPDATA%\siccotel-backups\2026-11-15-before-mysql\`: a full SQL dump, a copy of `storage/uploads` and of `.env.local`.
-2. **Database and user.** These are created once, with a password of your choice:
-   ```sql
-   CREATE DATABASE siccotel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   CREATE USER 'siccotel'@'127.0.0.1' IDENTIFIED BY 'your-password';
-   GRANT ALL PRIVILEGES ON siccotel.* TO 'siccotel'@'127.0.0.1';
-   ```
-3. **`.env.local`:**
-   ```
-   DATABASE_URL=mysql://siccotel:your-password@127.0.0.1:3306/siccotel
-   ```
-4. **Schema:** `npm run db:migrate`. It applies `db/migrations/*.sql` once each, tracked in `schema_migrations`.
-5. **First admin:** `npm run admin:create -- you@company.com "a-long-unique-password"`.
-6. **Run:** `npm run build`, then `npm start`. Open `http://localhost:3000/admin/login` and click **Import the current website** on the Dashboard.
+For a plain-HTTP local test with `npm start`, set `INSECURE_LOCAL_COOKIES=true` in `.env.local` so the session cookie works without HTTPS. Never set it on a public server.
 
-For a plain-HTTP local demo with `npm start`, `.env.local` also sets `INSECURE_LOCAL_COOKIES=true`, so the session cookie works without HTTPS. Never set it on a public server.
-
-## Hostinger later
+## Moving to production (for example Hostinger)
 
 - **Engine and version:** Hostinger's support site says its Web and Cloud hosting databases run **MariaDB**, although hPanel labels them "MySQL Databases". Check the exact version in hPanel → Databases or phpMyAdmin (`SELECT VERSION();`) before moving. The app works on both engines: its SQL avoids engine-specific features, and the migrations have run on MariaDB 11.4.5 and MySQL 8.4.11.
 - **Database:** hPanel → Databases → MySQL Databases. Create the database and user, then put them in `DATABASE_URL` (the host is shown in hPanel). Run `npm run db:migrate` and `npm run admin:create` against it.
 - **Moving the existing records** (pages, drafts, banners, products, news, settings, media records and admin accounts), instead of re-importing:
-  1. Dump the local data. Leave out `schema_migrations` and `sessions` (Hostinger's `db:migrate` fills the first, and old sign-ins should not carry over):
+  1. Dump the local data with `mysqldump` from your MySQL `bin` folder (adjust the port). Leave out `schema_migrations` and `sessions` (the server's `db:migrate` fills the first, and old sign-ins should not carry over). `--set-gtid-purged=OFF` is for MySQL's `mysqldump`; drop it with MariaDB's:
      ```powershell
-     & "$env:LOCALAPPDATA\siccotel-mysql\mysql-8.4.11-winx64\bin\mysqldump.exe" -h 127.0.0.1 -P 3308 -u siccotel -p --single-transaction --no-tablespaces --set-gtid-purged=OFF --no-create-info --skip-triggers --ignore-table=siccotel.schema_migrations --ignore-table=siccotel.sessions siccotel > siccotel-data.sql
+     mysqldump -h 127.0.0.1 -P 3306 -u siccotel -p --single-transaction --no-tablespaces --set-gtid-purged=OFF --no-create-info --skip-triggers --ignore-table=siccotel.schema_migrations --ignore-table=siccotel.sessions siccotel > siccotel-data.sql
      ```
   2. On Hostinger, run `npm run db:migrate` first (it creates the tables), then import `siccotel-data.sql` with hPanel → phpMyAdmin → Import. Do not run `admin:create` first, or the imported admin row will clash with it.
   3. Compare row counts for `admins`, `documents`, `entries`, `media_assets` and `slug_redirects` with the local database.
@@ -75,5 +52,5 @@ For a plain-HTTP local demo with `npm start`, `.env.local` also sets `INSECURE_L
   - A file still used by any page, banner, product or article, in either its draft or published version, cannot be deleted.
   - **Published images live in `public/assets/`**, sorted into `products/`, `articles/` (news covers and galleries), `banners/`, `logos/` (brand, partner and client logos) and `website/` (every other page image), and published content points at `/assets/...`. A newly chosen or uploaded image is published from `/media/...` first; `npm run cms:organize-images` then copies it, byte for byte, into the matching folder and points drafts and published versions at the public copy. Run it before `npm run build`: Next.js serves only the public files present at build time, so rebuild after running it on a live server. It is safe to rerun (`-- --dry-run` reports without changing anything), reuses identical files instead of copying them twice, never overwrites or deletes a file, backs up the rows it changes to `storage/backups/`, and leaves draft-only images and every upload original in `UPLOAD_DIR`, so the media library is unchanged.
   - Code refers to files in `public/assets` through `src/content/asset-manifest.ts` (sizes and blur placeholders), generated by `npm run assets:manifest`. Run it after adding, renaming or removing a file there by hand.
-- **Import:** content images from `public/assets` keep their `/assets/...` URLs; a managed copy is also stored so the media library lists them. The import is idempotent. It adds only missing items and never overwrites edits. Unpublished items stay unpublished, and deleted items stay deleted.
+- **Import:** run once from the Dashboard on an empty database. Content images from `public/assets` keep their `/assets/...` URLs; a managed copy is also stored so the media library lists them. The import is idempotent. It adds only missing items and never overwrites edits. Unpublished items stay unpublished, and deleted items stay deleted.
 - **Nationwide Reach map:** city markers are percentages of the map, so a sharper replacement with the same layout stays aligned. If a new map has a different layout, update each city's `x`/`y` in Pages → Homepage.

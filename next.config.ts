@@ -1,8 +1,6 @@
 import type { NextConfig } from "next";
 
-
 const nextConfig: NextConfig = {
-  /* config options here */
   // Optional separate build folder, so an isolated test instance (its own database and
   // uploads) can be built and run beside the main one without touching .next.
   ...(process.env.NEXT_DIST_DIR ? { distDir: process.env.NEXT_DIST_DIR } : {}),

@@ -29,5 +29,3 @@ export const networkCities: NetworkCity[] = [
   { id: "sukkur", name: "Sukkur", x: 47.59, y: 69.51 },
   { id: "karachi", name: "Karachi", x: 36.76, y: 85.29 },
 ];
-
-export const hqCityId = "karachi";

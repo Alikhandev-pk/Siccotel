@@ -158,6 +158,9 @@ const servicePhotos = {
 export const defaultDocs: DocMap = {
   settings: {
     email: contact.email,
+    infoEmail: contact.infoEmail,
+    whatsappDisplay: contact.whatsapp.display,
+    whatsappHref: contact.whatsapp.href,
     topBarPhoneDisplay: topBarPhone.display,
     topBarPhoneHref: topBarPhone.href,
     headOffice: { ...contact.headOffice, lines: [...contact.headOffice.lines] },
@@ -380,8 +383,8 @@ export const defaultDocs: DocMap = {
   contact: {
     hero: {
       eyebrow: "Contact",
-      title: "Partner with Siccotel",
-      intro: "Dealers, brands, manufacturing partners and customers — tell us what you need and we’ll route your enquiry to the right team.",
+      title: "Get in Touch",
+      intro: "We love to hear what you need and we’ll route your enquiry to the right team.",
     },
     formTitle: "Send an Enquiry",
     detailsTitle: "Contact Details",

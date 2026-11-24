@@ -2,9 +2,11 @@
 
 Comprehensive audit comparing the original public website ([https://siccotel.com/](https://siccotel.com/) and [https://siccoteltelecom.com/](https://siccoteltelecom.com/)) with the current implementation in `siccotel-web`.
 
-## Client Confirmation Required
+## Phone and WhatsApp numbers
 
-**Phone and WhatsApp numbers conflict across Siccotel's official websites. Neither number has been confirmed, and nothing here should be read as choosing the correct one.** Observed in a rendered browser on 2 November 2026:
+**Status (24 November 2026):** the client confirmed **+92 326 8400903** for WhatsApp. It appears in the footer, on the Contact page and as the homepage WhatsApp button, from the CMS Settings (`whatsappDisplay`, `whatsappHref`). The same number is the header top-bar phone (`topBarPhone`, requested on 14 November 2026). No phone number is shown in the footer, on the Contact page, in the enquiry form or in structured data. The client has not yet confirmed whether +92 300 0174226 is still in use.
+
+The history below explains why the numbers were held back until then. Siccotel's own websites disagreed, as observed in a rendered browser on 2 November 2026:
 
 | Page | Number displayed | Call link dials | WhatsApp button goes to |
 | :--- | :--- | :--- | :--- |
@@ -13,14 +15,7 @@ Comprehensive audit comparing the original public website ([https://siccotel.com
 | siccotel.com/contact-us/ | +92 300 0174226 | Two links, both labelled +92 300 0174226: one dials +92 300 0174226, the other **+92 326 8400903** | **+92 326 8400903** |
 | siccoteltelecom.com/contact-us/ | +92 300 0174226 | No call link | +92 300 0174226 |
 
-**This website currently shows one phone number, +92 326 8400903, in the desktop header top bar only** (`topBarPhone` in `src/content/company.ts`, added at the client's request on 14 November 2026). The footer, Contact page, enquiry form, structured data and WhatsApp still show no number; visitors there are directed to email and the enquiry form. +92 300 0174226 was removed on 13 November 2026.
-
-Please confirm:
-1. The correct public phone number.
-2. The correct WhatsApp number, which may be different.
-3. Whether +92 326 8400903 is still in use and for what.
-
-Once confirmed, add the numbers to `contact` in `src/content/company.ts` and restore the phone and WhatsApp links in the header, footer, contact page, enquiry form and enquiry CTA.
++92 300 0174226 was removed from this website on 13 November 2026. Still open: whether the client wants a general phone number in the footer, on the Contact page and in structured data.
 
 ---
 

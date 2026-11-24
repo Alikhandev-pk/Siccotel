@@ -88,6 +88,12 @@ export function SiteHeader({ contact }: { contact: HeaderContact }) {
     };
   }, [close]);
 
+  // Lets page-level fixed elements (the homepage WhatsApp button) step aside while the menu is open.
+  useEffect(() => {
+    document.documentElement.toggleAttribute("data-menu-open", open);
+    return () => document.documentElement.removeAttribute("data-menu-open");
+  }, [open]);
+
   useEffect(() => {
     menuOpenRef.current = open;
     if (!open) {

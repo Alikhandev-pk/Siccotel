@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 /**
  * Scroll-triggered reveal. Marks the element for the shared GSAP motion
- * system (see components/motion/PageMotion). Content is always present and
+ * system (see components/animations/PageMotion). Content is always present and
  * visible in the server HTML; reduced-motion users never see it hidden.
  */
 export function Reveal({

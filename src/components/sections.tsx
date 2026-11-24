@@ -243,8 +243,3 @@ export function NewsCard({
     </article>
   );
 }
-
-/* ------------------------------------------------------------------ */
-/* Enquiry routing CTA                                                 */
-/* ------------------------------------------------------------------ */
-export { HomeEnquiry as EnquiryPaths } from "./home/HomeEnquiry";

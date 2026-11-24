@@ -25,7 +25,7 @@ export function safeHref(value: unknown): string {
   return "";
 }
 
-const HREF_KEYS = new Set(["href", "url", "storeUrl", "ctaHref", "actionHref", "topBarPhoneHref", "siccoStore", "siccotelTelecom", "ptaDirbs", "carlcareWarranty", "appleCoverage"]);
+const HREF_KEYS = new Set(["href", "url", "storeUrl", "ctaHref", "actionHref", "topBarPhoneHref", "whatsappHref", "siccoStore", "siccotelTelecom", "ptaDirbs", "carlcareWarranty", "appleCoverage"]);
 
 /** Walks submitted content: trims strings, drops unsafe link schemes, caps sizes. */
 export function sanitizeContent(value: unknown, key = "", depth = 0): unknown {

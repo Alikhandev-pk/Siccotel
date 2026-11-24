@@ -6,7 +6,8 @@ import { fillProps, imageProps } from "@/lib/cms/image";
 import { getDoc, getSettings } from "@/lib/cms/public";
 import type { ServiceActivity, SettingsDoc } from "@/lib/cms/types";
 import { PageHero } from "@/components/sections";
-import { HomeEnquiry } from "@/components/home/HomeEnquiry";
+import { EnquiryPaths } from "@/components/EnquiryPaths";
+import { contactEmails } from "@/lib/contact-links";
 import { ButtonLink, Reveal, TextLink } from "@/components/ui";
 import { HeadingWords } from "@/components/HeadingWords";
 import { pageMetadata } from "@/lib/site";
@@ -20,7 +21,7 @@ export const metadata = pageMetadata({
 
 /** Product shots and logo artwork are shown whole; photographs fill the frame. */
 const containIds = new Set(["manufacturing", "retail"]);
-const enquiryFor: Record<string, EnquiryType> = { distribution: "brand", manufacturing: "manufacturing", retail: "dealer" };
+const enquiryFor: Record<string, EnquiryType> = { distribution: "brand", manufacturing: "brand", retail: "dealer" };
 
 function ActivitySection({ activity, index, links }: { activity: ServiceActivity; index: number; links: SettingsDoc["links"] }) {
   const visual = { ...activity.photo, contain: containIds.has(activity.id) };
@@ -259,7 +260,11 @@ export default async function ServicesPage() {
         </div>
       </section>
 
-      <HomeEnquiry title="How Can We Work Together?" email={settings.email} />
+      <EnquiryPaths
+        title="How Can We Work Together?"
+        intro="Choose the option that fits you best and your enquiry will reach the right team."
+        emails={contactEmails(settings)}
+      />
     </>
   );
 }

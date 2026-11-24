@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowUpRight, ChevronRight, FilePlus2, Image as ImageIcon, Newspaper, Package, PenLine, Plus, SlidersHorizontal, Upload } from "lucide-react";
+import { ImportButton } from "@/components/admin/ImportButton";
 import { isAdminRequest, requireAdmin } from "@/lib/cms/auth";
+import { SEED_MARKER_KEY } from "@/lib/cms/config";
 import { fromSql, parseJson, select } from "@/lib/cms/db";
 import type { CollectionName } from "@/lib/cms/types";
 import { createAndOpen } from "../actions";
@@ -52,10 +54,13 @@ const primary = "flex h-12 w-full items-center gap-2 rounded-md bg-accent px-4 t
 export default async function Dashboard() {
   if (!(await isAdminRequest())) return null;
   await requireAdmin();
-  const [entries, mediaRows] = await Promise.all([
+  const [entries, mediaRows, seedRows] = await Promise.all([
     select<EntryRow>("SELECT id, collection, draft, published, is_published, updated_at FROM entries WHERE deleted_at IS NULL ORDER BY updated_at DESC, id"),
     select<{ total: number; recent: number | null }>("SELECT COUNT(*) AS total, SUM(created_at > UTC_TIMESTAMP() - INTERVAL 7 DAY) AS recent FROM media_assets"),
+    select<{ key: string }>("SELECT `key` FROM documents WHERE `key` = ?", [SEED_MARKER_KEY]),
   ]);
+  // Until the first import, public pages show the built-in content and ignore the database.
+  const imported = seedRows.length > 0;
 
   const stats = (c: CollectionName) => {
     const rows = entries.filter((e) => e.collection === c);
@@ -79,6 +84,16 @@ export default async function Dashboard() {
           View website <ArrowUpRight className="size-4" />
         </a>
       </header>
+
+      {!imported && (
+        <section aria-labelledby="setup-heading" className="rounded-lg border border-accent/40 bg-white p-5">
+          <h2 id="setup-heading" className="text-lg font-semibold">Finish setup: import the website</h2>
+          <p className="mt-1 mb-4 max-w-2xl text-sm text-ink-soft">
+            The public site is still showing its built-in content. Importing copies every page, banner, product and article, with their images, into this database. From then on, what you publish here is what the site shows.
+          </p>
+          <ImportButton />
+        </section>
+      )}
 
       <section aria-label="Overview">
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
